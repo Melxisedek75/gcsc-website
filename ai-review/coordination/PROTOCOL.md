@@ -32,8 +32,9 @@ available Codex reasoning configuration; it is not an official public model.
    evidence packet: base/head SHA, changed files, requirements, exact commands,
    risk tier/boundaries, and review-record path.
 3. The dispatcher starts a fresh `SOL_ULTRA_REVIEWER` task in a distinct
-   reviewer context. The reviewer records its `Reviewer context ID` before
-   inspecting the diff. Identical or placeholder context IDs are rejected.
+   reviewer context. The reviewer records its environment-issued UUID as
+   `Reviewer context ID` before inspecting the diff. Identical, non-UUID, or
+   placeholder context IDs are rejected.
 4. The reviewer independently reads the diff and reruns the listed checks. For
    `DOCS` and `STANDARD`, `Independent QA/security` and `QA/security context ID`
    are both `NOT_REQUIRED`. For `HIGH` and `LIVE`, set
@@ -41,7 +42,14 @@ available Codex reasoning configuration; it is not an official public model.
    isolated `QA/security context ID` that differs from the author and reviewer
    context IDs, with its commands and results in the same review record.
 5. P0/P1 findings produce `CHANGES_REQUESTED`. After repair, a fresh reviewer
-   context repeats the review. Only that isolated reviewer can set `APPROVED`.
+   context repeats the review. Only that isolated reviewer can set `APPROVED`,
+   attest the exact Head commit/tree, and create the review-only commit.
+   After the reviewed head, only the current tracked regular Markdown review
+   record may change. Coordination payloads, scripts, binaries, or additional
+   records require a new reviewed head and independent pass. Final approval
+   replaces every author/reviewer evidence placeholder with a UTC timestamp,
+   completed summaries, diff inspection, rerun checks, findings, rationale,
+   and `Status: APPROVED`.
 6. If no independent reviewer configuration is available, leave the record
    `READY_FOR_REVIEW` or `BLOCKED`; never self-approve and never substitute
    repeated paid Claude polling for the required review.
@@ -76,6 +84,9 @@ powershell -ExecutionPolicy Bypass -File execution/ai-review-gate.ps1 -ReviewFil
 ```
 
 Neither command performs a merge or deploy.
+The local gate always rejects `LIVE` and `Deploy`; a separate
+founder-controlled runner must verify founder identity/evidence for either
+operation.
 
 Reviewers do not merge, deploy, publish, access external accounts, use secrets,
 sign blockchain transactions, move funds, or alter live systems while reviewing.
@@ -83,6 +94,7 @@ sign blockchain transactions, move funds, or alter live systems while reviewing.
 ## Historical records
 
 Existing `CODEX`/`CLAUDE` records and old inbox items remain readable. Do not
-rewrite them for this policy. `-LegacyRecord` is limited to records whose
-`Change ID` begins with a date before `2026-08-15`; new work uses explicit role
-and context fields and does not depend on legacy Claude availability.
+rewrite them for this policy. `-LegacyRecord` is archival and always fails
+closed; it cannot authorize merge or deploy. Any work that will be integrated
+must receive a new strict record with explicit role/context fields and does not
+depend on legacy Claude availability.

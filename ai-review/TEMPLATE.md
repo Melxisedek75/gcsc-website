@@ -8,17 +8,20 @@
 - Base commit: <full SHA>
 - Head commit: <full SHA>
 - Author AI: CODEX_AUTHOR
-- Author context ID: <task/thread/session ID; concrete and non-placeholder>
+- Author context ID: <environment-issued UUID>
 - Reviewer AI: SOL_ULTRA_REVIEWER
-- Reviewer context ID: <fresh isolated task/thread/session ID; differs from author>
+- Reviewer context ID: <fresh isolated UUID; differs from author>
+- Reviewer attested head: <same full SHA as Head commit>
+- Reviewer attested tree: <git tree SHA for Head commit>
 - Author status: PENDING
 - Prepared at (UTC): <YYYY-MM-DDTHH:MM:SSZ>
 - Reviewed at (UTC): PENDING
 
 `SOL_ULTRA` is an internal GCSC capability profile resolved to the highest
 available Codex reasoning configuration. It is not an official public model
-name. The author and reviewer roles and execution contexts must differ; a
-same-context self-approval is invalid.
+name. Context IDs must be UUIDs emitted by the execution environment. The
+author and reviewer roles and execution contexts must differ; a same-context
+self-approval is invalid.
 
 ## Scope and risk
 
@@ -44,19 +47,21 @@ independent QA/security pass; `HIGH` and `LIVE` require one.
 ## Independent review
 
 - Reviewer diff inspection: PENDING
-- Required checks rerun independently:
-  - `<exact command>`: PENDING
+- Required checks rerun independently: PENDING
 - Independent QA/security: NOT_REQUIRED
 - QA/security context ID: NOT_REQUIRED
 - Findings (P0/P1/P2/P3): PENDING
+- Final rationale: PENDING
 - Unresolved P0/P1 findings: PENDING
 
 For `DOCS` and `STANDARD`, both QA/security fields remain `NOT_REQUIRED`. For
 `HIGH` and `LIVE`, set `Independent QA/security: PASS` and provide a concrete,
 non-placeholder isolated `QA/security context ID` that differs from the author
-and reviewer context IDs; record its exact commands and results below. The
+and reviewer context IDs and is also an environment-issued UUID; record its
+exact commands and results below. The
 reviewer must use the bounded evidence packet and independently inspect the
-diff.
+diff. Approval requires every author/reviewer evidence field above to contain
+completed, non-placeholder evidence and a real UTC review timestamp.
 
 ## Decisions
 
@@ -80,6 +85,8 @@ before the explicit `-Operation Merge` gate. `Deploy decision` remains
 binds `Founder approval head` to the reviewed full Head SHA, sets `Founder
 approval operation` to `Merge`, `Deploy`, or `MergeAndDeploy`, sets `Deploy
 decision: READY` when applicable, and passes the matching explicit gate.
+The local gate never authorizes `LIVE` or `Deploy`; those states require a
+separate externally verified founder-controlled runner.
 
 ## Reviewer sign-off
 

@@ -63,10 +63,9 @@ author's reasoning history.
 
 ## Compatibility
 
-The validator accepts historical `CODEX` and `CLAUDE` identities so existing
-records remain readable. New records use explicit role and context fields.
-Legacy records without context IDs can be evaluated only in `-LegacyRecord`
-mode; new work must not use that compatibility switch.
+Historical `CODEX` and `CLAUDE` records remain readable. New records use
+explicit role and context fields. `-LegacyRecord` is an archival marker that
+always fails closed and cannot authorize merge or deploy.
 
 ## Validation
 
@@ -78,7 +77,7 @@ Pester-independent PowerShell fixtures cover:
 - pending decision rejection;
 - failed checks rejection;
 - uncleared live-risk rejection;
-- historical compatibility when explicitly requested;
+- fail-closed archival handling when explicitly requested;
 - UTF-8 and line-ending handling.
 
 ## Current PR migration

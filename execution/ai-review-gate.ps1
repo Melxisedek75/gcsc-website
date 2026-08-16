@@ -54,12 +54,34 @@ if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
     Fail-Gate "review file not found: $candidate"
 }
 
+$relativeReviewPath = $candidate.Substring($root.Length).TrimStart('\', '/').Replace('\', '/')
+if ($relativeReviewPath.Contains(':')) {
+    Fail-Gate 'review file path must not contain an alternate data stream'
+}
+$attributes = [System.IO.File]::GetAttributes($candidate)
+if (($attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+    Fail-Gate 'review file must not be a symlink or reparse point'
+}
+$trackedEntry = @(Invoke-GitLines @('ls-files', '--stage', '--', $relativeReviewPath))
+if (-not $trackedEntry -or $trackedEntry.Count -ne 1 -or $trackedEntry[0] -notmatch '^100(?:644|755) [0-9a-f]+ 0\s+') {
+    Fail-Gate 'review file must be a tracked regular Git file'
+}
+$trackedBlob = (Invoke-GitLines @('rev-parse', "HEAD:$relativeReviewPath") | Select-Object -Last 1).Trim()
+$workingBlob = (Invoke-GitLines @('hash-object', '--', $candidate) | Select-Object -Last 1).Trim()
+if ($trackedBlob -ne $workingBlob) {
+    Fail-Gate 'review file content must match the committed HEAD blob'
+}
+
 try {
     $utf8 = New-Object System.Text.UTF8Encoding($false, $true)
     $content = [System.IO.File]::ReadAllText($candidate, $utf8)
 }
 catch {
     Fail-Gate "review file must be valid UTF-8: $($_.Exception.Message)"
+}
+
+if ($LegacyRecord) {
+    Fail-Gate 'legacy records are archival only and cannot authorize Merge or Deploy'
 }
 
 $lines = $content -split "`r?`n"
@@ -81,7 +103,7 @@ function Read-Field([string]$Name) {
     if ($values.Count -eq 0) {
         Fail-Gate "missing field: $Name"
     }
-    if (-not $LegacyRecord -and $values.Count -ne 1) {
+    if ($values.Count -ne 1) {
         Fail-Gate "duplicate field: $Name"
     }
     return $values[$values.Count - 1]
@@ -95,7 +117,13 @@ function Test-ContextId([string]$Value) {
     if ($Value -in $placeholders) { return $false }
     if ($Value -match '^<.*>$') { return $false }
     if ($Value -match '(?i)placeholder|task/thread/session|fresh isolated') { return $false }
-    return $Value.Length -ge 8
+    return $Value -match '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$'
+}
+
+function Test-CompletedEvidence([string]$Value) {
+    if ($Value -match '^(PENDING|TBD|TODO|UNKNOWN|NOT_RECORDED)$') { return $false }
+    if ($Value -match '^<.*>$') { return $false }
+    return $Value.Trim().Length -ge 8
 }
 
 function Test-FullCommit([string]$Value, [string]$FieldName) {
@@ -160,15 +188,12 @@ if (-not $headIsAncestor) {
     Fail-Gate 'reviewed Head commit must be an ancestor of current HEAD'
 }
 
-$postHeadFiles = Invoke-GitLines @('diff', '--name-only', "${headCommit}..${currentHead}") |
+$postHeadFiles = @(Invoke-GitLines @('diff', '--name-only', "${headCommit}..${currentHead}") |
     ForEach-Object { ([string]$_).Trim().Replace('\', '/') } |
-    Where-Object { $_ }
-$unreviewedFiles = @($postHeadFiles | Where-Object {
-    $_ -notmatch '^ai-review/records/[^/]+\.md$' -and
-    $_ -notmatch '^ai-review/coordination/'
-})
+    Where-Object { $_ })
+$unreviewedFiles = @($postHeadFiles | Where-Object { $_ -ne $relativeReviewPath })
 if ($unreviewedFiles.Count -gt 0) {
-    Fail-Gate 'unreviewed non-coordination changes exist after recorded Head commit'
+    Fail-Gate 'only the current Markdown review record may change after reviewed Head commit'
 }
 
 $dirty = Invoke-GitLines @('status', '--porcelain')
@@ -176,42 +201,19 @@ if ($dirty) {
     Fail-Gate 'working tree must be clean before merge/deploy'
 }
 
-if ($LegacyRecord) {
-    if ($changeId -notmatch '^(?<date>\d{4}-\d{2}-\d{2})(?:-|$)') {
-        Fail-Gate 'legacy Change ID must begin with YYYY-MM-DD'
-    }
-    try {
-        $legacyDate = [datetime]::ParseExact(
-            $Matches['date'],
-            'yyyy-MM-dd',
-            [System.Globalization.CultureInfo]::InvariantCulture
-        )
-    }
-    catch {
-        Fail-Gate 'legacy Change ID must begin with a valid YYYY-MM-DD date'
-    }
-    if ($legacyDate -ge [datetime]'2026-08-15') {
-        Fail-Gate 'legacy compatibility is limited to records before 2026-08-15'
-    }
-    if ($author -notin @('CODEX', 'CLAUDE')) {
-        Fail-Gate 'legacy Author AI must be CODEX or CLAUDE'
-    }
-    if ($reviewer -notin @('CODEX', 'CLAUDE')) {
-        Fail-Gate 'legacy Reviewer AI must be CODEX or CLAUDE'
-    }
-    if ($author -eq $reviewer) {
-        Fail-Gate 'author and reviewer must be different agents'
-    }
-    if ($Operation -eq 'Deploy' -and $liveRisk -ne 'FOUNDER_APPROVED') {
-        Fail-Gate 'deploy requires FOUNDER_APPROVED live-risk decision'
-    }
-    if ($deployDecision -ne 'READY') {
-        Fail-Gate 'legacy deploy decision is not READY'
-    }
-}
-else {
-    $authorContext = Read-Field 'Author context ID'
+$authorContext = Read-Field 'Author context ID'
     $reviewerContext = Read-Field 'Reviewer context ID'
+    $reviewerAttestedHead = Read-Field 'Reviewer attested head'
+    $reviewerAttestedTree = Read-Field 'Reviewer attested tree'
+    $authorStatus = Read-Field 'Author status'
+    $reviewedAt = Read-Field 'Reviewed at (UTC)'
+    $resultSummary = Read-Field 'Result summary'
+    $knownLimitations = Read-Field 'Known limitations and open risks'
+    $reviewerDiffInspection = Read-Field 'Reviewer diff inspection'
+    $checksRerun = Read-Field 'Required checks rerun independently'
+    $findings = Read-Field 'Findings (P0/P1/P2/P3)'
+    $finalRationale = Read-Field 'Final rationale'
+    $status = Read-Field 'Status'
     $riskTier = Read-Field 'Risk tier'
     $qaSecurity = Read-Field 'Independent QA/security'
     $qaContext = Read-Field 'QA/security context ID'
@@ -233,6 +235,71 @@ else {
     }
     if ($authorContext -eq $reviewerContext) {
         Fail-Gate 'author and reviewer context IDs must differ'
+    }
+    if ($authorStatus -ne 'READY_FOR_REVIEW') {
+        Fail-Gate 'author status is not READY_FOR_REVIEW'
+    }
+    try {
+        [datetime]::ParseExact(
+            $reviewedAt,
+            'yyyy-MM-ddTHH:mm:ssZ',
+            [System.Globalization.CultureInfo]::InvariantCulture,
+            [System.Globalization.DateTimeStyles]::AssumeUniversal
+        ) | Out-Null
+    }
+    catch {
+        Fail-Gate 'Reviewed at (UTC) must be an ISO-8601 UTC timestamp'
+    }
+    foreach ($evidenceField in @{
+        'Result summary' = $resultSummary
+        'Known limitations and open risks' = $knownLimitations
+        'Reviewer diff inspection' = $reviewerDiffInspection
+        'Required checks rerun independently' = $checksRerun
+        'Findings (P0/P1/P2/P3)' = $findings
+        'Final rationale' = $finalRationale
+    }.GetEnumerator()) {
+        if (-not (Test-CompletedEvidence $evidenceField.Value)) {
+            Fail-Gate "$($evidenceField.Key) must contain completed evidence"
+        }
+    }
+    if ($status -ne 'APPROVED') {
+        Fail-Gate 'review status is not APPROVED'
+    }
+    if ($reviewerAttestedHead -ne $headCommit) {
+        Fail-Gate 'Reviewer attested head must match reviewed Head commit'
+    }
+    $headTree = (Invoke-GitLines @('rev-parse', "${headCommit}^{tree}") | Select-Object -Last 1).Trim()
+    if ($reviewerAttestedTree -ne $headTree) {
+        Fail-Gate 'Reviewer attested tree must match reviewed Head tree'
+    }
+
+    $reviewCommit = (Invoke-GitLines @('log', '-1', '--format=%H', '--', $relativeReviewPath) | Select-Object -Last 1).Trim()
+    if (-not $reviewCommit -or $reviewCommit -eq $headCommit) {
+        Fail-Gate 'review attestation must be committed after the reviewed Head commit'
+    }
+    $previousErrorActionPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        & git -C $root merge-base --is-ancestor $headCommit $reviewCommit 2>$null
+        $reviewAfterHead = $LASTEXITCODE -eq 0
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+    if (-not $reviewAfterHead) {
+        Fail-Gate 'review attestation commit must descend from reviewed Head commit'
+    }
+    $reviewCommitAuthor = (Invoke-GitLines @('show', '-s', '--format=%an', $reviewCommit) | Select-Object -Last 1).Trim()
+    $reviewCommitEmail = (Invoke-GitLines @('show', '-s', '--format=%ae', $reviewCommit) | Select-Object -Last 1).Trim()
+    $expectedReviewerEmail = $reviewer.ToLowerInvariant().Replace('_', '-') + '@gcsc.local'
+    if ($reviewCommitAuthor -ne $reviewer -or $reviewCommitEmail -ne $expectedReviewerEmail) {
+        Fail-Gate 'review attestation commit must be authored by Reviewer AI'
+    }
+    $reviewCommitFiles = @(Invoke-GitLines @('diff-tree', '--no-commit-id', '--name-only', '-r', $reviewCommit) |
+        ForEach-Object { ([string]$_).Trim().Replace('\', '/') } |
+        Where-Object { $_ })
+    if ($reviewCommitFiles.Count -ne 1 -or $reviewCommitFiles[0] -ne $relativeReviewPath) {
+        Fail-Gate 'review attestation commit may change only its review record'
     }
 
     if ($riskTier -notin @('DOCS', 'STANDARD', 'HIGH', 'LIVE')) {
@@ -306,23 +373,20 @@ else {
     if ($riskTier -eq 'LIVE' -and $liveRisk -ne 'FOUNDER_APPROVED') {
         Fail-Gate 'LIVE risk tier requires FOUNDER_APPROVED live-risk decision'
     }
+    if ($riskTier -eq 'LIVE') {
+        Fail-Gate 'local gate cannot authorize LIVE operations'
+    }
+    if ($Operation -eq 'Deploy') {
+        Fail-Gate 'local gate cannot authorize Deploy operations'
+    }
     if ($mergeDecision -ne 'READY') {
         Fail-Gate 'merge decision is not READY'
     }
     if ($deployDecision -notin @('BLOCKED', 'BLOCKED_FOUNDER', 'NOT_APPLICABLE', 'READY')) {
         Fail-Gate 'Deploy decision must be BLOCKED, BLOCKED_FOUNDER, NOT_APPLICABLE, or READY'
     }
-    if ($Operation -eq 'Deploy') {
-        if ($liveRisk -ne 'FOUNDER_APPROVED') {
-            Fail-Gate 'deploy requires FOUNDER_APPROVED live-risk decision'
-        }
-        if ($deployDecision -ne 'READY') {
-            Fail-Gate 'deploy decision is not READY'
-        }
-    }
-    elseif ($deployDecision -eq 'READY' -and $liveRisk -ne 'FOUNDER_APPROVED') {
-        Fail-Gate 'deploy readiness requires FOUNDER_APPROVED live-risk decision'
-    }
+if ($deployDecision -eq 'READY' -and $liveRisk -ne 'FOUNDER_APPROVED') {
+    Fail-Gate 'deploy readiness requires FOUNDER_APPROVED live-risk decision'
 }
 
 if ($reviewDecision -ne 'APPROVED') {
@@ -341,5 +405,4 @@ Write-Output "Author=$author Reviewer=$reviewer"
 Write-Output "ReviewedHead=$headCommit CurrentHead=$currentHead"
 Write-Output "DerivedRisk=$derivedRisk"
 Write-Output "Operation=$Operation"
-Write-Output "LegacyRecord=$($LegacyRecord.IsPresent)"
 exit 0

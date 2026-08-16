@@ -4,7 +4,7 @@
 
 **Goal:** Replace the unavailable mandatory Claude reviewer with an isolated SOL Ultra Codex reviewer while preserving reviewer independence and all merge/live-risk controls.
 
-**Architecture:** Review records identify both role and execution context. A PowerShell gate validates separation, evidence, checks, and risk decisions; repository instructions and coordination templates describe the same workflow. Historical records remain supported only through an explicit compatibility switch.
+**Architecture:** Review records identify both role and execution context. A PowerShell gate validates separation, evidence, checks, and risk decisions; repository instructions and coordination templates describe the same workflow. Historical records remain readable but are archival and cannot authorize integration.
 
 **Tech Stack:** Markdown policy files, PowerShell 5.1-compatible validator and fixture tests, Git worktrees, GitHub draft pull requests.
 
@@ -82,7 +82,7 @@ gate only permits `CODEX`/`CLAUDE` and currently misreads repository records.
 - [ ] **Step 3: Implement strict new-record validation**
 
 Add `Author context ID`, `Reviewer context ID`, explicit reviewer roles, robust
-UTF-8/CRLF field parsing, and `-LegacyRecord` compatibility. Default behavior
+UTF-8/CRLF field parsing, and fail-closed `-LegacyRecord` handling. Default behavior
 must reject missing or placeholder context IDs.
 
 - [ ] **Step 4: Run fixtures until all pass**

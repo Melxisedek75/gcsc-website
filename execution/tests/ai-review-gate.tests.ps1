@@ -69,17 +69,21 @@ function New-TestRepository {
     Invoke-Git $repository @('add', '--', 'docs/base.md') | Out-Null
     Invoke-Git $repository @('commit', '--quiet', '-m', 'test: base') | Out-Null
     $baseCommit = (Invoke-Git $repository @('rev-parse', 'HEAD') | Select-Object -Last 1).Trim()
+    $baseTree = (Invoke-Git $repository @('rev-parse', "${baseCommit}^{tree}") | Select-Object -Last 1).Trim()
 
     Write-Utf8File (Join-Path $repository $ImplementationPath) $ImplementationContent
     Invoke-Git $repository @('add', '--', ($ImplementationPath -replace '\\', '/')) | Out-Null
     Invoke-Git $repository @('commit', '--quiet', '-m', 'test: implementation') | Out-Null
     $headCommit = (Invoke-Git $repository @('rev-parse', 'HEAD') | Select-Object -Last 1).Trim()
+    $headTree = (Invoke-Git $repository @('rev-parse', "${headCommit}^{tree}") | Select-Object -Last 1).Trim()
 
     return [pscustomobject]@{
         Root = $repository
         Branch = 'test/review-gate'
         BaseCommit = $baseCommit
+        BaseTree = $baseTree
         HeadCommit = $headCommit
+        HeadTree = $headTree
         RiskTier = $RiskTier
     }
 }
@@ -92,7 +96,7 @@ function New-StrictRecord {
     )
 
     $qaResult = if ($Repository.RiskTier -eq 'HIGH') { 'PASS' } else { 'NOT_REQUIRED' }
-    $qaContext = if ($Repository.RiskTier -eq 'HIGH') { 'qa-thread-003' } else { 'NOT_REQUIRED' }
+    $qaContext = if ($Repository.RiskTier -eq 'HIGH') { '33333333-3333-4333-8333-333333333333' } else { 'NOT_REQUIRED' }
     $fields = [ordered]@{
         'Change ID' = '2026-08-15-test-change'
         'Repository' = 'gcsc-website'
@@ -100,10 +104,20 @@ function New-StrictRecord {
         'Base commit' = $Repository.BaseCommit
         'Head commit' = $Repository.HeadCommit
         'Author AI' = 'CODEX_AUTHOR'
-        'Author context ID' = 'author-thread-001'
+        'Author context ID' = '11111111-1111-4111-8111-111111111111'
         'Reviewer AI' = 'SOL_ULTRA_REVIEWER'
-        'Reviewer context ID' = 'review-thread-002'
+        'Reviewer context ID' = '22222222-2222-4222-8222-222222222222'
+        'Reviewer attested head' = $Repository.HeadCommit
+        'Reviewer attested tree' = $Repository.HeadTree
         'Author status' = 'READY_FOR_REVIEW'
+        'Reviewed at (UTC)' = '2026-08-15T12:00:00Z'
+        'Result summary' = 'PASS: author checks completed'
+        'Known limitations and open risks' = 'No live or external action in scope'
+        'Reviewer diff inspection' = 'PASS: base...head inspected independently'
+        'Required checks rerun independently' = 'powershell gate tests: PASS'
+        'Findings (P0/P1/P2/P3)' = 'P0=0 P1=0 P2=0 P3=0'
+        'Final rationale' = 'Independent diff and checks support approval'
+        'Status' = 'APPROVED'
         'Reviewer decision' = 'APPROVED'
         'Required checks' = 'PASS'
         'Risk tier' = $Repository.RiskTier
@@ -168,7 +182,8 @@ function Add-ReviewFixtureCommit {
     param(
         [pscustomobject]$Repository,
         [string]$Name,
-        [byte[]]$Bytes
+        [byte[]]$Bytes,
+        [switch]$WrongAuthor
     )
 
     $safeName = $Name -replace '[^A-Za-z0-9_.-]', '-'
@@ -177,7 +192,13 @@ function Add-ReviewFixtureCommit {
     [System.IO.Directory]::CreateDirectory((Split-Path -Parent $reviewFile)) | Out-Null
     [System.IO.File]::WriteAllBytes($reviewFile, $Bytes)
     Invoke-Git $Repository.Root @('add', '--', $relativePath) | Out-Null
-    Invoke-Git $Repository.Root @('commit', '--quiet', '-m', "test: add $safeName fixture") | Out-Null
+    $commitName = if ($WrongAuthor) { 'GCSC Gate Tests' } else { 'SOL_ULTRA_REVIEWER' }
+    $commitEmail = if ($WrongAuthor) { 'gate-tests@example.invalid' } else { 'sol-ultra-reviewer@gcsc.local' }
+    Invoke-Git $Repository.Root @(
+        '-c', "user.name=$commitName",
+        '-c', "user.email=$commitEmail",
+        'commit', '--quiet', '-m', "test: add $safeName fixture"
+    ) | Out-Null
     return $reviewFile
 }
 
@@ -228,10 +249,21 @@ function Assert-Gate {
         [string]$ExpectedText,
         [ValidateSet('Merge', 'Deploy')]
         [string]$Operation = 'Merge',
-        [switch]$LegacyRecord
+        [switch]$LegacyRecord,
+        [switch]$WrongCommitAuthor,
+        [switch]$KeepPostHeadCommits
     )
 
-    $reviewFile = Add-ReviewFixtureCommit -Repository $Repository -Name $Name -Bytes $utf8.GetBytes($Content)
+    if (-not $KeepPostHeadCommits) {
+        $safeBranchName = $Name -replace '[^A-Za-z0-9_.-]', '-'
+        $fixtureBranch = "test/fixture-$safeBranchName"
+        Invoke-Git $Repository.Root @('switch', '--quiet', '--create', $fixtureBranch, $Repository.HeadCommit) | Out-Null
+        $oldBranchPattern = "(?m)^- Branch: $([regex]::Escape($Repository.Branch))(\r?)$"
+        $branchReplacement = "- Branch: $fixtureBranch" + '$1'
+        $Content = [regex]::Replace($Content, $oldBranchPattern, $branchReplacement)
+    }
+    $reviewFile = Add-ReviewFixtureCommit -Repository $Repository -Name $Name `
+        -Bytes $utf8.GetBytes($Content) -WrongAuthor:$WrongCommitAuthor
     $result = Invoke-Gate -Repository $Repository -ReviewFile $reviewFile -Operation $Operation -LegacyRecord:$LegacyRecord
     if ($result.ExitCode -ne $ExpectedExitCode -or $result.Output -notmatch [regex]::Escape($ExpectedText)) {
         $failures.Add("${Name}: expected exit $ExpectedExitCode containing '$ExpectedText'; got exit $($result.ExitCode): $($result.Output)")
@@ -279,7 +311,7 @@ try {
         }) -ExpectedExitCode 1 -ExpectedText 'Author context ID must identify an isolated execution context'
 
     Assert-Gate -Name 'same-context-rejected' -Repository $docsRepo `
-        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{'Reviewer context ID' = 'author-thread-001'}) `
+        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{'Reviewer context ID' = '11111111-1111-4111-8111-111111111111'}) `
         -ExpectedExitCode 1 -ExpectedText 'author and reviewer context IDs must differ'
 
     Assert-Gate -Name 'invalid-reviewer-role-rejected' -Repository $docsRepo `
@@ -294,13 +326,44 @@ try {
         -Content (New-StrictRecord -Repository $docsRepo -Overrides @{'Required checks' = 'FAIL'}) `
         -ExpectedExitCode 1 -ExpectedText 'required checks are not PASS'
 
+    Assert-Gate -Name 'pending-review-evidence-rejected' -Repository $docsRepo `
+        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{'Reviewer diff inspection' = 'PENDING'}) `
+        -ExpectedExitCode 1 -ExpectedText 'Reviewer diff inspection must contain completed evidence'
+
+    Assert-Gate -Name 'invalid-reviewed-at-rejected' -Repository $docsRepo `
+        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{'Reviewed at (UTC)' = 'PENDING'}) `
+        -ExpectedExitCode 1 -ExpectedText 'Reviewed at (UTC) must be an ISO-8601 UTC timestamp'
+
     Assert-Gate -Name 'branch-mismatch-rejected' -Repository $docsRepo `
         -Content (New-StrictRecord -Repository $docsRepo -Overrides @{'Branch' = 'codex/wrong-branch'}) `
         -ExpectedExitCode 1 -ExpectedText 'record Branch does not match current branch'
 
+    Assert-Gate -Name 'reviewer-attested-head-must-match' -Repository $docsRepo `
+        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{
+            'Reviewer attested head' = $docsRepo.BaseCommit
+            'Reviewer attested tree' = $docsRepo.BaseTree
+        }) -ExpectedExitCode 1 -ExpectedText 'Reviewer attested head must match reviewed Head commit'
+
+    Assert-Gate -Name 'review-attestation-commit-requires-reviewer-identity' -Repository $docsRepo `
+        -Content (New-StrictRecord -Repository $docsRepo) -WrongCommitAuthor `
+        -ExpectedExitCode 1 -ExpectedText 'review attestation commit must be authored by Reviewer AI'
+
     Assert-Gate -Name 'stale-head-rejected' -Repository $docsRepo `
-        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{'Head commit' = $docsRepo.BaseCommit}) `
-        -ExpectedExitCode 1 -ExpectedText 'unreviewed non-coordination changes exist after recorded Head commit'
+        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{
+            'Head commit' = $docsRepo.BaseCommit
+            'Reviewer attested head' = $docsRepo.BaseCommit
+            'Reviewer attested tree' = $docsRepo.BaseTree
+        }) `
+        -ExpectedExitCode 1 -ExpectedText 'only the current Markdown review record may change'
+
+    $payloadRepo = New-TestRepository -Name 'post-head-payload' -ImplementationPath 'docs\change.md' `
+        -ImplementationContent "# Documentation change`n" -RiskTier DOCS
+    Write-Utf8File (Join-Path $payloadRepo.Root 'ai-review\coordination\payload.ps1') "Write-Output 'unreviewed'`n"
+    Invoke-Git $payloadRepo.Root @('add', '--', 'ai-review/coordination/payload.ps1') | Out-Null
+    Invoke-Git $payloadRepo.Root @('commit', '--quiet', '-m', 'test: add unreviewed coordination payload') | Out-Null
+    Assert-Gate -Name 'post-head-coordination-payload-rejected' -Repository $payloadRepo `
+        -Content (New-StrictRecord -Repository $payloadRepo) -KeepPostHeadCommits `
+        -ExpectedExitCode 1 -ExpectedText 'only the current Markdown review record may change'
 
     Assert-Gate -Name 'runtime-cannot-be-declared-standard' -Repository $highRepo `
         -Content (New-StrictRecord -Repository $highRepo -Overrides @{
@@ -320,7 +383,7 @@ try {
         -ExpectedExitCode 0 -ExpectedText 'DerivedRisk=HIGH'
 
     Assert-Gate -Name 'qa-context-must-differ-from-reviewer' -Repository $highRepo `
-        -Content (New-StrictRecord -Repository $highRepo -Overrides @{'QA/security context ID' = 'review-thread-002'}) `
+        -Content (New-StrictRecord -Repository $highRepo -Overrides @{'QA/security context ID' = '22222222-2222-4222-8222-222222222222'}) `
         -ExpectedExitCode 1 -ExpectedText 'QA/security context ID must differ from author and reviewer contexts'
 
     Assert-Gate -Name 'live-risk-without-founder-approval-rejected' -Repository $highRepo `
@@ -328,14 +391,14 @@ try {
         -ExpectedExitCode 1 -ExpectedText 'LIVE risk tier requires FOUNDER_APPROVED live-risk decision'
 
     $founderEvidence = 'codex-user-message:thread-123:2026-08-15T00:00:00Z'
-    Assert-Gate -Name 'live-risk-founder-approved-merge-passes' -Repository $highRepo `
+    Assert-Gate -Name 'live-risk-remains-locally-blocked-after-evidence' -Repository $highRepo `
         -Content (New-StrictRecord -Repository $highRepo -Overrides @{
             'Risk tier' = 'LIVE'
             'Live-risk decision' = 'FOUNDER_APPROVED'
             'Founder evidence' = $founderEvidence
             'Founder approval head' = $highRepo.HeadCommit
             'Founder approval operation' = 'Merge'
-        }) -ExpectedExitCode 0 -ExpectedText 'Operation=Merge'
+        }) -ExpectedExitCode 1 -ExpectedText 'local gate cannot authorize LIVE operations'
 
     Assert-Gate -Name 'arbitrary-founder-evidence-rejected' -Repository $highRepo `
         -Content (New-StrictRecord -Repository $highRepo -Overrides @{
@@ -365,30 +428,43 @@ try {
         }) -Operation Deploy -ExpectedExitCode 1 `
         -ExpectedText 'Founder approval operation does not authorize Deploy'
 
-    Assert-Gate -Name 'deploy-with-scoped-founder-approval-passes' -Repository $highRepo `
+    Assert-Gate -Name 'deploy-remains-locally-blocked-after-evidence' -Repository $highRepo `
         -Content (New-StrictRecord -Repository $highRepo -Overrides @{
             'Live-risk decision' = 'FOUNDER_APPROVED'
             'Founder evidence' = $founderEvidence
             'Founder approval head' = $highRepo.HeadCommit
             'Founder approval operation' = 'Deploy'
             'Deploy decision' = 'READY'
-        }) -Operation Deploy -ExpectedExitCode 0 -ExpectedText 'Operation=Deploy'
+        }) -Operation Deploy -ExpectedExitCode 1 -ExpectedText 'local gate cannot authorize Deploy operations'
 
     Assert-Gate -Name 'legacy-rejected-by-default' -Repository $docsRepo `
         -Content (New-LegacyRecord -Repository $docsRepo) `
         -ExpectedExitCode 1 -ExpectedText 'missing field: Author context ID'
 
-    Assert-Gate -Name 'legacy-explicitly-accepted' -Repository $docsRepo `
+    Assert-Gate -Name 'legacy-explicitly-blocked-for-merge' -Repository $docsRepo `
         -Content (New-LegacyRecord -Repository $docsRepo) -LegacyRecord `
-        -ExpectedExitCode 0 -ExpectedText 'LegacyRecord=True'
+        -ExpectedExitCode 1 -ExpectedText 'legacy records are archival only and cannot authorize Merge or Deploy'
 
-    Assert-Gate -Name 'legacy-mode-cannot-bypass-new-policy' -Repository $docsRepo `
-        -Content (New-LegacyRecord -Repository $docsRepo -ChangeId '2026-08-15-bypass') -LegacyRecord `
-        -ExpectedExitCode 1 -ExpectedText 'legacy compatibility is limited to records before 2026-08-15'
+    Assert-Gate -Name 'legacy-explicitly-blocked-for-deploy' -Repository $docsRepo `
+        -Content (New-LegacyRecord -Repository $docsRepo) -LegacyRecord -Operation Deploy `
+        -ExpectedExitCode 1 -ExpectedText 'legacy records are archival only and cannot authorize Merge or Deploy'
 
     Assert-Gate -Name 'duplicate-field-rejected' -Repository $docsRepo `
         -Content ((New-StrictRecord -Repository $docsRepo) + "`n- Reviewer decision: APPROVED") `
         -ExpectedExitCode 1 -ExpectedText 'duplicate field: Reviewer decision'
+
+    $ignoredRelative = 'ai-review/records/ignored-review-record.md'
+    $ignoredFile = Join-Path $docsRepo.Root ($ignoredRelative -replace '/', '\')
+    Write-Utf8File $ignoredFile (New-StrictRecord -Repository $docsRepo)
+    [System.IO.File]::AppendAllText(
+        (Join-Path $docsRepo.Root '.git\info\exclude'),
+        "`n/$ignoredRelative`n",
+        $utf8
+    )
+    $ignoredResult = Invoke-Gate -Repository $docsRepo -ReviewFile $ignoredFile
+    Assert-Condition -Name 'ignored-untracked-review-record-rejected' `
+        -Condition ($ignoredResult.ExitCode -eq 1 -and $ignoredResult.Output -match 'review file must be a tracked regular Git file') `
+        -Failure "unexpected result: $($ignoredResult.Output)"
 
     $invalidUtf8File = Add-ReviewFixtureCommit -Repository $docsRepo -Name 'invalid-utf8-rejected' `
         -Bytes ([byte[]](0x23, 0x20, 0xC3, 0x28))
@@ -406,6 +482,10 @@ try {
     $requiredTemplateFields = @(
         'Change ID', 'Branch', 'Base commit', 'Head commit', 'Author AI',
         'Author context ID', 'Reviewer AI', 'Reviewer context ID', 'Risk tier',
+        'Reviewer attested head', 'Reviewer attested tree',
+        'Reviewed at (UTC)', 'Result summary', 'Known limitations and open risks',
+        'Reviewer diff inspection', 'Required checks rerun independently',
+        'Findings (P0/P1/P2/P3)', 'Final rationale', 'Status',
         'Independent QA/security', 'QA/security context ID', 'Reviewer decision',
         'Required checks', 'Unresolved P0/P1 findings', 'Live-risk decision',
         'Founder evidence', 'Founder approval head', 'Founder approval operation',

@@ -12,7 +12,7 @@
   `SOL_ULTRA_REVIEWER`. Допустимые независимые альтернативы: `CODEX_REVIEWER`
   и `CLAUDE_REVIEWER`.
 - Автор указывает `Author context ID`, reviewer -- `Reviewer context ID`:
-  идентификаторы task/thread/session должны быть конкретными, не placeholder и
+  идентификаторы должны быть UUID, выданными execution environment, и
   различаться. Author and reviewer execution contexts must differ.
 - Роли автора и reviewer также различаются. Same-context self-approval
   запрещён, даже если оба запуска используют Codex.
@@ -40,7 +40,14 @@ XPR action или публичная публикация не выполняе�
 5. P0/P1 переводят record в `CHANGES_REQUESTED`. После исправления требуется
    новый независимый review pass с другим reviewer context.
 6. Только isolated reviewer может поставить `Reviewer decision: APPROVED` и
-   `Required checks: PASS`.
+   `Required checks: PASS`, записать `Reviewer attested head/tree` и создать
+   отдельный review-only commit под reviewer identity.
+   После reviewed head разрешено менять только текущий tracked regular
+   Markdown review record. Coordination scripts, binaries, второй record или
+   любой другой payload требуют нового reviewed head и нового review pass.
+   `Reviewed at (UTC)`, author result/limitations, reviewer diff inspection,
+   independently rerun checks, findings, final rationale и `Status: APPROVED`
+   должны содержать завершённые evidence, а не placeholders.
 7. `APPROVED` only permits merge consideration. Merge is not automatic и
    требует явного integration action после проверки record.
 8. `Deploy decision` и все live-risk boundaries остаются
@@ -59,6 +66,8 @@ powershell -ExecutionPolicy Bypass -File execution/ai-review-gate.ps1 -ReviewFil
 ```
 
 Обе команды являются проверками policy и не выполняют merge или deploy сами.
+Локальный gate всегда отклоняет `LIVE` и `Deploy`; их может разрешить только
+отдельный founder-controlled runner с проверяемой внешней identity/evidence.
 
 ## Правило «зелёное перед передачей» (один круг ревью)
 
@@ -101,9 +110,9 @@ diff: изменение любого файла кроме `.md`, `.txt` и `.c
 - Прямые рабочие изменения в `main` запрещены. Один PR содержит одну
   законченную задачу и одну review-запись.
 - Исторические records с `CODEX`/`CLAUDE` остаются читаемыми и не
-  переписываются. `-LegacyRecord` разрешён только для record, чей `Change ID`
-  начинается с даты раньше `2026-08-15`; новые работы не используют этот режим
-  и обязаны иметь role/context fields.
+  переписываются. `-LegacyRecord` явно подтверждает архивный режим, но всегда
+  fail-closed и не может разрешить Merge или Deploy. Любая интегрируемая работа
+  должна получить новый strict record с role/context fields.
 
 ## Статусы
 
