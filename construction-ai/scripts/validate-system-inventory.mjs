@@ -99,8 +99,16 @@ for (const row of rows) {
   }
 
   const fullPath = path.join(root, row.relative_path);
+  const tracked = isTracked(row.relative_path);
+  if (!tracked && row.provenance !== 'EXTERNAL_SOURCE_NOT_PRESENT') {
+    fail(`untracked path must be EXTERNAL_SOURCE_NOT_PRESENT: ${row.component}`);
+  }
+  if (tracked && row.provenance === 'EXTERNAL_SOURCE_NOT_PRESENT') {
+    fail(`tracked path needs local provenance: ${row.component}`);
+  }
+
   if (row.provenance === 'LOCAL_SOURCE_VERIFIED') {
-    if (!fs.existsSync(fullPath) || !isTracked(row.relative_path)) {
+    if (!fs.existsSync(fullPath) || !tracked) {
       fail(`local source is not tracked for ${row.component}`);
     }
     if (row.expected_kind === 'directory' && !fs.statSync(fullPath).isDirectory()) {
@@ -108,9 +116,6 @@ for (const row of rows) {
     }
   }
 
-  if (row.provenance === 'EXTERNAL_SOURCE_NOT_PRESENT' && fs.existsSync(fullPath)) {
-    fail(`external source is present and needs reclassification: ${row.component}`);
-  }
 }
 
 for (const [component, provenance] of requiredComponents) {
