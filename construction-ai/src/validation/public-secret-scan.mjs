@@ -1,19 +1,19 @@
 const PUBLIC_SECRET_PATTERNS = [
   {
     type: 'service-role-key-assignment',
-    pattern: /\bSERVICE[_-]?ROLE(?:[_-]?KEY)?\s*[:=]\s*\S{12,}/gi,
+    pattern: /(?:["']SERVICE[_-]?ROLE(?:[_-]?KEY)?["']|\bSERVICE[_-]?ROLE(?:[_-]?KEY)?\b)\s*[:=]\s*\S{12,}/gi,
   },
   {
     type: 'private-key-assignment',
-    pattern: /\bPRIVATE[_-]?KEY\s*[:=]\s*\S{12,}/gi,
+    pattern: /(?:["']PRIVATE[_-]?KEY["']|\bPRIVATE[_-]?KEY\b)\s*[:=]\s*\S{12,}/gi,
   },
   {
     type: 'seed-phrase-assignment',
-    pattern: /\bSEED(?:[_-]|\s)+PHRASE\s*[:=]\s*\S{12,}/gi,
+    pattern: /(?:["']SEED(?:[_-]|\s)+PHRASE["']|\bSEED(?:[_-]|\s)+PHRASE\b)\s*[:=]\s*\S{12,}/gi,
   },
   {
     type: 'database-password-assignment',
-    pattern: /\b(?:DB|DATABASE)[_-]?PASSWORD\s*[:=]\s*\S{12,}/gi,
+    pattern: /(?:["'](?:DB|DATABASE)(?:[_-]|\s)+PASSWORD["']|\b(?:DB|DATABASE)(?:[_-]|\s)+PASSWORD\b)\s*[:=]\s*\S{12,}/gi,
   },
   {
     type: 'supabase-service-role-key',
@@ -25,7 +25,7 @@ const PUBLIC_SECRET_PATTERNS = [
   },
   {
     type: 'jwt',
-    pattern: /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/g,
+    pattern: /\beyJ[A-Za-z0-9_-]{17,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/g,
   },
   {
     type: 'pem-private-key',

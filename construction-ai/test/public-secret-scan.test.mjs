@@ -28,11 +28,35 @@ test('reports only metadata for a private-key assignment', () => {
   ]);
 });
 
+test('reports metadata for a quoted private-key assignment', () => {
+  const findings = findPublicSecretFindings('"PRIVATE_KEY"=not-a-real-key-but-long-enough');
+
+  assert.deepEqual(findings, [
+    { type: 'private-key-assignment', index: 0, line: 1 },
+  ]);
+});
+
 test('reports only metadata for a database-password assignment', () => {
   const findings = findPublicSecretFindings('public copy\nDATABASE_PASSWORD=not-a-real-password');
 
   assert.deepEqual(findings, [
     { type: 'database-password-assignment', index: 12, line: 2 },
+  ]);
+});
+
+test('reports metadata for a space-separated database-password assignment', () => {
+  const findings = findPublicSecretFindings('DATABASE PASSWORD=not-a-real-password');
+
+  assert.deepEqual(findings, [
+    { type: 'database-password-assignment', index: 0, line: 1 },
+  ]);
+});
+
+test('reports metadata for a quoted service-role assignment', () => {
+  const findings = findPublicSecretFindings('"SERVICE_ROLE_KEY"=service-role-value');
+
+  assert.deepEqual(findings, [
+    { type: 'service-role-key-assignment', index: 0, line: 1 },
   ]);
 });
 
@@ -64,6 +88,12 @@ test('reports a JWT-shaped string location', () => {
   assert.deepEqual(findings, [
     { type: 'jwt', index: 7, line: 1 },
   ]);
+});
+
+test('does not flag a short JWT-like prose string', () => {
+  const findings = findPublicSecretFindings('Example token eyJshorttoken.abcdefghijk.abcdefghijk is not a credential.');
+
+  assert.deepEqual(findings, []);
 });
 
 test('reports a PEM private-key header location', () => {
