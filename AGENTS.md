@@ -56,9 +56,10 @@
 - Если обновление безопасное, локальное и бесплатно ускоряет работу — можно предложить применить сразу, но всё равно сначала объясни зачем.
 - Формат вопроса пользователю: "Хочешь, я применю это для GCSC сейчас?"
 
-### Rule 7: Codex-Claude Cross-Review Gate
+### Rule 7: Independent SOL Ultra Review Gate
 - Перед merge, deploy или интеграцией обязательно прочитай `AI-REVIEW-GATE.md` и создай запись из `ai-review/TEMPLATE.md`.
-- Автор изменения и reviewer должны быть разными агентами (`CODEX` и `CLAUDE`); deploy разрешён только после `AI_REVIEW_GATE=PASS` и отдельного founder approval для live-risk.
+- Для новой работы автора `CODEX_AUTHOR` reviewer по умолчанию -- `SOL_ULTRA_REVIEWER`: это внутренний capability profile GCSC, который разрешается в `highest available Codex reasoning configuration`, а не название официальной публичной модели.
+- Автор и reviewer обязаны иметь разные execution contexts: заполни `Author context ID` и `Reviewer context ID`; same-context self-approval запрещён. `APPROVED` разрешает только merge consideration, но не выполняет merge автоматически; deploy и все live-risk границы остаются `BLOCKED_FOUNDER` до отдельного evidence-backed founder approval.
 
 ### Rule 8: Зелёное перед передачей (один круг ревью)
 - Прежде чем ставить `READY_FOR_REVIEW`, автор сам прогоняет ВЕСЬ набор обязательных проверок теми же командами, что и reviewer, без временных CLI-обходов; flaky-тесты (тайминги, ключи, сеть, БД) гоняет 2–3 раза до стабильного зелёного (целевая среда — медленный Windows-runner founder'а).
