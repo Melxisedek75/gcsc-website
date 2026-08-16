@@ -9,12 +9,21 @@ const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(testDirectory, '..', '..');
 
 function expectInvalidInventoryCsv(rewrite, expectedMessage) {
-  const csvPath = path.join(root, 'docs', 'architecture', '2026-08-component-provenance.csv');
-  const originalCsv = fs.readFileSync(csvPath, 'utf8');
+  const sourceCsvPath = path.join(root, 'docs', 'architecture', '2026-08-component-provenance.csv');
+  const originalCsv = fs.readFileSync(sourceCsvPath, 'utf8');
+  const tempRoot = path.join(root, '.tmp');
+  fs.mkdirSync(tempRoot, { recursive: true });
+  const tempDirectory = fs.mkdtempSync(path.join(tempRoot, 'system-inventory-test-'));
+  const csvPath = path.join(tempDirectory, 'inventory.csv');
+  const relativeCsvPath = path.relative(root, csvPath).split(path.sep).join('/');
 
   try {
     fs.writeFileSync(csvPath, rewrite(originalCsv), 'utf8');
-    const result = spawnSync(process.execPath, ['construction-ai/scripts/validate-system-inventory.mjs'], {
+    const result = spawnSync(process.execPath, [
+      'construction-ai/scripts/validate-system-inventory.mjs',
+      '--inventory-csv',
+      relativeCsvPath,
+    ], {
       cwd: root,
       encoding: 'utf8',
     });
@@ -22,7 +31,7 @@ function expectInvalidInventoryCsv(rewrite, expectedMessage) {
     assert.notEqual(result.status, 0);
     assert.match(result.stderr, expectedMessage);
   } finally {
-    fs.writeFileSync(csvPath, originalCsv, 'utf8');
+    fs.rmSync(tempDirectory, { recursive: true, force: true });
   }
 }
 
@@ -66,6 +75,27 @@ test('inventory rejects a tracked component marked external', () => {
   expectInvalidInventoryCsv(
     (csv) => csv.replace('construction-ai,construction-ai,directory,LOCAL_SOURCE_VERIFIED', 'construction-ai,construction-ai,directory,EXTERNAL_SOURCE_NOT_PRESENT'),
     /tracked path needs local provenance/,
+  );
+});
+
+test('inventory rejects a substituted path for a required component', () => {
+  expectInvalidInventoryCsv(
+    (csv) => csv.replace('construction-ai,construction-ai,directory,LOCAL_SOURCE_VERIFIED', 'construction-ai,mobile/smartcontractor,directory,LOCAL_SOURCE_VERIFIED'),
+    /required component is missing or misclassified: construction-ai/,
+  );
+});
+
+test('inventory rejects an unsupported expected kind', () => {
+  expectInvalidInventoryCsv(
+    (csv) => csv.replace('gcscbuild11,gcscbuild11,directory', 'gcscbuild11,gcscbuild11,sidecar'),
+    /unsupported expected kind/,
+  );
+});
+
+test('inventory rejects quoted CSV fields', () => {
+  expectInvalidInventoryCsv(
+    (csv) => csv.replace('Tracked local token-contract source', '"Tracked local token-contract source"'),
+    /quoted CSV fields are not supported/,
   );
 });
 

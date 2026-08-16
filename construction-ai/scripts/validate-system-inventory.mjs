@@ -5,10 +5,11 @@ import path from 'node:path';
 const root = path.basename(process.cwd()) === 'construction-ai'
   ? path.resolve(process.cwd(), '..')
   : process.cwd();
-const csvPath = path.join(root, 'docs', 'architecture', '2026-08-component-provenance.csv');
+const defaultCsvPath = path.join(root, 'docs', 'architecture', '2026-08-component-provenance.csv');
 const inventoryPath = path.join(root, 'docs', 'architecture', '2026-08-system-inventory.md');
 const baselineCommit = '99f2838a5d80bf1c3c1b368c50bcb4a28ef41521';
 const expectedHeaders = ['component', 'relative_path', 'expected_kind', 'provenance', 'notes'];
+const allowedExpectedKinds = new Set(['directory', 'file']);
 const allowedProvenance = new Set([
   'LOCAL_SOURCE_VERIFIED',
   'LOCAL_ARTIFACT_ONLY',
@@ -17,14 +18,16 @@ const allowedProvenance = new Set([
   'ARCHIVE_OR_REFERENCE',
 ]);
 const requiredComponents = new Map([
-  ['construction-ai', 'LOCAL_SOURCE_VERIFIED'],
-  ['mobile-smartcontractor', 'LOCAL_SOURCE_VERIFIED'],
-  ['core-contracts', 'LOCAL_SOURCE_VERIFIED'],
-  ['meme-contracts', 'LOCAL_SOURCE_VERIFIED'],
-  ['gcsctoken111', 'LOCAL_SOURCE_VERIFIED'],
-  ['gcscbuild11', 'EXTERNAL_SOURCE_NOT_PRESENT'],
-  ['legacy-v3-service', 'EXTERNAL_SOURCE_NOT_PRESENT'],
+  ['construction-ai', { relative_path: 'construction-ai', expected_kind: 'directory', provenance: 'LOCAL_SOURCE_VERIFIED' }],
+  ['mobile-smartcontractor', { relative_path: 'mobile/smartcontractor', expected_kind: 'directory', provenance: 'LOCAL_SOURCE_VERIFIED' }],
+  ['core-contracts', { relative_path: 'contracts/gcsc-core', expected_kind: 'directory', provenance: 'LOCAL_SOURCE_VERIFIED' }],
+  ['meme-contracts', { relative_path: 'contracts/gcsc-meme', expected_kind: 'directory', provenance: 'LOCAL_SOURCE_VERIFIED' }],
+  ['gcsctoken111', { relative_path: 'gcsctoken111', expected_kind: 'directory', provenance: 'LOCAL_SOURCE_VERIFIED' }],
+  ['gcscbuild11', { relative_path: 'gcscbuild11', expected_kind: 'directory', provenance: 'EXTERNAL_SOURCE_NOT_PRESENT' }],
+  ['legacy-v3-service', { relative_path: 'v3', expected_kind: 'directory', provenance: 'EXTERNAL_SOURCE_NOT_PRESENT' }],
 ]);
+const resolveRealPath = fs.realpathSync.native ?? fs.realpathSync;
+const canonicalRoot = resolveRealPath(root);
 
 function fail(message) {
   console.error(`system_inventory_validation_failed: ${message}`);
@@ -32,6 +35,9 @@ function fail(message) {
 }
 
 function parseCsv(text) {
+  if (text.includes('"')) {
+    fail('quoted CSV fields are not supported');
+  }
   const lines = text.trim().split(/\r?\n/);
   const headers = lines.shift()?.split(',');
   if (headers?.join(',') !== expectedHeaders.join(',')) {
@@ -55,6 +61,31 @@ function isRootRelative(relativePath) {
     && !relativePath.split(/[\\/]/).includes('..');
 }
 
+function isWithinRoot(candidatePath) {
+  const relativePath = path.relative(canonicalRoot, candidatePath);
+  return relativePath === '' || (
+    relativePath !== '..'
+    && !relativePath.startsWith(`..${path.sep}`)
+    && !path.isAbsolute(relativePath)
+  );
+}
+
+function resolveCsvPath() {
+  const args = process.argv.slice(2);
+  if (args.length === 0) {
+    return defaultCsvPath;
+  }
+  if (args.length !== 2 || args[0] !== '--inventory-csv' || !isRootRelative(args[1])) {
+    fail('inventory CSV path must be root-relative');
+  }
+
+  const candidatePath = path.resolve(root, args[1]);
+  if (!isWithinRoot(candidatePath)) {
+    fail('inventory CSV path must stay inside the repository root');
+  }
+  return candidatePath;
+}
+
 function isTracked(relativePath) {
   const normalizedPath = relativePath.replace(/\\/g, '/');
   const output = execFileSync('git', ['-C', root, 'ls-files', '--', normalizedPath], {
@@ -65,6 +96,8 @@ function isTracked(relativePath) {
     entry === normalizedPath || entry.startsWith(`${normalizedPath}/`)
   ));
 }
+
+const csvPath = resolveCsvPath();
 
 if (!fs.existsSync(csvPath) || !fs.existsSync(inventoryPath)) {
   fail('inventory documentation is missing');
@@ -100,6 +133,9 @@ for (const row of rows) {
   if (!allowedProvenance.has(row.provenance)) {
     fail(`unsupported provenance state for ${row.component}`);
   }
+  if (!allowedExpectedKinds.has(row.expected_kind)) {
+    fail(`unsupported expected kind for ${row.component}`);
+  }
   if (!isRootRelative(row.relative_path)) {
     fail(`path must be root-relative for ${row.component}`);
   }
@@ -117,16 +153,29 @@ for (const row of rows) {
     if (!fs.existsSync(fullPath) || !tracked) {
       fail(`local source is not tracked for ${row.component}`);
     }
-    if (row.expected_kind === 'directory' && !fs.statSync(fullPath).isDirectory()) {
+    const sourceStats = fs.lstatSync(fullPath);
+    if (sourceStats.isSymbolicLink()) {
+      fail(`local source must not be a symlink: ${row.component}`);
+    }
+    if (!isWithinRoot(resolveRealPath(fullPath))) {
+      fail(`local source resolves outside the repository root: ${row.component}`);
+    }
+    if (row.expected_kind === 'directory' && !sourceStats.isDirectory()) {
+      fail(`local source has the wrong kind for ${row.component}`);
+    }
+    if (row.expected_kind === 'file' && !sourceStats.isFile()) {
       fail(`local source has the wrong kind for ${row.component}`);
     }
   }
 
 }
 
-for (const [component, provenance] of requiredComponents) {
+for (const [component, required] of requiredComponents) {
   const row = rows.find((candidate) => candidate.component === component);
-  if (!row || row.provenance !== provenance) {
+  if (!row
+    || row.relative_path !== required.relative_path
+    || row.expected_kind !== required.expected_kind
+    || row.provenance !== required.provenance) {
     fail(`required component is missing or misclassified: ${component}`);
   }
 }
