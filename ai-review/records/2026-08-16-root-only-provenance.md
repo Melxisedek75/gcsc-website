@@ -10,19 +10,19 @@
 - Author AI: CODEX_AUTHOR
 - Author context ID: 019e7c87-8410-79f1-b86a-eedf78a1aa27
 - Reviewer AI: SOL_ULTRA_REVIEWER
-- Reviewer context ID: 01a008db-8b81-7931-ba10-bcfabede4c48
-- Reviewer dispatch evidence: codex-agent:01a008db-8b81-7931-ba10-bcfabede4c48
-- Reviewer attested head: 7070562aebdbd8ae2ce560dee19af82018eb48f9
-- Reviewer attested tree: 7e4bf01fad60c51a324ee857b40e0b53bfb19465
+- Reviewer context ID: PENDING
+- Reviewer dispatch evidence: PENDING
+- Reviewer attested head: PENDING
+- Reviewer attested tree: PENDING
 - Author status: READY_FOR_REVIEW
 - Prepared at (UTC): 2026-08-16T04:35:58Z
-- Reviewed at (UTC): 2026-08-16T04:40:11Z
+- Reviewed at (UTC): PENDING
 
 ## Scope and risk
 
 - Changed files: `PROJECT-MAP.md`, `construction-ai/package.json`, `construction-ai/scripts/validate-system-inventory.mjs`, `construction-ai/test/system-inventory.test.mjs`, `docs/architecture/2026-08-component-provenance.csv`, `docs/architecture/2026-08-system-inventory.md`
 - Requirements: Safe MVP Task 0: record only `C:\gcsc` source, classify missing components honestly, and validate local-source claims without network or external-folder inspection.
-- Risk tier: STANDARD
+- Risk tier: HIGH
 - Risk boundaries: NOT_REQUIRED; no secrets, external accounts, live systems, payments, XPR/FIO, deployment, or public publication.
 - Review record path: `ai-review/records/2026-08-16-root-only-provenance.md`
 
@@ -39,26 +39,26 @@
 
 ## Independent review
 
-- Reviewer diff inspection: PASS: independently inspected `9529363bdbdfaab6cc26bb880ff77493cd069c4d...7070562aebdbd8ae2ce560dee19af82018eb48f9`; Project Map has no external source claims, and `isTracked` uses literal pathspecs plus exact returned-path matching.
-- Required checks rerun independently: PASS: `node --check`, `node --test` (10/10), `npm --prefix construction-ai run check:system-inventory`, `npm --prefix construction-ai run check:no-live-actions`, and `git diff --check origin/main...7070562aebdbd8ae2ce560dee19af82018eb48f9` all passed.
-- Independent QA/security: NOT_REQUIRED
-- QA/security context ID: NOT_REQUIRED
-- QA/security dispatch evidence: NOT_REQUIRED
-- Findings (P0/P1/P2/P3): P0=0; P1=0; P2=0; P3=0. The Git pathspec bypass and tracked-but-external branch are covered by regression tests.
-- Final rationale: APPROVED only for `7070562aebdbd8ae2ce560dee19af82018eb48f9`: deterministic root-only provenance validation is implemented, pathspec abuse is rejected, and all independent checks passed without live actions.
-- Unresolved P0/P1 findings: 0
+- Reviewer diff inspection: PENDING
+- Required checks rerun independently: PENDING
+- Independent QA/security: PENDING
+- QA/security context ID: PENDING
+- QA/security dispatch evidence: PENDING
+- Findings (P0/P1/P2/P3): PENDING
+- Final rationale: PENDING
+- Unresolved P0/P1 findings: PENDING
 
 ## Decisions
 
-- Status: APPROVED
-- Reviewer decision: APPROVED
-- Required checks: PASS
-- Merge decision: READY
+- Status: PENDING
+- Reviewer decision: PENDING
+- Required checks: PENDING
+- Merge decision: BLOCKED
 - Deploy decision: BLOCKED_FOUNDER
-- Live-risk decision: NOT_REQUIRED
-- Founder evidence: NOT_REQUIRED
-- Founder approval head: NOT_REQUIRED
-- Founder approval operation: NOT_REQUIRED
+- Live-risk decision: PENDING
+- Founder evidence: PENDING
+- Founder approval head: PENDING
+- Founder approval operation: PENDING
 
 ## Reviewer sign-off
 
