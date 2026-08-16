@@ -6,12 +6,22 @@
 - Repository: gcsc-website
 - Branch: codex/sol-ultra-review-gate
 - Base commit: 06bbb5f2b16fa9f810ef9a2fb6152517e2e0ec21
-- Head commit: 7bb1fc81fb1e5ca358d9f5fa4dd2fb8a5918022c
+- Head commit: d110620405164b6baabd7163d854e6682ec2af20
 - Author AI: CODEX_AUTHOR
 - Author context ID: 019e7c87-8410-79f1-b86a-eedf78a1aa27
 - Reviewer AI: SOL_ULTRA_REVIEWER
 - Reviewer context ID: PENDING
+- Reviewer attested head: PENDING
+- Reviewer attested tree: PENDING
 - Author status: READY_FOR_REVIEW
+- Reviewed at (UTC): PENDING
+- Result summary: PASS: author suite completed with 62 scenarios
+- Known limitations and open risks: Merge remains review-gated; LIVE and Deploy remain locally blocked
+- Reviewer diff inspection: PENDING
+- Required checks rerun independently: PENDING
+- Findings (P0/P1/P2/P3): PENDING
+- Final rationale: PENDING
+- Status: READY_FOR_REVIEW
 - Reviewer decision: PENDING
 - Required checks: PENDING
 - Risk tier: HIGH
@@ -48,7 +58,7 @@ PowerShell gate, and preserve all founder/live-risk boundaries.
 
 | Check | Command | Author result |
 | --- | --- | --- |
-| Validator fixtures | `powershell -NoProfile -ExecutionPolicy Bypass -File execution/tests/ai-review-gate.tests.ps1` | PASS, 45 scenarios |
+| Validator fixtures | `powershell -NoProfile -ExecutionPolicy Bypass -File execution/tests/ai-review-gate.tests.ps1` | PASS, 62 scenarios |
 | Whitespace | `git diff --check origin/main...HEAD` | PASS |
 | Instruction synchronization | SHA-256 of `AGENTS.md`, `.claude/CLAUDE.md`, `GEMINI.md` | PASS, identical |
 | Policy vocabulary | `rg` consistency scan for roles, contexts, risk tiers, decisions, and gate operations | PASS after P1/P2 corrections |
@@ -59,15 +69,15 @@ PowerShell gate, and preserve all founder/live-risk boundaries.
   future review.
 - Context IDs are evidence identifiers; the dispatcher must still start fresh
   isolated agents as required by policy.
-- Historical records are accepted only with explicit `-LegacyRecord` and a
-  pre-2026-08-15 Change ID.
+- Historical records remain readable, but `-LegacyRecord` always fails closed
+  and cannot authorize Merge or Deploy.
 - No merge, deploy, live system, secret, payment, external account, or
   blockchain action is part of this change.
 
 ## Independent review
 
 - Reviewer diff inspection: PENDING
-- Required checks rerun independently: PENDING
+- Required checks rerun independently (details): PENDING
 - QA/security findings: PENDING
 - Reviewer findings: PENDING
 - Final rationale: PENDING
