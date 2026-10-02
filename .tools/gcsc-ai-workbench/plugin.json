@@ -1,0 +1,7 @@
+{
+  "name": "gcsc-ai-workbench",
+  "version": "0.1.0",
+  "description": "GCSC construction-domain workflows for Codex and ChatGPT.",
+  "skills": "./skills/",
+  "hooks": "./hooks/"
+}
