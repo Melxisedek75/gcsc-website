@@ -10,3 +10,6 @@ Evidence through 2026-10-16:
 - `.tmp` transfer completed: 22,706/22,706 files, 381.47 MB, 0 mismatches, source removed, destination on D:.
 - Gradle cache source is absent from C:; SDK/JDK material is in the D: quarantine archive.
 - Remaining work: independent review/clean-checkout verification and assessment of unique worktrees before any further deletion.
+- Clean-clone verification completed on D: at HEAD `c1e7b5c5`: 1,974 files and empty `git status`.
+- Main worktree exact duplicate cleanup committed and pushed; remaining dirty entries are nested repositories with patches preserved on D:.
+- `.tmp` archive verification completed: 22,706 files and 381.47 MB on D: with source removed from C:.
