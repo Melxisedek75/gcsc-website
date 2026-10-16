@@ -1,0 +1,269 @@
+{
+  "version": "eosio::abi/1.2",
+  "structs": [
+    {
+      "name": "Config",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "token_contract",
+          "type": "name"
+        },
+        {
+          "name": "basic_fee",
+          "type": "int64"
+        },
+        {
+          "name": "standard_fee",
+          "type": "int64"
+        },
+        {
+          "name": "premium_fee",
+          "type": "int64"
+        },
+        {
+          "name": "membership_duration",
+          "type": "uint32"
+        },
+        {
+          "name": "token_symbol_raw",
+          "type": "uint64"
+        },
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "Member",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        },
+        {
+          "name": "full_name",
+          "type": "string"
+        },
+        {
+          "name": "email_hash",
+          "type": "string"
+        },
+        {
+          "name": "tier",
+          "type": "uint8"
+        },
+        {
+          "name": "is_verified",
+          "type": "bool"
+        },
+        {
+          "name": "join_date",
+          "type": "uint32"
+        },
+        {
+          "name": "expiry_date",
+          "type": "uint32"
+        },
+        {
+          "name": "total_paid",
+          "type": "int64"
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "base": "",
+      "fields": [
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "regmember",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        },
+        {
+          "name": "full_name",
+          "type": "string"
+        },
+        {
+          "name": "email_hash",
+          "type": "string"
+        },
+        {
+          "name": "tier",
+          "type": "uint8"
+        }
+      ]
+    },
+    {
+      "name": "removemember",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        }
+      ]
+    },
+    {
+      "name": "renewmember",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        }
+      ]
+    },
+    {
+      "name": "setconfig",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "token_contract",
+          "type": "name"
+        },
+        {
+          "name": "basic_fee",
+          "type": "asset"
+        },
+        {
+          "name": "standard_fee",
+          "type": "asset"
+        },
+        {
+          "name": "premium_fee",
+          "type": "asset"
+        },
+        {
+          "name": "membership_secs",
+          "type": "uint32"
+        }
+      ]
+    },
+    {
+      "name": "updmember",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        },
+        {
+          "name": "full_name",
+          "type": "string"
+        },
+        {
+          "name": "email_hash",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "upgrmember",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        },
+        {
+          "name": "new_tier",
+          "type": "uint8"
+        }
+      ]
+    },
+    {
+      "name": "verifymember",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        }
+      ]
+    }
+  ],
+  "types": [],
+  "actions": [
+    {
+      "name": "pause",
+      "type": "pause",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "regmember",
+      "type": "regmember",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "removemember",
+      "type": "removemember",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "renewmember",
+      "type": "renewmember",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "setconfig",
+      "type": "setconfig",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "updmember",
+      "type": "updmember",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "upgrmember",
+      "type": "upgrmember",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "verifymember",
+      "type": "verifymember",
+      "ricardian_contract": ""
+    }
+  ],
+  "tables": [
+    {
+      "name": "config",
+      "type": "Config",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "members",
+      "type": "Member",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    }
+  ],
+  "ricardian_clauses": [],
+  "variants": [],
+  "action_results": [],
+  "abi_extensions": [],
+  "error_messages": []
+}

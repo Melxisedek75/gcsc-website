@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "vidiq-youtube",
+  "version": "0.1.0",
+  "description": "A private plugin for planning, optimizing, and reviewing YouTube content with vidIQ-style workflows.",
+  "author": {
+    "name": "GCSC"
+  },
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "vidIQ YouTube",
+        "shortDescription": "vidIQ for YouTube",
+        "longDescription": "Plan YouTube content, generate topic ideas, improve titles and descriptions, and review channel strategy using vidIQ-style workflows.",
+        "developerName": "GCSC",
+        "category": "Marketing",
+        "capabilities": ["Interactive"],
+        "defaultPrompt": [
+          "Create 10 YouTube video ideas for my niche.",
+          "Review this title, thumbnail concept, and description for SEO and click-through potential.",
+          "Build a 30-day YouTube content plan from my audience and goals."
+        ]
+      }
+    }
+  }
+}

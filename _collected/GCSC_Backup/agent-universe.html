@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSC × SPRUT — Agent Universe</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;color:#fff;height:100vh;width:100vw}
+canvas{position:fixed;top:0;left:0;z-index:0}
+#universe{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1}
+
+/* HUD */
+#hud{position:fixed;top:0;left:0;right:0;z-index:10;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(0,0,0,0.8),transparent)}
+.hud-logo{font-size:18px;font-weight:900;letter-spacing:3px;background:linear-gradient(90deg,#00d4ff,#00ff88);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hud-sub{font-size:11px;color:#475569;letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.hud-stats{display:flex;gap:24px}
+.hud-stat{text-align:center}
+.hud-stat-val{font-size:20px;font-weight:800;color:#00d4ff}
+.hud-stat-lbl{font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:1px}
+
+/* PANEL */
+#panel{position:fixed;right:-420px;top:0;bottom:0;width:420px;z-index:20;background:rgba(5,5,15,0.97);border-left:1px solid rgba(0,212,255,0.15);transition:right 0.4s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;padding:32px 28px}
+#panel.open{right:0}
+#panel-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+#panel-close:hover{background:rgba(0,212,255,0.15);color:#00d4ff}
+.panel-category{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+.panel-name{font-size:26px;font-weight:900;line-height:1.1;margin-bottom:8px}
+.panel-tagline{font-size:14px;color:#64748b;margin-bottom:24px;line-height:1.5}
+.panel-desc{font-size:14px;color:#94a3b8;line-height:1.7;margin-bottom:24px}
+.panel-features{list-style:none}
+.panel-features li{font-size:13px;color:#94a3b8;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:flex-start;gap:8px}
+.panel-features li::before{content:'→';color:#00d4ff;flex-shrink:0;font-weight:700}
+.panel-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(0,255,136,0.1));border:1px solid rgba(0,212,255,0.3);color:#00d4ff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;margin-top:24px;transition:all 0.2s}
+.panel-btn:hover{background:linear-gradient(135deg,rgba(0,212,255,0.25),rgba(0,255,136,0.18));transform:translateY(-1px)}
+
+/* LEGEND */
+#legend{position:fixed;bottom:24px;left:24px;z-index:10;display:flex;flex-direction:column;gap:8px}
+.legend-item{display:flex;align-items:center;gap:10px;font-size:11px;color:#475569}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* TOOLTIP */
+#tooltip{position:fixed;z-index:15;background:rgba(5,5,20,0.95);border:1px solid rgba(0,212,255,0.3);border-radius:10px;padding:10px 14px;font-size:12px;pointer-events:none;opacity:0;transition:opacity 0.2s;max-width:200px}
+#tooltip strong{display:block;color:#fff;margin-bottom:3px;font-size:13px}
+#tooltip span{color:#64748b}
+
+/* CONNECTIONS */
+.connections-hint{position:fixed;bottom:24px;right:24px;z-index:10;font-size:11px;color:#334155;text-align:right;line-height:1.6}
+
+/* SCROLL HINT */
+.scroll-hint{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;text-align:center;pointer-events:none;animation:fadeHint 3s ease forwards 2s}
+@keyframes fadeHint{0%{opacity:1}100%{opacity:0;display:none}}
+.scroll-hint p{font-size:13px;color:#334155}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<div id="universe"></div>
+
+<!-- HUD -->
+<div id="hud">
+  <div>
+    <div class="hud-logo">GCSC × SPRUT</div>
+    <div class="hud-sub">Agent Universe v1.0</div>
+  </div>
+  <div class="hud-stats">
+    <div class="hud-stat"><div class="hud-stat-val">34</div><div class="hud-stat-lbl">Agents</div></div>
+    <div class="hud-stat"><div class="hud-stat-val">5</div><div class="hud-stat-lbl">Orbits</div></div>
+    <div class="hud-stat"><div class="hud-stat-val">∞</div><div class="hud-stat-lbl">Possibilities</div></div>
+  </div>
+</div>
+
+<!-- SIDE PANEL -->
+<div id="panel">
+  <button id="panel-close">✕</button>
+  <div class="panel-category" id="p-cat"></div>
+  <div class="panel-name" id="p-name"></div>
+  <div class="panel-tagline" id="p-tagline"></div>
+  <div class="panel-desc" id="p-desc"></div>
+  <ul class="panel-features" id="p-features"></ul>
+  <a class="panel-btn" id="p-btn">⚡ Активировать агента</a>
+</div>
+
+<!-- TOOLTIP -->
+<div id="tooltip"><strong id="tt-name"></strong><span id="tt-cat"></span></div>
+
+<!-- LEGEND -->
+<div id="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b;box-shadow:0 0 6px #f59e0b"></div>AI Core — Claude</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#00d4ff;box-shadow:0 0 6px #00d4ff"></div>GCSC Agents</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#00ff88;box-shadow:0 0 6px #00ff88"></div>Document Skills</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a855f7;box-shadow:0 0 6px #a855f7"></div>Creative Skills</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f97316;box-shadow:0 0 6px #f97316"></div>SPRUT Agents</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ec4899;box-shadow:0 0 6px #ec4899"></div>Communication</div>
+</div>
+
+<div class="connections-hint">Click any planet<br>to learn more</div>
+
+<script>
+// ═══════════════════════════════════════════
+// STARFIELD BACKGROUND
+// ═══════════════════════════════════════════
+const bgCanvas = document.getElementById('bg');
+const bgCtx = bgCanvas.getContext('2d');
+bgCanvas.width = window.innerWidth;
+bgCanvas.height = window.innerHeight;
+
+const stars = Array.from({length:300}, () => ({
+  x: Math.random() * bgCanvas.width,
+  y: Math.random() * bgCanvas.height,
+  r: Math.random() * 1.5,
+  a: Math.random(),
+  da: (Math.random() - 0.5) * 0.005
+}));
+
+function drawBg() {
+  bgCtx.fillStyle = '#000005';
+  bgCtx.fillRect(0,0,bgCanvas.width,bgCanvas.height);
+
+  // Nebula
+  const grad = bgCtx.createRadialGradient(bgCanvas.width/2, bgCanvas.height/2, 0, bgCanvas.width/2, bgCanvas.height/2, bgCanvas.width*0.6);
+  grad.addColorStop(0, 'rgba(0,30,60,0.3)');
+  grad.addColorStop(0.5, 'rgba(0,10,30,0.2)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  bgCtx.fillStyle = grad;
+  bgCtx.fillRect(0,0,bgCanvas.width,bgCanvas.height);
+
+  stars.forEach(s => {
+    s.a += s.da;
+    if(s.a > 1) s.a = 1, s.da *= -1;
+    if(s.a < 0.1) s.a = 0.1, s.da *= -1;
+    bgCtx.beginPath();
+    bgCtx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    bgCtx.fillStyle = `rgba(255,255,255,${s.a})`;
+    bgCtx.fill();
+  });
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+// ═══════════════════════════════════════════
+// PLANET DATA
+// ═══════════════════════════════════════════
+const PLANETS = [
+  // CORE
+  {
+    id:'core', name:'Claude AI Core', category:'AI Core', orbit:0, angle:0, speed:0,
+    size:42, color:'#f59e0b', glow:'#f59e0b',
+    tagline:'Anthropic Claude — мозг всей экосистемы',
+    desc:'Центральная звезда вселенной. Claude Opus 4.6 — мощнейшая языковая модель, которая управляет всеми агентами, выполняет задачи и координирует работу экосистемы.',
+    features:['Модель: Claude Opus 4.6','Контекст: 200K токенов','Мультимодальность: текст, код, изображения','Инструменты: 50+ встроенных','Память: SQLite + векторный поиск']
+  },
+
+  // ORBIT 1 — GCSC Agents (5)
+  {
+    id:'cma', name:'CMA', category:'GCSC Agent', orbit:1, angle:0, speed:0.008,
+    size:22, color:'#00d4ff', glow:'#00d4ff',
+    tagline:'Contractor Matching Agent',
+    desc:'Матчинг подрядчиков с заказчиками на основе навыков, локации, рейтинга и цены. Использует ML-алгоритмы для оптимального подбора.',
+    features:['Анализ 100+ параметров подрядчика','Геолокационный поиск','Проверка рейтингов и отзывов','Оценка стоимости проекта','Автоматическое предложение 3 вариантов']
+  },
+  {
+    id:'raa', name:'RAA', category:'GCSC Agent', orbit:1, angle:72, speed:0.007,
+    size:22, color:'#00d4ff', glow:'#00d4ff',
+    tagline:'Risk Assessment Agent',
+    desc:'Мониторинг прогресса проектов в реальном времени. Обнаруживает паттерны мошенничества и триггерит алерты при отклонении от milestone-плана.',
+    features:['Анализ фото с этапов работ','Детекция аномалий в платежах','Алерты при задержках > 48 часов','Скоринг риска 0-100','Интеграция с Insurance Bond']
+  },
+  {
+    id:'ca', name:'CA', category:'GCSC Agent', orbit:1, angle:144, speed:0.009,
+    size:22, color:'#00d4ff', glow:'#00d4ff',
+    tagline:'Compliance Agent',
+    desc:'Проверка лицензий, KYC/AML, страховых бондов и соответствия требованиям регуляторов по штатам США.',
+    features:['KYC через WebAuth Wallet','AML проверка транзакций','Верификация лицензий (50 штатов)','Проверка Insurance Bond','Мониторинг SEC/FinCEN требований']
+  },
+  {
+    id:'ta', name:'TA', category:'GCSC Agent', orbit:1, angle:216, speed:0.006,
+    size:22, color:'#00d4ff', glow:'#00d4ff',
+    tagline:'Treasury Agent',
+    desc:'Управление протокол-казначейством: ребалансировка, yield-стратегии, управление ликвидностью в пулах XPR Network.',
+    features:['Авто-ребалансировка портфеля','Yield optimization','Управление GCSC/GCST ликвидностью','Отчёты DAO для governance','Защита от impermanent loss']
+  },
+  {
+    id:'rea', name:'REA', category:'GCSC Agent', orbit:1, angle:288, speed:0.0075,
+    size:22, color:'#00d4ff', glow:'#00d4ff',
+    tagline:'Real Estate Agent',
+    desc:'Оценка недвижимости в реальном времени через Zillow/ATTOM Data API. Работает как on-chain оракул для RWA токенизации home equity.',
+    features:['Zillow + ATTOM Data интеграция','Обновление оценки ежеквартально','Сравнительный анализ аналогов','On-chain оракул для HET токена','Анализ ремонтного ROI по NAR']
+  },
+
+  // ORBIT 2 — Document Skills (5)
+  {
+    id:'docx', name:'DOCX', category:'Document Skill', orbit:2, angle:0, speed:0.005,
+    size:19, color:'#00ff88', glow:'#00ff88',
+    tagline:'Word Document Creator & Editor',
+    desc:'Создание и редактирование профессиональных Word документов с таблицами, заголовками, изображениями, tracked changes и TOC.',
+    features:['Создание .docx с нуля','Редактирование XML напрямую','Tracked changes с комментариями','Таблицы с двойной шириной DXA','TOC с HeadingLevel стилями']
+  },
+  {
+    id:'pptx', name:'PPTX', category:'Document Skill', orbit:2, angle:60, speed:0.0045,
+    size:19, color:'#00ff88', glow:'#00ff88',
+    tagline:'PowerPoint Presentation Builder',
+    desc:'Создание и парсинг презентаций PowerPoint с поддержкой слайдов, шаблонов, speaker notes, анимаций и изображений.',
+    features:['Pitch decks и слайд-деки','Извлечение текста из .pptx','Редактирование layouts и тем','Speaker notes поддержка','Объединение нескольких файлов']
+  },
+  {
+    id:'pdf', name:'PDF', category:'Document Skill', orbit:2, angle:120, speed:0.0055,
+    size:19, color:'#00ff88', glow:'#00ff88',
+    tagline:'PDF Processing Toolkit',
+    desc:'Полный набор инструментов для работы с PDF: извлечение, создание, объединение, разделение, формы, OCR.',
+    features:['Извлечение текста и таблиц','Объединение/разделение PDF','Заполнение форм','OCR для сканов','Добавление водяных знаков']
+  },
+  {
+    id:'xlsx', name:'XLSX', category:'Document Skill', orbit:2, angle:180, speed:0.004,
+    size:19, color:'#00ff88', glow:'#00ff88',
+    tagline:'Excel Spreadsheet Handler',
+    desc:'Создание и анализ таблиц Excel с формулами, форматированием, графиками и сводными таблицами.',
+    features:['Создание .xlsx с нуля','Формулы и сводные таблицы','Графики и визуализация данных','Очистка messy данных','Финансовые модели и бюджеты']
+  },
+  {
+    id:'schedule', name:'Schedule', category:'Document Skill', orbit:2, angle:240, speed:0.0042,
+    size:19, color:'#00ff88', glow:'#00ff88',
+    tagline:'Task Scheduler',
+    desc:'Создание запланированных задач — автоматически или по запросу. Cron-расписания, напоминания, повторяющиеся задачи.',
+    features:['Cron-расписания','Одноразовые напоминания','Повторяющиеся задачи','Мониторинг выполнения','Интеграция с Telegram']
+  },
+  {
+    id:'internal', name:'Internal Comms', category:'Document Skill', orbit:2, angle:300, speed:0.0048,
+    size:19, color:'#00ff88', glow:'#00ff88',
+    tagline:'Internal Communications Writer',
+    desc:'Написание внутренних коммуникаций: статус-репорты, newsletter, FAQ, incident reports, project updates.',
+    features:['Статус-репорты для leadership','Company newsletter','Incident reports','FAQ документы','Project update emails']
+  },
+
+  // ORBIT 3 — Creative Skills (5)
+  {
+    id:'canvas', name:'Canvas Design', category:'Creative Skill', orbit:3, angle:20, speed:0.003,
+    size:17, color:'#a855f7', glow:'#a855f7',
+    tagline:'Visual Art & Poster Designer',
+    desc:'Создание визуального искусства: постеры, брендинг, дизайн-материалы в .png и .pdf форматах.',
+    features:['Постеры и принты','Брендинг материалы','Инфографика','Баннеры для соцсетей','Экспорт PNG/PDF высокого разрешения']
+  },
+  {
+    id:'algoart', name:'Algo Art', category:'Creative Skill', orbit:3, angle:92, speed:0.0028,
+    size:17, color:'#a855f7', glow:'#a855f7',
+    tagline:'Algorithmic Art Generator',
+    desc:'Генеративное алгоритмическое искусство через p5.js: flow fields, particle systems, фракталы с seeded randomness.',
+    features:['Flow fields и частицы','Фракталы и L-системы','Интерактивные параметры','Seeded randomness (воспроизводимость)','Экспорт SVG и PNG']
+  },
+  {
+    id:'theme', name:'Theme Factory', category:'Creative Skill', orbit:3, angle:164, speed:0.0032,
+    size:17, color:'#a855f7', glow:'#a855f7',
+    tagline:'Artifact Theme Styler',
+    desc:'10 готовых тем для любых артефактов — слайды, документы, landing pages. Кастомные темы на лету.',
+    features:['10 preset тем с цветами/шрифтами','Применение к любым артефактам','Кастомные темы по запросу','Web3, minimal, corporate стили','Мгновенный re-style']
+  },
+  {
+    id:'brand', name:'Brand Guidelines', category:'Creative Skill', orbit:3, angle:236, speed:0.003,
+    size:17, color:'#a855f7', glow:'#a855f7',
+    tagline:'Anthropic Brand Styler',
+    desc:'Применение официального бренда Anthropic к артефактам — цвета, типографика, стандарты оформления.',
+    features:['Официальные цвета Anthropic','Типографика и сетка','Применение к документам','Соответствие brand guidelines','Экспорт в нужных форматах']
+  },
+  {
+    id:'webartifacts', name:'Web Artifacts', category:'Creative Skill', orbit:3, angle:308, speed:0.0026,
+    size:17, color:'#a855f7', glow:'#a855f7',
+    tagline:'React + Tailwind Artifact Builder',
+    desc:'Сложные многокомпонентные HTML артефакты на React, Tailwind CSS и shadcn/ui с routing и state management.',
+    features:['React + Tailwind CSS','shadcn/ui компоненты','Routing и state management','Сложные интерактивные UI','Recharts, D3, Three.js поддержка']
+  },
+
+  // ORBIT 4 — SPRUT Agents (9)
+  {
+    id:'deepresearch', name:'Deep Research', category:'SPRUT Agent', orbit:4, angle:0, speed:0.002,
+    size:15, color:'#f97316', glow:'#f97316',
+    tagline:'Глубокое исследование с цитатами',
+    desc:'Системное глубокое исследование любой темы через DuckDuckGo с источниками, цитатами и аналитическими выводами.',
+    features:['DuckDuckGo поиск','Источники и цитаты','Структурированные отчёты','Анализ конкурентов','Trend research за 30 дней']
+  },
+  {
+    id:'subcoord', name:'Sub-Coordinator', category:'SPRUT Agent', orbit:4, angle:40, speed:0.0022,
+    size:15, color:'#f97316', glow:'#f97316',
+    tagline:'Координатор параллельных субагентов',
+    desc:'Запуск и координация нескольких параллельных субагентов для выполнения сложных многошаговых задач одновременно.',
+    features:['Параллельный запуск агентов','REST API: POST /api/subagent/run','Мониторинг статуса','Сбор результатов','Web UI на порту 4632']
+  },
+  {
+    id:'agentbuilder', name:'Agent Builder', category:'SPRUT Agent', orbit:4, angle:80, speed:0.0018,
+    size:15, color:'#f97316', glow:'#f97316',
+    tagline:'Создание persistent skill-агентов',
+    desc:'Построитель новых persistent агентов с "душой" — идентичностью, памятью и набором навыков, описанных в текстовых файлах.',
+    features:['SOUL.md — идентичность агента','AGENTS.md — рабочие правила','SQLite память + embeddings','Hybrid search (vector 0.7 + FTS5 0.3)','Decay-система памяти']
+  },
+  {
+    id:'brainstorm', name:'Brainstorm', category:'SPRUT Agent', orbit:4, angle:120, speed:0.002,
+    size:15, color:'#f97316', glow:'#f97316',
+    tagline:'Структурированный мозговой штурм',
+    desc:'Методичный мозговой штурм с применением различных фреймворков: SCAMPER, Six Hats, HMW, Mind Mapping.',
+    features:['SCAMPER техника','Six Thinking Hats','How Might We фреймворк','Кластеризация идей','Приоритизация по матрице']
+  },
+  {
+    id:'debugger', name:'Debugger', category:'SPRUT Agent', orbit:4, angle:160, speed:0.0022,
+    size:15, color:'#f97316', glow:'#f97316',
+    tagline:'Systematic Debugging Agent',
+    desc:'Пошаговая методичная отладка любых проблем — код, система, логика. Применяет scientific debugging approach.',
+    features:['Hypothesis-driven debugging','Воспроизведение ошибки','Root cause analysis','Пошаговое исправление','Документирование решения']
+  },
+  {
+    id:'audit', name:'Site Auditor', category:'SPRUT Agent', orbit:4, angle:200, speed:0.0019,
+    size:15, color:'#f97316', glow:'#f97316',
+    tagline:'SEO, UX & Security Audit',
+    desc:'Комплексный аудит веб-сайтов: SEO, UX, безопасность, производительность, доступность.',
+    features:['SEO технический аудит','Core Web Vitals анализ','Проверка безопасности заголовков','UX/accessibility оценка','Отчёт с приоритетами']
+  },
+  {
+    id:'presentation', name:'Presentation', category:'SPRUT Agent', orbit:4, angle:240, speed:0.002,
+    size:15, color:'#f97316', glow:'#f97316',
+    tagline:'Marp Presentation Builder',
+    desc:'Создание презентаций через Marp — Markdown превращается в красивые слайды с темами и переходами.',
+    features:['Markdown → слайды','Marp темы','PDF и HTML экспорт','Speaker notes','Reveal.js совместимость']
+  },
+  {
+    id:'tubescribe', name:'TubeScribe', category:'SPRUT Agent', orbit:4, angle:280, speed:0.0018,
+    size:15, color:'#f97316', glow:'#f97316',
+    tagline:'YouTube → текст + аудио',
+    desc:'Транскрипция YouTube видео в текст с таймстемпами, саммари и ключевыми цитатами.',
+    features:['Транскрипция с таймстемпами','Авто-саммари','Ключевые цитаты','Экспорт в .md/.txt','Поддержка длинных видео']
+  },
+  {
+    id:'writingplans', name:'Writing Plans', category:'SPRUT Agent', orbit:4, angle:320, speed:0.0021,
+    size:15, color:'#f97316', glow:'#f97316',
+    tagline:'Пошаговые планы реализации',
+    desc:'Создание детальных пошаговых планов реализации любых проектов — от задумки до запуска.',
+    features:['Декомпозиция задач','Зависимости и критический путь','Оценка времени','Распределение ресурсов','Milestone-план']
+  },
+
+  // ORBIT 5 — Communication (6)
+  {
+    id:'tweetwriter', name:'Tweet Writer', category:'Communication', orbit:5, angle:0, speed:0.0015,
+    size:13, color:'#ec4899', glow:'#ec4899',
+    tagline:'Вирусные твиты и треды',
+    desc:'Создание вирусного контента для Twitter/X — твиты, треды, hooks с максимальным engagement.',
+    features:['Viral hooks','Thread структуры','Engagement оптимизация','Хэштеги и CTA','A/B тест варианты']
+  },
+  {
+    id:'socialcard', name:'Social Cards', category:'Communication', orbit:5, angle:60, speed:0.0013,
+    size:13, color:'#ec4899', glow:'#ec4899',
+    tagline:'Посты для всех соцсетей',
+    desc:'Адаптация контента под все основные площадки: Twitter, LinkedIn, Instagram, Telegram, Reddit.',
+    features:['Адаптация под каждую площадку','Оптимальная длина текста','Эмодзи и форматирование','Scheduling рекомендации','Cross-posting стратегия']
+  },
+  {
+    id:'reddit', name:'Reddit Scout', category:'Communication', orbit:5, angle:120, speed:0.0016,
+    size:13, color:'#ec4899', glow:'#ec4899',
+    tagline:'Поиск и анализ Reddit',
+    desc:'Глубокий поиск по Reddit: тренды, мнения аудитории, лучшие посты, community insights.',
+    features:['Поиск по subreddits','Анализ тональности','Trend detection','Конкурентный анализ','Community insights']
+  },
+  {
+    id:'weather', name:'Weather', category:'Communication', orbit:5, angle:180, speed:0.0014,
+    size:13, color:'#ec4899', glow:'#ec4899',
+    tagline:'Погода и прогнозы',
+    desc:'Актуальная погода и прогнозы через wttr.in и Open-Meteo API для любой точки мира.',
+    features:['Текущая погода','7-дневный прогноз','Погода в любой локации','Интеграция с задачами','wttr.in + Open-Meteo']
+  },
+  {
+    id:'last30days', name:'Trend Radar', category:'Communication', orbit:5, angle:240, speed:0.0012,
+    size:13, color:'#ec4899', glow:'#ec4899',
+    tagline:'Тренды за последние 30 дней',
+    desc:'Исследование актуальных трендов за последние 30 дней в любой нише — технологии, крипто, рынок.',
+    features:['Тренды за 30 дней','Ниши: tech, crypto, market','Emerging opportunities','Конкурентный landscape','Actionable insights']
+  },
+  {
+    id:'excalidraw', name:'Excalidraw', category:'Communication', orbit:5, angle:300, speed:0.0015,
+    size:13, color:'#ec4899', glow:'#ec4899',
+    tagline:'Схемы и диаграммы',
+    desc:'Создание схем и диаграмм в формате Excalidraw для Obsidian — архитектурные диаграммы, flowcharts, mind maps.',
+    features:['Архитектурные диаграммы','Flowcharts и swimlanes','Mind maps','Obsidian интеграция','Экспорт в SVG/PNG']
+  },
+];
+
+// ═══════════════════════════════════════════
+// UNIVERSE RENDERER (SVG-based)
+// ═══════════════════════════════════════════
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const universe = document.getElementById('universe');
+
+const svg = document.createElementNS(SVG_NS, 'svg');
+svg.setAttribute('width', '100%');
+svg.setAttribute('height', '100%');
+universe.appendChild(svg);
+
+// Defs
+const defs = document.createElementNS(SVG_NS, 'defs');
+svg.appendChild(defs);
+
+// Glow filter
+function makeGlow(id, color) {
+  const filter = document.createElementNS(SVG_NS, 'filter');
+  filter.setAttribute('id', id);
+  filter.setAttribute('x', '-50%'); filter.setAttribute('y', '-50%');
+  filter.setAttribute('width', '200%'); filter.setAttribute('height', '200%');
+  const blur = document.createElementNS(SVG_NS, 'feGaussianBlur');
+  blur.setAttribute('in', 'SourceGraphic');
+  blur.setAttribute('stdDeviation', '4');
+  blur.setAttribute('result', 'blur');
+  const flood = document.createElementNS(SVG_NS, 'feFlood');
+  flood.setAttribute('flood-color', color);
+  flood.setAttribute('flood-opacity', '0.6');
+  flood.setAttribute('result', 'color');
+  const comp = document.createElementNS(SVG_NS, 'feComposite');
+  comp.setAttribute('in', 'color');
+  comp.setAttribute('in2', 'blur');
+  comp.setAttribute('operator', 'in');
+  comp.setAttribute('result', 'coloredBlur');
+  const merge = document.createElementNS(SVG_NS, 'feMerge');
+  const n1 = document.createElementNS(SVG_NS, 'feMergeNode');
+  n1.setAttribute('in', 'coloredBlur');
+  const n2 = document.createElementNS(SVG_NS, 'feMergeNode');
+  n2.setAttribute('in', 'SourceGraphic');
+  merge.appendChild(n1); merge.appendChild(n2);
+  filter.appendChild(blur); filter.appendChild(flood); filter.appendChild(comp); filter.appendChild(merge);
+  defs.appendChild(filter);
+}
+
+const glowColors = {
+  'AI Core': '#f59e0b',
+  'GCSC Agent': '#00d4ff',
+  'Document Skill': '#00ff88',
+  'Creative Skill': '#a855f7',
+  'SPRUT Agent': '#f97316',
+  'Communication': '#ec4899'
+};
+
+Object.entries(glowColors).forEach(([k,v]) => makeGlow('glow-' + k.replace(/\s+/g,''), v));
+
+// Orbit radii
+const ORBIT_R = [0, 110, 195, 275, 355, 430];
+
+// Center
+let CX = window.innerWidth / 2;
+let CY = window.innerHeight / 2;
+
+// Draw orbit rings
+ORBIT_R.slice(1).forEach(r => {
+  const circle = document.createElementNS(SVG_NS, 'circle');
+  circle.setAttribute('cx', CX);
+  circle.setAttribute('cy', CY);
+  circle.setAttribute('r', r);
+  circle.setAttribute('fill', 'none');
+  circle.setAttribute('stroke', 'rgba(255,255,255,0.04)');
+  circle.setAttribute('stroke-width', '1');
+  circle.setAttribute('stroke-dasharray', '4,8');
+  svg.appendChild(circle);
+});
+
+// Planet DOM elements
+const planetEls = {};
+const angles = {};
+
+PLANETS.forEach(p => {
+  angles[p.id] = (p.angle * Math.PI) / 180;
+
+  const g = document.createElementNS(SVG_NS, 'g');
+  g.setAttribute('cursor', 'pointer');
+  g.style.transition = 'transform 0.1s';
+
+  const filterId = 'glow-' + p.category.replace(/\s+/g,'');
+
+  // Outer glow ring
+  if (p.id !== 'core') {
+    const ring = document.createElementNS(SVG_NS, 'circle');
+    ring.setAttribute('r', p.size + 6);
+    ring.setAttribute('fill', 'none');
+    ring.setAttribute('stroke', p.color);
+    ring.setAttribute('stroke-width', '1');
+    ring.setAttribute('opacity', '0.25');
+    g.appendChild(ring);
+  }
+
+  // Main circle (gradient)
+  const gradId = 'grad-' + p.id;
+  const grad = document.createElementNS(SVG_NS, 'radialGradient');
+  grad.setAttribute('id', gradId);
+  grad.setAttribute('cx', '35%'); grad.setAttribute('cy', '35%');
+  grad.setAttribute('r', '65%');
+  const stop1 = document.createElementNS(SVG_NS, 'stop');
+  stop1.setAttribute('offset', '0%');
+  stop1.setAttribute('stop-color', lighten(p.color, 80));
+  const stop2 = document.createElementNS(SVG_NS, 'stop');
+  stop2.setAttribute('offset', '100%');
+  stop2.setAttribute('stop-color', darken(p.color, 40));
+  grad.appendChild(stop1); grad.appendChild(stop2);
+  defs.appendChild(grad);
+
+  const circle = document.createElementNS(SVG_NS, 'circle');
+  circle.setAttribute('r', p.size);
+  circle.setAttribute('fill', `url(#${gradId})`);
+  circle.setAttribute('filter', `url(#${filterId})`);
+  g.appendChild(circle);
+
+  // Label
+  if (p.size >= 17) {
+    const text = document.createElementNS(SVG_NS, 'text');
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('dy', p.id === 'core' ? '5px' : '4px');
+    text.setAttribute('fill', '#fff');
+    text.setAttribute('font-size', p.id === 'core' ? '10px' : '8px');
+    text.setAttribute('font-weight', '700');
+    text.setAttribute('font-family', 'Segoe UI, system-ui, sans-serif');
+    text.setAttribute('pointer-events', 'none');
+    text.textContent = p.id === 'core' ? '✦' : p.name.substring(0,5);
+    g.appendChild(text);
+  }
+
+  // Hover events
+  g.addEventListener('mouseenter', (e) => {
+    showTooltip(e, p);
+    g.setAttribute('transform', g.getAttribute('transform') + ' scale(1.15)');
+    circle.setAttribute('stroke', p.color);
+    circle.setAttribute('stroke-width', '2');
+  });
+  g.addEventListener('mouseleave', () => {
+    hideTooltip();
+    circle.removeAttribute('stroke');
+    // transform will be reset in animate
+  });
+  g.addEventListener('click', () => openPanel(p));
+
+  svg.appendChild(g);
+  planetEls[p.id] = g;
+});
+
+function lighten(hex, amount) {
+  const num = parseInt(hex.slice(1), 16);
+  const r = Math.min(255, (num >> 16) + amount);
+  const g = Math.min(255, ((num >> 8) & 0xFF) + amount);
+  const b = Math.min(255, (num & 0xFF) + amount);
+  return `rgb(${r},${g},${b})`;
+}
+
+function darken(hex, amount) {
+  const num = parseInt(hex.slice(1), 16);
+  const r = Math.max(0, (num >> 16) - amount);
+  const g = Math.max(0, ((num >> 8) & 0xFF) - amount);
+  const b = Math.max(0, (num & 0xFF) - amount);
+  return `rgb(${r},${g},${b})`;
+}
+
+// ═══════════════════════════════════════════
+// ANIMATION
+// ═══════════════════════════════════════════
+let hoveredId = null;
+
+function animate() {
+  PLANETS.forEach(p => {
+    angles[p.id] += p.speed;
+
+    const r = ORBIT_R[p.orbit];
+    const x = CX + r * Math.cos(angles[p.id]);
+    const y = CY + r * Math.sin(angles[p.id]);
+
+    const g = planetEls[p.id];
+    if (hoveredId === p.id) {
+      g.setAttribute('transform', `translate(${x},${y}) scale(1.15)`);
+    } else {
+      g.setAttribute('transform', `translate(${x},${y})`);
+    }
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ═══════════════════════════════════════════
+// TOOLTIP
+// ═══════════════════════════════════════════
+const tooltip = document.getElementById('tooltip');
+const ttName = document.getElementById('tt-name');
+const ttCat = document.getElementById('tt-cat');
+
+function showTooltip(e, p) {
+  ttName.textContent = p.name;
+  ttCat.textContent = p.category + ' — ' + p.tagline;
+  tooltip.style.opacity = '1';
+  hoveredId = p.id;
+}
+
+function hideTooltip() {
+  tooltip.style.opacity = '0';
+  hoveredId = null;
+}
+
+document.addEventListener('mousemove', (e) => {
+  tooltip.style.left = (e.clientX + 16) + 'px';
+  tooltip.style.top = (e.clientY - 10) + 'px';
+});
+
+// ═══════════════════════════════════════════
+// SIDE PANEL
+// ═══════════════════════════════════════════
+const panel = document.getElementById('panel');
+const pCat = document.getElementById('p-cat');
+const pName = document.getElementById('p-name');
+const pTagline = document.getElementById('p-tagline');
+const pDesc = document.getElementById('p-desc');
+const pFeatures = document.getElementById('p-features');
+const pBtn = document.getElementById('p-btn');
+
+const categoryColors = {
+  'AI Core': '#f59e0b',
+  'GCSC Agent': '#00d4ff',
+  'Document Skill': '#00ff88',
+  'Creative Skill': '#a855f7',
+  'SPRUT Agent': '#f97316',
+  'Communication': '#ec4899'
+};
+
+function openPanel(p) {
+  pCat.textContent = p.category;
+  pCat.style.color = categoryColors[p.category] || '#00d4ff';
+  pName.textContent = p.name;
+  pName.style.color = p.color;
+  pTagline.textContent = p.tagline;
+  pDesc.textContent = p.desc;
+  pFeatures.innerHTML = p.features.map(f => `<li>${f}</li>`).join('');
+  pBtn.textContent = p.category === 'GCSC Agent' ? '⚡ Запустить агента' : p.category === 'SPRUT Agent' ? '🤖 Активировать' : '📄 Использовать навык';
+  panel.classList.add('open');
+}
+
+document.getElementById('panel-close').addEventListener('click', () => {
+  panel.classList.remove('open');
+});
+
+// Close panel on escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') panel.classList.remove('open');
+});
+
+// ═══════════════════════════════════════════
+// RESIZE
+// ═══════════════════════════════════════════
+window.addEventListener('resize', () => {
+  CX = window.innerWidth / 2;
+  CY = window.innerHeight / 2;
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+
+  // Update orbit rings
+  svg.querySelectorAll('circle[stroke-dasharray]').forEach((c, i) => {
+    c.setAttribute('cx', CX);
+    c.setAttribute('cy', CY);
+  });
+});
+
+// ═══════════════════════════════════════════
+// CONNECTION LINES (on hover — orbit mates)
+// ═══════════════════════════════════════════
+const linesGroup = document.createElementNS(SVG_NS, 'g');
+linesGroup.setAttribute('opacity', '0');
+linesGroup.style.transition = 'opacity 0.3s';
+svg.insertBefore(linesGroup, svg.firstChild.nextSibling);
+
+// Add faint constellation lines between orbit 1 planets (GCSC agents)
+function drawConstellations() {
+  linesGroup.innerHTML = '';
+  const orbit1 = PLANETS.filter(p => p.orbit === 1);
+  for(let i = 0; i < orbit1.length; i++) {
+    for(let j = i+1; j < orbit1.length; j++) {
+      const a = orbit1[i], b = orbit1[j];
+      const ax = CX + ORBIT_R[1] * Math.cos(angles[a.id]);
+      const ay = CY + ORBIT_R[1] * Math.sin(angles[a.id]);
+      const bx = CX + ORBIT_R[1] * Math.cos(angles[b.id]);
+      const by = CY + ORBIT_R[1] * Math.sin(angles[b.id]);
+      const line = document.createElementNS(SVG_NS, 'line');
+      line.setAttribute('x1', ax); line.setAttribute('y1', ay);
+      line.setAttribute('x2', bx); line.setAttribute('y2', by);
+      line.setAttribute('stroke', 'rgba(0,212,255,0.1)');
+      line.setAttribute('stroke-width', '1');
+      linesGroup.appendChild(line);
+    }
+  }
+}
+
+// Periodically show constellations
+setInterval(() => {
+  drawConstellations();
+  linesGroup.setAttribute('opacity', '0.8');
+  setTimeout(() => linesGroup.setAttribute('opacity', '0'), 2000);
+}, 5000);
+
+</script>
+</body>
+</html>

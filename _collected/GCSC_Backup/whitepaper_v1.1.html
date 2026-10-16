@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSC Whitepaper v1.1 — Global Construction Smart Contract</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #0f0f1a;
+    --bg3: #13131f;
+    --border: #1e1e2e;
+    --accent: #00d4ff;
+    --green: #00ff88;
+    --purple: #7c3aed;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --white: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    line-height: 1.7;
+  }
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { font-size: 20px; font-weight: 700; color: var(--accent); letter-spacing: 2px; }
+  .nav-version { font-size: 12px; color: var(--muted); background: var(--bg3); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 100px 40px 80px;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,255,0.08) 0%, transparent 70%);
+  }
+  .hero-badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3);
+    padding: 6px 16px; border-radius: 20px; margin-bottom: 32px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 64px); font-weight: 800; line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+  }
+  .hero-sub { font-size: 18px; color: var(--muted); margin-bottom: 48px; }
+  .hero-meta { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+  .hero-meta span { font-size: 13px; color: var(--muted); }
+  .hero-meta strong { color: var(--text); }
+
+  /* STATS */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px; background: var(--border);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    margin: 0;
+  }
+  .stat-item {
+    background: var(--bg); padding: 32px 24px; text-align: center;
+  }
+  .stat-value { font-size: 32px; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* LAYOUT */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 40px; }
+  .section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px;
+  }
+  .section h2 {
+    font-size: 32px; font-weight: 800; color: var(--white); margin-bottom: 24px; line-height: 1.2;
+  }
+  .section h3 {
+    font-size: 20px; font-weight: 700; color: var(--white); margin: 36px 0 16px;
+  }
+  .section h4 {
+    font-size: 16px; font-weight: 600; color: var(--accent); margin: 24px 0 12px;
+  }
+  p { color: var(--muted); margin-bottom: 16px; }
+  strong { color: var(--text); }
+
+  /* CARDS */
+  .card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px; margin-bottom: 16px;
+  }
+  .card-accent { border-left: 3px solid var(--accent); }
+  .card-green { border-left: 3px solid var(--green); }
+  .card-purple { border-left: 3px solid var(--purple); }
+  .card h4 { margin-top: 0; }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box {
+    background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 12px; padding: 24px; margin: 24px 0;
+  }
+  .highlight-box.green {
+    background: rgba(0,255,136,0.06); border-color: rgba(0,255,136,0.2);
+  }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; margin: 24px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th {
+    background: var(--bg3); color: var(--accent);
+    padding: 12px 16px; text-align: left; font-weight: 600;
+    border-bottom: 1px solid var(--border); font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+  }
+  td {
+    padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* STEPS */
+  .steps { counter-reset: steps; }
+  .step {
+    display: flex; gap: 20px; margin-bottom: 20px; align-items: flex-start;
+  }
+  .step-num {
+    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px; color: #000; margin-top: 2px;
+  }
+  .step-content h4 { margin-top: 0; margin-bottom: 6px; }
+  .step-content p { margin-bottom: 0; }
+
+  /* TOKEN GRID */
+  .token-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .token-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px;
+    text-align: center;
+  }
+  .token-symbol { font-size: 28px; font-weight: 900; color: var(--accent); margin-bottom: 8px; }
+  .token-name { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .token-desc { font-size: 14px; color: var(--text); }
+
+  /* ROADMAP */
+  .roadmap { position: relative; padding-left: 32px; }
+  .roadmap::before {
+    content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--purple), var(--green));
+  }
+  .roadmap-phase { margin-bottom: 36px; }
+  .phase-dot {
+    position: absolute; left: -5px; width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--bg); margin-top: 4px;
+  }
+  .phase-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px; padding-left: 20px; position: relative;
+  }
+  .phase-title { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 12px; padding-left: 20px; }
+  .phase-items { list-style: none; padding-left: 20px; }
+  .phase-items li { color: var(--muted); font-size: 14px; margin-bottom: 6px; padding-left: 16px; position: relative; }
+  .phase-items li::before { content: '→'; position: absolute; left: 0; color: var(--accent); }
+
+  /* AI AGENTS */
+  .agents-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin: 24px 0; }
+  .agent-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px;
+  }
+  .agent-abbr { font-size: 22px; font-weight: 900; color: var(--green); margin-bottom: 4px; }
+  .agent-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .agent-desc { font-size: 13px; color: var(--muted); }
+
+  /* DISTRIBUTION PIE PLACEHOLDER */
+  .dist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 24px 0; }
+  .dist-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px;
+  }
+  .dist-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .dist-pct { font-size: 18px; font-weight: 800; color: var(--text); }
+  .dist-label { font-size: 12px; color: var(--muted); }
+
+  /* RWA SECTION — new styling */
+  .rwa-hero {
+    background: linear-gradient(135deg, rgba(0,212,255,0.08) 0%, rgba(0,255,136,0.06) 100%);
+    border: 1px solid rgba(0,212,255,0.2); border-radius: 16px; padding: 40px;
+    margin-bottom: 40px; text-align: center;
+  }
+  .rwa-tagline {
+    font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 12px;
+  }
+  .rwa-tagline span { color: var(--accent); }
+  .rwa-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-top: 32px; }
+  .rwa-stat { text-align: center; }
+  .rwa-stat-val { font-size: 24px; font-weight: 800; color: var(--green); }
+  .rwa-stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg2); border-top: 1px solid var(--border);
+    padding: 48px 40px; text-align: center;
+  }
+  footer .logo { font-size: 24px; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
+  footer p { color: var(--muted); font-size: 14px; }
+  footer .links { margin-top: 24px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+  footer .links a { color: var(--muted); text-decoration: none; font-size: 13px; }
+  footer .links a:hover { color: var(--accent); }
+
+  /* TOC */
+  .toc { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 32px; margin-bottom: 60px; }
+  .toc h3 { color: var(--white); font-size: 16px; margin-bottom: 16px; }
+  .toc ol { list-style: none; counter-reset: toc; }
+  .toc ol li {
+    counter-increment: toc; padding: 8px 0; border-bottom: 1px solid var(--border);
+    font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 12px;
+  }
+  .toc ol li:last-child { border-bottom: none; }
+  .toc ol li::before {
+    content: counter(toc, decimal-leading-zero);
+    color: var(--accent); font-weight: 700; font-size: 12px; min-width: 24px;
+  }
+  .toc ol li a { color: var(--muted); text-decoration: none; }
+  .toc ol li a:hover { color: var(--accent); }
+  .toc-new { color: var(--green) !important; }
+
+  @media (max-width: 600px) {
+    nav { padding: 12px 20px; }
+    .container { padding: 0 20px; }
+    .section { padding: 48px 0; }
+    .rwa-stats { grid-template-columns: 1fr 1fr; }
+    .token-grid, .dist-grid { grid-template-columns: 1fr; }
+    .hero { padding: 60px 20px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">GCSC</div>
+  <div class="nav-version">Whitepaper v1.1 • March 2026</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Global Construction Smart Contract</div>
+  <h1>Building the Future<br>of Construction on Blockchain</h1>
+  <p class="hero-sub">The world's first decentralized construction ecosystem — uniting contractors, homeowners, and DeFi through AI-powered smart contracts on XPR Network.</p>
+  <div class="hero-meta">
+    <span><strong>Blockchain:</strong> XPR Network</span>
+    <span><strong>Version:</strong> 1.1</span>
+    <span><strong>Date:</strong> March 2026</span>
+    <span><strong>Status:</strong> Pre-Launch</span>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-grid">
+  <div class="stat-item">
+    <div class="stat-value">$13T</div>
+    <div class="stat-label">Construction Market/yr</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">1B</div>
+    <div class="stat-label">GCSC Tokens</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">5</div>
+    <div class="stat-label">AI Agents</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">$33B+</div>
+    <div class="stat-label">RWA Market 2025</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Gas Fees (XPR)</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- TOC -->
+  <div class="section">
+    <div class="toc">
+      <h3>Table of Contents</h3>
+      <ol>
+        <li><a href="#executive">Executive Summary</a></li>
+        <li><a href="#problem">Problem &amp; Solution</a></li>
+        <li><a href="#tech">Technical Architecture</a></li>
+        <li><a href="#tokens">Token Economy</a></li>
+        <li><a href="#agents">AI Agents</a></li>
+        <li><a href="#subscriptions">Membership Plans</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+        <li><a href="#rwa" class="toc-new">🆕 RWA Strategy — Home Equity DeFi Loans</a></li>
+        <li><a href="#risks">Risk Analysis</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 1. EXECUTIVE SUMMARY -->
+  <div class="section" id="executive">
+    <div class="section-label">Section 01</div>
+    <h2>Executive Summary</h2>
+    <p>GCSC (Global Construction Smart Contract) is a decentralized marketplace platform for construction and renovation. It connects homeowners and contractors <strong>directly through smart contracts</strong> — without middlemen, lead-selling, or hidden fees.</p>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:16px; margin:32px 0;">
+      <div class="card card-accent">
+        <h4>Smart Escrow</h4>
+        <p>Milestone-based payments released only when work is verified by AI agents.</p>
+      </div>
+      <div class="card card-green">
+        <h4>NFT Passport</h4>
+        <p>Every contractor gets an on-chain credential — license, reviews, work history.</p>
+      </div>
+      <div class="card card-purple">
+        <h4>DAO Governance</h4>
+        <p>GCSC token holders govern the protocol — fees, rules, dispute resolution.</p>
+      </div>
+      <div class="card card-accent">
+        <h4>AI Agents</h4>
+        <p>5 AI agents handle matching, compliance, risk, treasury, and real estate.</p>
+      </div>
+      <div class="card card-green">
+        <h4>🆕 RWA Home Equity</h4>
+        <p>Tokenize home equity → get DeFi loan via Proton LOAN → pay contractor via smart contract.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. PROBLEM & SOLUTION -->
+  <div class="section" id="problem">
+    <div class="section-label">Section 02</div>
+    <h2>Problem &amp; Solution</h2>
+    <div class="highlight-box">
+      <strong>The Problem:</strong> The $13 trillion construction industry is riddled with fraud, delayed payments, zero transparency, and contractor scams. Homeowners have no protection. Contractors wait months to get paid.
+    </div>
+    <h3>GCSC Solution</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Homeowner posts a project</h4>
+          <p>They describe the work, upload photos, set budget. CMA AI agent matches them with verified contractors.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Smart contract escrow created</h4>
+          <p>Funds locked in smart contract. Released only when milestones verified — no upfront risk for either party.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Work completed, payment released</h4>
+          <p>Contractor uploads proof per milestone. AI verifies. Payment released automatically. NFT record created.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>NFT Property Passport updated</h4>
+          <p>Permanent on-chain record of all work done on the property — adds value at resale.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. TECH -->
+  <div class="section" id="tech">
+    <div class="section-label">Section 03</div>
+    <h2>Technical Architecture</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Blockchain</td><td>XPR Network (Proton)</td><td>Main chain — 0 gas fees, 0.5s finality</td></tr>
+          <tr><td>Wallet</td><td>WebAuth Wallet + WalletConnect</td><td>Biometric login, no seed phrases</td></tr>
+          <tr><td>Cross-chain</td><td>Metal Blockchain</td><td>Bridge to traditional finance via Metal Pay</td></tr>
+          <tr><td>DeFi Lending</td><td>Proton Loan Protocol</td><td>Collateralized loans in USDC</td></tr>
+          <tr><td>AI Agents</td><td>LangChain + AutoGPT + XPR SDK</td><td>5 specialized agents</td></tr>
+          <tr><td>Smart Contracts</td><td>C++ / XPR Network</td><td>7 core contracts deployed</td></tr>
+          <tr><td>Frontend</td><td>GitHub Pages / HTML+JS</td><td>Web app, WebAuth integrated</td></tr>
+          <tr><td><strong>RWA Layer</strong></td><td><strong>Wyoming DAO LLC + NFT Property Passport</strong></td><td><strong>Home equity tokenization, HET token</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Smart Contracts</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Contract</th><th>Account</th><th>Function</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>GCSC Token</td><td>gcsctoken111</td><td>Governance + utility token</td></tr>
+          <tr><td>GCSC Member</td><td>gcscmember11</td><td>Membership management</td></tr>
+          <tr><td>GCSC Lead</td><td>gcsclead1111</td><td>Project lead management</td></tr>
+          <tr><td>GCSC Stake</td><td>gcscstake111</td><td>Staking &amp; rewards</td></tr>
+          <tr><td>GCSC Treasury</td><td>gcsctreasry1</td><td>Protocol treasury</td></tr>
+          <tr><td>GCSC Realty</td><td>gcscrealty11</td><td>Real estate + RWA</td></tr>
+          <tr><td>GCSC Insurance</td><td>gcscinsure11</td><td>Insurance bonds</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. TOKENS -->
+  <div class="section" id="tokens">
+    <div class="section-label">Section 04</div>
+    <h2>Token Economy</h2>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-symbol">GCSC</div>
+        <div class="token-name">Governance + Utility + Investment</div>
+        <div class="token-desc">1 Billion total supply. Used for governance voting, staking rewards, platform fees, and investment.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-symbol" style="color:var(--green)">GCST</div>
+        <div class="token-name">Stable Token — $1 USD peg</div>
+        <div class="token-desc">Stable token for platform transactions. Used for contractor payments, subscriptions, and RWA loan fees.</div>
+      </div>
+    </div>
+    <h3>GCSC Distribution (1 Billion Tokens)</h3>
+    <div class="dist-grid">
+      <div class="dist-item">
+        <div class="dist-dot" style="background:#00d4ff"></div>
+        <div>
+          <div class="dist-pct">40%</div>
+          <div class="dist-label">Ecosystem Rewards</div>
+        </div>
+      </div>
+      <div class="dist-item">
+        <div class="dist-dot" style="background:#7c3aed"></div>
+        <div>
+          <div class="dist-pct">20%</div>
+          <div class="dist-label">Treasury / Real Estate</div>
+        </div>
+      </div>
+      <div class="dist-item">
+        <div class="dist-dot" style="background:#00ff88"></div>
+        <div>
+          <div class="dist-pct">15%</div>
+          <div class="dist-label">Team &amp; Advisors</div>
+        </div>
+      </div>
+      <div class="dist-item">
+        <div class="dist-dot" style="background:#f59e0b"></div>
+        <div>
+          <div class="dist-pct">10%</div>
+          <div class="dist-label">Initial Liquidity</div>
+        </div>
+      </div>
+      <div class="dist-item">
+        <div class="dist-dot" style="background:#ef4444"></div>
+        <div>
+          <div class="dist-pct">10%</div>
+          <div class="dist-label">Community Sale</div>
+        </div>
+      </div>
+      <div class="dist-item">
+        <div class="dist-dot" style="background:#64748b"></div>
+        <div>
+          <div class="dist-pct">5%</div>
+          <div class="dist-label">Reserve</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. AI AGENTS -->
+  <div class="section" id="agents">
+    <div class="section-label">Section 05</div>
+    <h2>5 AI Agents</h2>
+    <p>GCSC is powered by five specialized AI agents built on LangChain + AutoGPT, integrated with the XPR Network SDK.</p>
+    <div class="agents-grid">
+      <div class="agent-card">
+        <div class="agent-abbr">CMA</div>
+        <div class="agent-name">Contractor Matching Agent</div>
+        <div class="agent-desc">Matches homeowners with the best verified contractors based on skill, location, reviews, and price.</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-abbr">RAA</div>
+        <div class="agent-name">Risk Assessment Agent</div>
+        <div class="agent-desc">Monitors project progress, detects fraud patterns, triggers alerts if contractor deviates from milestones.</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-abbr">CA</div>
+        <div class="agent-name">Compliance Agent</div>
+        <div class="agent-desc">Verifies contractor licenses, KYC/AML, insurance bonds, and regulatory compliance per state.</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-abbr">TA</div>
+        <div class="agent-name">Treasury Agent</div>
+        <div class="agent-desc">Manages protocol treasury — rebalancing, yield strategies, liquidity provision across pools.</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-abbr">REA</div>
+        <div class="agent-name">Real Estate Agent</div>
+        <div class="agent-desc">Pulls live property valuations via Zillow/ATTOM API. Acts as oracle for RWA home equity tokenization.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. SUBSCRIPTIONS -->
+  <div class="section" id="subscriptions">
+    <div class="section-label">Section 06</div>
+    <h2>Membership Plans</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Plan</th><th>Price</th><th>Included</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>BASIC</strong></td>
+            <td><strong>$49/mo</strong></td>
+            <td>Minor repairs, painting, carpeting, basic matching</td>
+          </tr>
+          <tr>
+            <td><strong>PRO</strong></td>
+            <td><strong>$99/mo</strong></td>
+            <td>Everything in Basic + electrical, plumbing, HVAC, AI risk assessment</td>
+          </tr>
+          <tr>
+            <td><strong>ENTERPRISE</strong></td>
+            <td><strong>$199/mo</strong></td>
+            <td>Multiple properties, personal project manager, full AI suite, RWA loan access</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 7. ROADMAP -->
+  <div class="section" id="roadmap">
+    <div class="section-label">Section 07</div>
+    <h2>Roadmap</h2>
+    <div class="roadmap">
+      <div class="roadmap-phase" style="position:relative">
+        <div class="phase-dot"></div>
+        <div class="phase-label">Phase 1 — NOW</div>
+        <div class="phase-title">Foundation ✅</div>
+        <ul class="phase-items">
+          <li>Token launched on XPR Network</li>
+          <li>7 core smart contracts written &amp; deployed</li>
+          <li>WebAuth Wallet integrated</li>
+          <li>MVP application</li>
+          <li>Website live on GitHub Pages</li>
+        </ul>
+      </div>
+      <div class="roadmap-phase" style="position:relative">
+        <div class="phase-dot" style="background:var(--green)"></div>
+        <div class="phase-label">Phase 2 — Months 4–8</div>
+        <div class="phase-title">AI + DeFi</div>
+        <ul class="phase-items">
+          <li>5 AI agents deployed</li>
+          <li>Proton Loan integration</li>
+          <li>First 100 verified contractors</li>
+          <li>Seattle/Tacoma pilot program</li>
+          <li>RWA Module MVP (HET testnet)</li>
+        </ul>
+      </div>
+      <div class="roadmap-phase" style="position:relative">
+        <div class="phase-dot" style="background:var(--purple)"></div>
+        <div class="phase-label">Phase 3 — Months 9–18</div>
+        <div class="phase-title">Scale</div>
+        <ul class="phase-items">
+          <li>Real Estate DAO launched</li>
+          <li>5 US states (WA, CA, TX, FL, NY)</li>
+          <li>Insurance Bond system</li>
+          <li>Metal Blockchain integration</li>
+          <li>RWA Module public launch — HET mainnet</li>
+        </ul>
+      </div>
+      <div class="roadmap-phase" style="position:relative">
+        <div class="phase-dot" style="background:#f59e0b"></div>
+        <div class="phase-label">Phase 4 — Months 19–36</div>
+        <div class="phase-title">Autonomous</div>
+        <ul class="phase-items">
+          <li>Full AI autonomy</li>
+          <li>10,000+ contractors</li>
+          <li>Municipal contracts</li>
+          <li>HET secondary market on XPR DEX — passive income for investors</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. RWA STRATEGY — NEW SECTION -->
+  <div class="section" id="rwa">
+    <div class="section-label" style="color:var(--green)">Section 08 — NEW</div>
+    <h2>RWA Strategy<br><span style="font-size:20px; color:var(--accent); font-weight:500">Home Equity DeFi Loans via Proton LOAN</span></h2>
+
+    <div class="rwa-hero">
+      <div class="rwa-tagline">
+        Tokenize Home Equity <span>→</span> Get DeFi Loan <span>→</span> Pay Contractor <span>→</span> Refinance
+      </div>
+      <p style="color:var(--muted); font-size:15px">The world's first protocol uniting RWA home equity tokenization, DeFi lending, and construction milestone escrow in a single on-chain flow.</p>
+      <div class="rwa-stats">
+        <div class="rwa-stat">
+          <div class="rwa-stat-val">$33B+</div>
+          <div class="rwa-stat-lbl">RWA Market 2025</div>
+        </div>
+        <div class="rwa-stat">
+          <div class="rwa-stat-val">$16T</div>
+          <div class="rwa-stat-lbl">Forecast 2030</div>
+        </div>
+        <div class="rwa-stat">
+          <div class="rwa-stat-val">$13T</div>
+          <div class="rwa-stat-lbl">Construction/yr</div>
+        </div>
+        <div class="rwa-stat">
+          <div class="rwa-stat-val">&gt;50%</div>
+          <div class="rwa-stat-lbl">RWA Annual Growth</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>8.1 The Problem — Locked Home Equity</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Problem</th><th>Traditional Path</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>No money for renovation</td><td>Bank HELOC — 6–12 months processing</td><td>People delay repairs for years</td></tr>
+          <tr><td>High interest rates</td><td>Mortgage loan 7–9% APR + bank fees</td><td>$30K–$80K overpayment over 10 years</td></tr>
+          <tr><td>No credit history</td><td>Banks require FICO 720+</td><td>Hundreds of thousands cut off from equity</td></tr>
+          <tr><td>Slow refinancing</td><td>Refi takes 45–90 days, thousands in fees</td><td>Home value grows — no equity access</td></tr>
+          <tr><td>No transparency</td><td>Contractors take money and disappear</td><td>Fraud, delays, lawsuits</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>8.2 GCSC RWA Solution vs Traditional Bank</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Parameter</th><th>Bank (HELOC)</th><th>GCSC RWA Loan</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Processing time</td><td>45–90 days</td><td><strong style="color:var(--green)">24–48 hours</strong></td></tr>
+          <tr><td>Fees</td><td>$3,000–$8,000</td><td><strong style="color:var(--green)">0.5–1% in GCST tokens</strong></td></tr>
+          <tr><td>Requirements</td><td>FICO 720+, income docs, tax returns</td><td><strong style="color:var(--green)">KYC + proof of home ownership</strong></td></tr>
+          <tr><td>Payment transparency</td><td>Bank statements</td><td><strong style="color:var(--green)">Fully on-chain</strong></td></tr>
+          <tr><td>Renovation management</td><td>None</td><td><strong style="color:var(--green)">GCSC milestone smart contract</strong></td></tr>
+          <tr><td>Refinancing</td><td>45–90 days</td><td><strong style="color:var(--green)">Instant when ready</strong></td></tr>
+          <tr><td>Loan currency</td><td>USD</td><td><strong style="color:var(--green)">USDC (1:1 stablecoin)</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>8.3 What is RWA?</h3>
+    <div class="highlight-box green">
+      <strong>RWA (Real World Asset)</strong> is a digital token that represents ownership of a real-world asset: real estate, stocks, gold, rental income, revenue streams. The token does not replace the legal right — it is its digital representation, backed by a legal structure (SPV, Trust, NFT document).
+      <br><br>
+      <strong>Analogy:</strong> Your home is a gold bar. RWA is a certificate for that bar. You don't move the gold, but the certificate can be pledged, sold as fractions, or used as collateral — all on-chain, in seconds.
+    </div>
+
+    <h4>Market Leader: Chintai</h4>
+    <p>Chintai is the RWA market leader, licensed by MAS (Singapore). They've tokenized $570M in rental income from 1,900 apartments, $750M multi-family real estate fund, minimum investment from $50,000.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th></th><th>Chintai</th><th>GCSC (our target)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Target audience</td><td>Institutional investors</td><td><strong style="color:var(--green)">Homeowners, contractors</strong></td></tr>
+          <tr><td>Minimum threshold</td><td>$50,000–$1,000,000</td><td><strong style="color:var(--green)">$10,000–$500,000 (home equity)</strong></td></tr>
+          <tr><td>Asset type</td><td>Commercial real estate, funds</td><td><strong style="color:var(--green)">Residential homes (Home Equity)</strong></td></tr>
+          <tr><td>Token purpose</td><td>Investment, yield</td><td><strong style="color:var(--green)">Get loan for renovation</strong></td></tr>
+          <tr><td>US market</td><td>Limited (regulatory)</td><td><strong style="color:var(--green)">Direct focus — Seattle, then USA</strong></td></tr>
+          <tr><td>DeFi integration</td><td>Chainlink, Ethereum</td><td><strong style="color:var(--green)">XPR Network + Proton LOAN</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>8.4 Legal Structure — SPV + Wyoming DAO LLC</h3>
+    <div class="card" style="background:rgba(124,58,237,0.08); border-color:rgba(124,58,237,0.3); margin-bottom:24px;">
+      <strong>⚖️ Important:</strong> In the US, real estate tokenization requires compliance with federal securities laws (SEC), state laws, and AML/KYC rules. GCSC is not a broker or lender — the platform provides infrastructure for smart contract transactions.
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Home Valuation</h4>
+          <p>Licensed appraiser determines market value. REA AI agent verifies data via Zillow/Redfin API + public registries. Result stored in NFT Property Passport on XPR Network.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>SPV Creation — Wyoming DAO LLC</h4>
+          <p>Homeowner registers an LLC in Wyoming (most crypto-friendly legislation). Home is transferred to this LLC. HET token represents ownership stake in the LLC — not the home directly. <strong>You tokenize the LLC, not the house.</strong></p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Home Equity Token (HET) Mint</h4>
+          <p>HET minted on XPR Network: $1 HET = $1 equity value. Max LTV 70%. Home worth $400K, mortgage $250K = equity $150K → up to $105,000 in HET tokens.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Collateral in Proton LOAN</h4>
+          <p>HET deposited as collateral in Proton LOAN Protocol. Protocol issues USDC loan with 130–150% overcollateralization ratio. Rate 4–8% APR (vs 7–9% banks). Zero gas fees on XPR Network.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Milestone Escrow — Pay Contractor</h4>
+          <p>USDC doesn't go to contractor immediately. GCSC smart contract splits payments: 20% upfront, 30% after phase 1, 30% after phase 2, 20% after final inspection. RAA AI agent monitors progress.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <h4>Value Growth + Refinancing</h4>
+          <p>After renovation, home is worth more (US avg: 1.2x–2.0x ROI on renovations). New appraisal recalculates equity. Options: (a) repay LOAN from new equity, (b) refinance at higher valuation, (c) hold HET in liquidity pool for passive income.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>8.5 Real Case Study — John, Seattle</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Parameter</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Home value</td><td>$420,000</td></tr>
+          <tr><td>Remaining mortgage</td><td>$260,000</td></tr>
+          <tr><td>Home Equity</td><td>$160,000</td></tr>
+          <tr><td>Tokenized equity (70% LTV)</td><td>$112,000 in HET tokens</td></tr>
+          <tr><td>USDC loan amount</td><td>$80,000</td></tr>
+          <tr><td>Renovation goal</td><td>Kitchen + bathroom + new roof</td></tr>
+          <tr><td>Renovation cost</td><td>$75,000</td></tr>
+          <tr><td>Expected home value increase</td><td>+$95,000–$120,000 (NAR data)</td></tr>
+          <tr><td>New value after renovation</td><td>$515,000–$540,000</td></tr>
+          <tr><td>New equity after renovation</td><td>$255,000–$280,000</td></tr>
+          <tr><td>Loan repayment</td><td>~$83,000–$85,000 (4–6% interest)</td></tr>
+          <tr><td><strong>Net gain for homeowner</strong></td><td><strong style="color:var(--green)">+$170,000–$195,000 in new equity</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>8.6 Revenue Model</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Revenue Source</th><th>Model</th><th>Amount per $80K deal</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Tokenization fee</td><td>0.5% of loan amount</td><td>$400</td></tr>
+          <tr><td>Origination fee</td><td>1% at loan issuance</td><td>$800</td></tr>
+          <tr><td>Milestone management fee</td><td>0.25% of contract amount</td><td>$188</td></tr>
+          <tr><td>GCST stable token usage</td><td>Each transaction in GCST</td><td>Spread + volume fees</td></tr>
+          <tr><td>NFT Property Passport mint</td><td>Fixed fee</td><td>$50–$150</td></tr>
+          <tr><td><strong>Total per $80K deal</strong></td><td></td><td><strong style="color:var(--green)">~$1,500–$2,000</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="highlight-box green">
+      <strong>Scale:</strong> 1,000 deals/year at $80K avg = <strong>$1.5M–$2M revenue</strong> from Home Equity Loans alone. At 10,000 deals (Phase 4) = <strong>$15M–$20M/year</strong>, not counting subscriptions and token economy.
+    </div>
+
+    <h3>8.7 Technical Architecture — RWA Layer</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Function</th><th>Technology</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>NFT Property Passport</td><td>Stores property data, appraisal, documents</td><td>XPR Network NFT standard</td></tr>
+          <tr><td>HET Smart Contract</td><td>Mints/burns Home Equity Token</td><td>XPR Network smart contract (C++)</td></tr>
+          <tr><td>REA Oracle</td><td>Pulls real estate prices on-chain</td><td>LangChain + Zillow/ATTOM Data API</td></tr>
+          <tr><td>Proton LOAN Integration</td><td>Accepts HET as collateral</td><td>LOAN Protocol governance proposal</td></tr>
+          <tr><td>Milestone Escrow Contract</td><td>Manages contractor payments</td><td>GCSC existing smart contract</td></tr>
+          <tr><td>Compliance Agent (CA)</td><td>KYC, AML, license verification</td><td>WebAuth + government registries</td></tr>
+          <tr><td>GCST Stablecoin</td><td>Stable token for fee payments</td><td>Pegged $1:1 to USD</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Why XPR Network is Perfect for RWA</h4>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:12px; margin:16px 0;">
+      <div class="card card-accent" style="padding:16px">
+        <h4 style="font-size:14px">Zero Gas Fees</h4>
+        <p style="font-size:13px">Critical for small milestone payments ($500–$5,000 phases)</p>
+      </div>
+      <div class="card card-green" style="padding:16px">
+        <h4 style="font-size:14px">WebAuth Wallet</h4>
+        <p style="font-size:13px">Face ID login, no seed phrases — accessible to regular people</p>
+      </div>
+      <div class="card card-accent" style="padding:16px">
+        <h4 style="font-size:14px">Native USDC</h4>
+        <p style="font-size:13px">Cross-chain xTokens — stable currency without volatility</p>
+      </div>
+      <div class="card card-green" style="padding:16px">
+        <h4 style="font-size:14px">0.5s Finality</h4>
+        <p style="font-size:13px">Real-time milestone payments to contractor</p>
+      </div>
+    </div>
+
+    <h3>8.8 Competitive Analysis</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Company</th><th>What they do</th><th>What's missing</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Figure Technologies</td><td>Blockchain HELOC for banks</td><td>No DeFi, no renovation management</td></tr>
+          <tr><td>Chintai</td><td>Large commercial asset tokenization</td><td>Min $50K, no renovation escrow</td></tr>
+          <tr><td>RealNOI</td><td>Apartment rental stream tokenization</td><td>Not for homeowners, no loans</td></tr>
+          <tr><td>Centrifuge</td><td>DeFi loans for businesses under RWA</td><td>Not for individuals, no construction</td></tr>
+          <tr><td><strong style="color:var(--green)">GCSC (target)</strong></td><td><strong style="color:var(--green)">RWA home equity + DeFi loan + renovation escrow</strong></td><td><strong style="color:var(--green)">THIS IS OUR UNIQUE PROPOSITION</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>8.9 RWA Risk Analysis</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Risk</th><th>Description</th><th>GCSC Mitigation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Regulatory (SEC)</td><td>HET may be classified as a security</td><td>Wyoming DAO LLC + legal counsel. Use Reg D 506(c) for accredited investors initially</td></tr>
+          <tr><td>Real estate price drop</td><td>Collateral value falls below loan (liquidation)</td><td>Conservative 70% LTV. REA agent monitors prices. Auto margin call at -15%</td></tr>
+          <tr><td>Smart contract vulnerability</td><td>Code bug = loss of funds</td><td>CertiK audit. Bug bounty program. Gradual rollout</td></tr>
+          <tr><td>USDC liquidity on XPR</td><td>Insufficient USDC in pool for loans</td><td>Start small ($10K–$50K). Attract institutional liquidity via Metal Blockchain</td></tr>
+          <tr><td>Contractor fraud</td><td>Contractor takes milestone funds and disappears</td><td>NFT Contractor License. DAO governance. Insurance Bond. Milestone photos + AI verification</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="highlight-box green" style="margin-top:40px;">
+      <strong style="font-size:18px; display:block; margin-bottom:12px;">🎯 Main Message</strong>
+      GCSC is not just a contractor marketplace. It is a <strong>financial ecosystem</strong> that unlocks $10 trillion of trapped home equity for Americans and channels it into home improvement through transparent smart contracts — faster, cheaper, and safer than any bank.
+    </div>
+  </div>
+
+  <!-- 9. RISKS -->
+  <div class="section" id="risks">
+    <div class="section-label">Section 09</div>
+    <h2>Risk Analysis</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Risk</th><th>Mitigation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Smart contract bugs</td><td>CertiK audit, bug bounty program, gradual mainnet rollout</td></tr>
+          <tr><td>Regulatory (SEC/FinCEN)</td><td>Wyoming DAO LLC, Reg D exemptions, qualified legal counsel</td></tr>
+          <tr><td>Low adoption</td><td>Free tier, contractor incentives, Seattle/Tacoma pilot</td></tr>
+          <tr><td>XPR Network downtime</td><td>Metal Blockchain backup layer, escrow contract safety mechanisms</td></tr>
+          <tr><td>Token price volatility</td><td>Payments in GCST stablecoin, GCSC only for governance/fees</td></tr>
+          <tr><td>AI agent errors</td><td>Human review layer, DAO governance override, insurance bond</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 10. CONCLUSION -->
+  <div class="section" id="conclusion">
+    <div class="section-label">Section 10</div>
+    <h2>Conclusion</h2>
+    <p>GCSC represents a fundamental shift in how construction and renovation are financed and managed. By combining <strong>RWA tokenization</strong>, <strong>DeFi lending through Proton LOAN</strong>, and <strong>milestone smart contract escrow</strong>, we create the first complete on-chain construction finance ecosystem.</p>
+    <p>The RWA flywheel is powerful: homeowners unlock equity → renovate homes → homes appreciate → more equity unlocked → more renovations. Each cycle generates platform revenue and strengthens the GCSC ecosystem.</p>
+    <div class="highlight-box" style="margin-top:32px;">
+      <strong>GCSC = Construction Marketplace + DeFi Bank + AI Compliance Layer</strong><br>
+      <span style="color:var(--muted); font-size:14px">The first protocol in the world combining home equity tokenization (RWA) + DeFi lending + renovation project management in one on-chain system.</span>
+    </div>
+    <div style="text-align:center; margin-top:48px;">
+      <div style="font-size:13px; color:var(--muted); margin-bottom:8px;">Version 1.1 • March 2026</div>
+      <div style="font-size:14px; color:var(--text)">github.com/Melxisedek75/gcsc-website</div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <div class="logo">GCSC</div>
+  <p>Global Construction Smart Contract</p>
+  <div class="links">
+    <a href="https://melxisedek75.github.io/gcsc-website">Website</a>
+    <a href="https://github.com/Melxisedek75/gcsc-website">GitHub</a>
+    <a href="https://twitter.com/GCSC_Network">Twitter @GCSC_Network</a>
+    <a href="https://docs.xprnetwork.org">XPR Network</a>
+  </div>
+  <p style="margin-top:24px; font-size:12px;">© 2026 GCSC — Global Construction Smart Contract. Whitepaper v1.1</p>
+</footer>
+
+</body>
+</html>

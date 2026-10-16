@@ -1,0 +1,8 @@
+# Define a name of the account to deploy contract to.
+# ACCOUNT=
+
+# Define the location of the contract's file to deploy
+# SOURCE=
+
+# Define a binding for network. This will cause an error on attempt to deploy on a wrong network
+# NETWORK=  # proton or proton-test

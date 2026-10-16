@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSC — The Living Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --paper:#0A1628; --paper-2:#0D1D33; --ink:#E8F1FB; --dim:#7C93B5;
+  --cyan:#4FC3F7; --amber:#FFB300; --mint:#00E5A0; --red:#FF5470;
+  --line:rgba(79,195,247,.16); --line-2:rgba(79,195,247,.35);
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+h1,h2,h3,.disp{font-family:'Space Grotesk',sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+::selection{background:rgba(79,195,247,.3)}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+
+/* blueprint grid + grain */
+.bp-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:56px 56px;opacity:.5;
+  mask-image:radial-gradient(ellipse 120% 100% at 50% 0%,#000 40%,rgba(0,0,0,.3) 100%)}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E")}
+main,nav,footer{position:relative;z-index:2}
+
+/* ============ CURSOR ============ */
+@media (pointer:fine){
+  .cur{position:fixed;z-index:9999;pointer-events:none;top:0;left:0}
+  .cur-x{width:22px;height:22px;transform:translate(-50%,-50%)}
+  .cur-x::before,.cur-x::after{content:'';position:absolute;background:var(--cyan);transition:opacity .2s}
+  .cur-x::before{left:50%;top:0;bottom:0;width:1px;transform:translateX(-50%)}
+  .cur-x::after{top:50%;left:0;right:0;height:1px;transform:translateY(-50%)}
+  .cur-ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:8px;height:8px;border:1px solid var(--cyan);border-radius:50%;transition:width .25s var(--ease),height .25s var(--ease),background .25s}
+  .cur-label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--paper);opacity:0;white-space:nowrap}
+  .cur.hov .cur-ring{width:58px;height:58px;background:var(--cyan)}
+  .cur.hov .cur-label{opacity:1;transition:opacity .2s .1s}
+  .cur.hov .cur-x::before,.cur.hov .cur-x::after{opacity:0}
+}
+@media (pointer:coarse){.cur{display:none}}
+
+/* ============ NAV ============ */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;border-bottom:1px solid transparent;transition:all .3s}
+nav.scrolled{background:rgba(10,22,40,.82);backdrop-filter:blur(14px);border-bottom-color:var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk';font-weight:700;font-size:17px;letter-spacing:1px}
+.logo .stamp{width:32px;height:32px;border:1.5px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--cyan);position:relative}
+.logo .stamp::after{content:'';position:absolute;inset:3px;border:1px dotted rgba(79,195,247,.4)}
+.nav-links{display:flex;gap:30px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:1px;color:var(--dim)}
+.nav-links a{transition:color .2s;padding:4px 0}
+.nav-links a:hover{color:var(--cyan)}
+.nav-links a b{color:var(--cyan);font-weight:500;margin-right:6px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:11px 22px;font-size:13.5px;font-weight:600;border:1px solid var(--cyan);color:var(--cyan);background:transparent;position:relative;transition:all .25s;will-change:transform}
+.btn:hover{background:var(--cyan);color:var(--paper);box-shadow:0 0 32px rgba(79,195,247,.35)}
+.btn-amber{border-color:var(--amber);color:var(--amber)}
+.btn-amber:hover{background:var(--amber);color:var(--paper);box-shadow:0 0 32px rgba(255,179,0,.35)}
+.btn .tick{position:absolute;width:6px;height:6px;border-top:1px solid currentColor;border-left:1px solid currentColor}
+.btn .tick.tl{top:-1px;left:-1px}.btn .tick.br{bottom:-1px;right:-1px;transform:rotate(180deg)}
+
+/* ============ HUD bits ============ */
+.hud-note{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--dim)}
+.hud-note b{color:var(--cyan);font-weight:500}
+.dim-line{display:flex;align-items:center;gap:10px}
+.dim-line::before,.dim-line::after{content:'';flex:0 0 28px;height:1px;background:var(--line-2)}
+.crosshair{position:absolute;width:14px;height:14px;pointer-events:none}
+.crosshair::before,.crosshair::after{content:'';position:absolute;background:var(--line-2)}
+.crosshair::before{left:50%;top:0;bottom:0;width:1px}
+.crosshair::after{top:50%;left:0;right:0;height:1px}
+
+/* ============ HERO ============ */
+.hero{min-height:92vh;display:flex;flex-direction:column;justify-content:center;padding-top:120px;position:relative}
+.hero .coord{position:absolute;top:96px;right:28px}
+h1{font-size:clamp(44px,7.6vw,104px);font-weight:700;line-height:.99;letter-spacing:-3.5px;max-width:1080px}
+h1 .w{display:inline-block;overflow:hidden;vertical-align:bottom}
+h1 .w i{display:inline-block;font-style:normal;transform:translateY(110%)}
+body.loaded h1 .w i{animation:wordup .7s var(--ease) forwards;animation-delay:var(--d)}
+@keyframes wordup{to{transform:translateY(0)}}
+.roll{display:inline-block;position:relative;color:var(--cyan);vertical-align:bottom;overflow:hidden;height:1.02em}
+.roll-track{display:flex;flex-direction:column;transition:transform .6s var(--ease)}
+.roll-track span{height:1.02em;line-height:1.02}
+.hero-sub{display:flex;gap:48px;align-items:flex-end;justify-content:space-between;margin-top:42px;flex-wrap:wrap}
+.hero-sub p{font-size:18px;color:var(--dim);max-width:480px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+.hud-strip{display:flex;gap:0;margin-top:64px;border:1px solid var(--line);background:rgba(13,29,51,.5);backdrop-filter:blur(8px)}
+.hud-cell{flex:1;padding:16px 22px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.hud-cell:last-child{border-right:none}
+.hud-cell .v{font-family:'JetBrains Mono',monospace;font-size:21px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:8px}
+.hud-cell .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--mint);animation:pul 2s infinite}
+@keyframes pul{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,229,160,.5)}50%{opacity:.6;box-shadow:0 0 0 6px rgba(0,229,160,0)}}
+.scroll-cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--dim)}
+.scroll-cue .ln{width:1px;height:44px;background:var(--line-2);position:relative;overflow:hidden}
+.scroll-cue .ln::after{content:'';position:absolute;top:-40%;left:0;width:100%;height:40%;background:var(--cyan);animation:drip 1.8s ease-in infinite}
+@keyframes drip{to{top:110%}}
+
+/* ============ STORY (pinned scene) ============ */
+.story{position:relative}
+.story-track{height:520vh;position:relative}
+.story-pin{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:1fr 1.15fr;align-items:center;overflow:hidden}
+.scene{position:relative;height:min(78vh,720px);display:flex;align-items:center;justify-content:center}
+.scene svg{width:min(100%,640px);height:auto;overflow:visible}
+.scene .hud-tag{position:absolute;top:6%;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:clamp(10px,1.1vw,12.5px);letter-spacing:2px;color:var(--cyan);border:1px solid var(--line-2);padding:8px 18px;background:rgba(10,22,40,.8);backdrop-filter:blur(6px);white-space:nowrap;transition:opacity .4s,transform .4s}
+.chapters{padding:0 6vw 0 2vw;position:relative;height:100%;display:flex;align-items:center}
+.chapter{position:absolute;max-width:430px;opacity:0;transform:translateY(36px);transition:opacity .5s var(--ease),transform .5s var(--ease);pointer-events:none}
+.chapter.on{opacity:1;transform:none;pointer-events:auto}
+.chapter .no{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);letter-spacing:2px;display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.chapter .no::after{content:'';width:48px;height:1px;background:var(--line-2)}
+.chapter h3{font-size:clamp(24px,2.6vw,34px);font-weight:700;letter-spacing:-1px;line-height:1.12;margin-bottom:14px}
+.chapter p{font-size:15.5px;color:var(--dim)}
+.chapter .data{margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--amber);letter-spacing:1px}
+.progress-rail{position:absolute;left:28px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:5}
+.progress-rail .pp{width:8px;height:8px;border:1px solid var(--line-2);transform:rotate(45deg);transition:all .3s}
+.progress-rail .pp.on{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 12px rgba(79,195,247,.6)}
+
+/* scene drawing */
+.scene path,.scene line,.scene polyline,.scene rect.draw,.scene circle.draw{fill:none;stroke:var(--cyan);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.scene .amber{stroke:var(--amber)}
+.scene .mint{stroke:var(--mint)}
+.scene .thin{stroke-width:1;opacity:.45}
+.scene .fillc{fill:rgba(79,195,247,.05)}
+.scene text{font-family:'JetBrains Mono',monospace;fill:var(--dim);font-size:9.5px;letter-spacing:1px;stroke:none}
+.seal{opacity:0;transform-origin:center;transform:scale(1.8) rotate(-4deg)}
+.seal.on{animation:stamp .55s cubic-bezier(.2,1.6,.35,1) forwards}
+@keyframes stamp{to{opacity:1;transform:scale(1) rotate(-12deg)}}
+.ledger-l{opacity:0}
+.house-glow{opacity:0;transition:opacity 1s}
+.particle{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 12px rgba(255,179,0,.8);pointer-events:none;opacity:0}
+.particle.mintc{background:var(--mint);box-shadow:0 0 12px rgba(0,229,160,.8)}
+
+/* ============ SECTIONS ============ */
+section{padding:110px 0;position:relative}
+.sec-head{display:flex;align-items:flex-start;justify-content:space-between;gap:32px;margin-bottom:60px;flex-wrap:wrap}
+.sec-no{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);letter-spacing:2px}
+h2{font-size:clamp(30px,4.4vw,52px);font-weight:700;letter-spacing:-1.6px;line-height:1.06;max-width:680px}
+.sec-head .side{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--dim);letter-spacing:1px;text-align:right;padding-top:14px}
+
+/* ============ SIMULATOR ============ */
+.sim{border:1px solid var(--line);background:rgba(13,29,51,.55);backdrop-filter:blur(12px);position:relative}
+.sim .crosshair.tl{top:-7px;left:-7px}.sim .crosshair.tr{top:-7px;right:-7px}.sim .crosshair.bl{bottom:-7px;left:-7px}.sim .crosshair.br{bottom:-7px;right:-7px}
+.sim-grid{display:grid;grid-template-columns:1.15fr .85fr;min-height:480px}
+.sim-stage{padding:40px;border-right:1px solid var(--line);position:relative;display:flex;flex-direction:column}
+.nodes{flex:1;position:relative;min-height:260px}
+.node{position:absolute;width:108px;text-align:center}
+.node .nb{width:64px;height:64px;margin:0 auto 10px;border:1.5px solid var(--line-2);background:rgba(10,22,40,.9);display:flex;align-items:center;justify-content:center;color:var(--cyan);transition:all .3s;position:relative}
+.node.lit .nb{border-color:var(--amber);color:var(--amber);box-shadow:0 0 22px rgba(255,179,0,.25)}
+.node.lit-m .nb{border-color:var(--mint);color:var(--mint);box-shadow:0 0 22px rgba(0,229,160,.25)}
+.node b{font-size:12px;font-weight:600;display:block}
+.node span{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)}
+.node.n-owner{left:0;top:55%;transform:translateY(-50%)}
+.node.n-vault{left:50%;top:0;transform:translateX(-50%)}
+.node.n-contr{right:0;top:55%;transform:translateY(-50%)}
+.sim-controls{padding:28px 40px;border-top:1px solid var(--line)}
+.slider-row{display:flex;align-items:center;gap:18px;margin-bottom:20px}
+.slider-row label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--dim);white-space:nowrap}
+input[type=range]{flex:1;appearance:none;-webkit-appearance:none;height:2px;background:var(--line-2);outline:none}
+input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:18px;height:18px;background:var(--paper);border:2px solid var(--cyan);transform:rotate(45deg);cursor:grab}
+.budget{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;color:var(--amber);font-variant-numeric:tabular-nums;min-width:120px;text-align:right}
+.ms-btns{display:flex;gap:10px;flex-wrap:wrap}
+.msb{flex:1;min-width:140px;padding:13px 10px;border:1px solid var(--line-2);background:transparent;color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;transition:all .25s;position:relative}
+.msb:not(:disabled):hover{border-color:var(--cyan);color:var(--cyan)}
+.msb:disabled{opacity:.32;cursor:not-allowed}
+.msb.done{border-color:var(--mint);color:var(--mint)}
+.msb.fund{border-color:var(--amber);color:var(--amber)}
+.msb.fund:not(:disabled):hover{background:var(--amber);color:var(--paper)}
+.sim-ledger{padding:34px;display:flex;flex-direction:column}
+.sim-ledger .lt{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--dim);margin-bottom:16px;display:flex;justify-content:space-between}
+.ring-wrap{display:flex;align-items:center;gap:20px;margin-bottom:22px}
+.ring{transform:rotate(-90deg)}
+.ring .bgc{fill:none;stroke:var(--line);stroke-width:5}
+.ring .fgc{fill:none;stroke:var(--mint);stroke-width:5;stroke-linecap:round;stroke-dasharray:289;stroke-dashoffset:289;transition:stroke-dashoffset .8s var(--ease)}
+.ring-num{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.ring-num small{display:block;font-size:10px;color:var(--dim);letter-spacing:1.5px;font-weight:400}
+.ledger{flex:1;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:2.1;color:var(--dim);overflow-y:auto;max-height:240px;border-top:1px solid var(--line);padding-top:14px}
+.ledger .row{display:flex;justify-content:space-between;gap:12px;opacity:0;animation:lin .4s forwards}
+@keyframes lin{to{opacity:1}}
+.ledger .ok{color:var(--mint)}.ledger .am{color:var(--amber)}.ledger .hash{color:rgba(124,147,181,.55);font-size:10px}
+
+/* ============ AUDIENCE PANELS ============ */
+.aud{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.pane{border:1px solid var(--line);background:rgba(13,29,51,.5);padding:44px 40px;position:relative;transition:border-color .3s;transform-style:preserve-3d;will-change:transform}
+.pane:hover{border-color:var(--line-2)}
+.pane .role{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2.5px;color:var(--amber);margin-bottom:18px;display:block}
+.pane h3{font-size:26px;font-weight:700;letter-spacing:-.8px;margin-bottom:24px;line-height:1.2}
+.callout{display:flex;gap:14px;padding:13px 0;border-top:1px dotted rgba(79,195,247,.25);font-size:14px;color:var(--dim);align-items:baseline}
+.callout .mk{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--cyan);white-space:nowrap}
+.pane.c .callout .mk{color:var(--mint)}
+
+/* ============ PIPELINE ============ */
+.pipe{position:relative;padding:40px 0 10px}
+.pipe-line{position:absolute;top:71px;left:4%;right:4%;height:1px;background:var(--line)}
+.pipe-line i{display:block;height:100%;width:0;background:var(--cyan);box-shadow:0 0 10px rgba(79,195,247,.6);transition:width 1.6s var(--ease)}
+.pipe-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;position:relative}
+.ps{text-align:center;padding-top:14px}
+.ps .pd{width:36px;height:36px;margin:0 auto 16px;border:1.5px solid var(--line-2);background:var(--paper);transform:rotate(45deg);display:flex;align-items:center;justify-content:center;transition:all .4s;position:relative;z-index:2}
+.ps .pd svg{transform:rotate(-45deg);color:var(--dim);transition:color .4s}
+.ps.on .pd{border-color:var(--mint);box-shadow:0 0 16px rgba(0,229,160,.35)}
+.ps.on .pd svg{color:var(--mint)}
+.ps b{font-size:13.5px;display:block;margin-bottom:3px}
+.ps span{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:1px}
+
+/* ============ PERMIT CTA ============ */
+.permit{max-width:780px;margin:0 auto;border:1.5px solid var(--line-2);padding:64px 56px;text-align:center;position:relative;background:rgba(13,29,51,.6)}
+.permit::before{content:'';position:absolute;inset:8px;border:1px dotted rgba(79,195,247,.3);pointer-events:none}
+.permit .pstamp{position:absolute;top:-26px;right:34px;border:2px solid var(--mint);color:var(--mint);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2.5px;padding:10px 18px;background:var(--paper);opacity:0;transform:scale(1.7) rotate(-3deg)}
+.permit .pstamp.on{animation:stamp .55s cubic-bezier(.2,1.6,.35,1) forwards}
+.permit h2{margin:0 auto 16px}
+.permit p{color:var(--dim);max-width:440px;margin:0 auto 32px}
+.permit .meta{margin-top:36px;display:flex;justify-content:center;gap:34px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1.5px;color:var(--dim);flex-wrap:wrap}
+
+/* ============ FOOTER ============ */
+footer{border-top:1px solid var(--line);margin-top:40px}
+.tblock{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.tb{padding:22px 24px;border-right:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--dim)}
+.tb:last-child{border-right:none}
+.tb b{display:block;color:var(--ink);font-weight:500;margin-top:4px;font-size:12px}
+
+/* ============ REVEAL / MISC ============ */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .65s var(--ease),transform .65s var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media (max-width:980px){
+  .nav-links{display:none}
+  .story-pin{grid-template-columns:1fr;grid-template-rows:50vh 1fr}
+  .scene{height:46vh}
+  .scene .hud-tag{top:3%}
+  .chapters{padding:18px 24px;align-items:flex-start}
+  .chapter{max-width:100%}
+  .progress-rail{left:12px}
+  .sim-grid{grid-template-columns:1fr}
+  .sim-stage{border-right:none;border-bottom:1px solid var(--line)}
+  .aud{grid-template-columns:1fr}
+  .pipe-steps{grid-template-columns:1fr;gap:18px}
+  .pipe-line{display:none}
+  .tblock{grid-template-columns:1fr 1fr}
+  .tb{border-bottom:1px solid var(--line)}
+  h1{letter-spacing:-2px}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  h1 .w i{transform:none}
+  .rv,.chapter{opacity:1;transform:none}
+  .cur{display:none}
+  .scroll-cue{display:none}
+}
+</style>
+</head>
+<body>
+<div class="bp-grid" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cur" aria-hidden="true"><div class="cur-x"><div class="cur-ring"></div><div class="cur-label"></div></div></div>
+
+<nav id="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#" data-cursor="HOME"><span class="stamp">G</span>GCSC</a>
+    <div class="nav-links">
+      <a href="#story" data-cursor="VIEW"><b>01</b>STORY</a>
+      <a href="#sim" data-cursor="TRY"><b>02</b>SIMULATOR</a>
+      <a href="#roles" data-cursor="VIEW"><b>03</b>ROLES</a>
+      <a href="#trust" data-cursor="VIEW"><b>04</b>TRUST</a>
+    </div>
+    <a class="btn magnetic" href="#" data-cursor="LAUNCH"><span class="tick tl"></span>Launch App<span class="tick br"></span></a>
+  </div>
+</nav>
+
+<main>
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <div class="coord hud-note">DWG № GCSC-2026 · REV 1.3 · <b>SHEET 01/05</b></div>
+    <h1>
+      <span class="w" style="--d:.05s"><i>Construction,</i></span><br>
+      <span class="w" style="--d:.15s"><i>financed&nbsp;like</i></span><br>
+      <span class="w" style="--d:.25s"><i><span class="roll"><span class="roll-track" id="rollTrack"><span>infrastructure.</span><span>verified&nbsp;work.</span><span>clean&nbsp;ledgers.</span></span></span></i></span>
+    </h1>
+    <div class="hero-sub">
+      <p>GCSC is the escrow rail for the $13T construction industry. Funds lock before work begins, release milestone-by-milestone, and every action lands in a verifiable audit trail.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-amber magnetic" href="#sim" data-cursor="FUND"><span class="tick tl"></span>Try the escrow<span class="tick br"></span></a>
+        <a class="btn magnetic" href="#story" data-cursor="SCROLL"><span class="tick tl"></span>Watch it build<span class="tick br"></span></a>
+      </div>
+    </div>
+    <div class="hud-strip rv">
+      <div class="hud-cell"><span class="v"><span class="pulse"></span><span data-count="100" data-suffix="%">0%</span></span><span class="k">Funds escrow-secured</span></div>
+      <div class="hud-cell"><span class="v"><span data-count="500" data-prefix="&lt;" data-suffix="ms">0</span></span><span class="k">Settlement finality</span></div>
+      <div class="hud-cell"><span class="v"><span data-count="4">0</span></span><span class="k">Signed milestone actions</span></div>
+      <div class="hud-cell"><span class="v"><span data-count="0">0</span></span><span class="k">Trust assumptions</span></div>
+    </div>
+  </div>
+  <div class="scroll-cue hud-note"><span>SCROLL TO BUILD</span><span class="ln"></span></div>
+</header>
+
+<!-- ================= STORY ================= -->
+<div class="story" id="story">
+<div class="story-track" id="storyTrack">
+  <div class="story-pin">
+    <div class="progress-rail" id="rail">
+      <div class="pp on"></div><div class="pp"></div><div class="pp"></div><div class="pp"></div><div class="pp"></div>
+    </div>
+
+    <div class="chapters">
+      <div class="chapter on" data-ch="0">
+        <div class="no">CH.01 — THE LOT</div>
+        <h3>A project is posted.<br>Only the verified may bid.</h3>
+        <p>A homeowner publishes scope, budget and timeline. Contractors bid — but only those whose license, insurance and documents passed compliance review.</p>
+        <div class="data">PROJECT #1042 · 3 VERIFIED BIDS</div>
+      </div>
+      <div class="chapter" data-ch="1">
+        <div class="no">CH.02 — THE FOUNDATION</div>
+        <h3>Money locks before<br>the first shovel hits dirt.</h3>
+        <p>The accepted bid funds an escrow vault. The contractor sees guaranteed money. The owner keeps release control. Nobody works on a promise.</p>
+        <div class="data">ESCROW FUNDED · $38,500 LOCKED</div>
+      </div>
+      <div class="chapter" data-ch="2">
+        <div class="no">CH.03 — THE BUILD</div>
+        <h3>Work rises in stages.<br>So does accountability.</h3>
+        <p>Each milestone is submitted with evidence. The owner reviews real progress — walls, wiring, roofline — before anything moves.</p>
+        <div class="data">MILESTONE 2/4 SUBMITTED · IN REVIEW</div>
+      </div>
+      <div class="chapter" data-ch="3">
+        <div class="no">CH.04 — THE RELEASE</div>
+        <h3>Approved work<br>gets paid in seconds.</h3>
+        <p>Approval stamps the milestone like a building permit. Funds release to the contractor with sub-second finality — no invoices aging 60 days.</p>
+        <div class="data">RELEASED $9,000 · 0.4s FINALITY</div>
+      </div>
+      <div class="chapter" data-ch="4">
+        <div class="no">CH.05 — THE RECORD</div>
+        <h3>The house stands.<br>So does the evidence.</h3>
+        <p>Every bid, approval, release and dispute is written to a permanent audit trail — verifiable on-chain, exportable for court or insurer.</p>
+        <div class="data">AUDIT TRAIL · 9 EVENTS · IMMUTABLE</div>
+      </div>
+    </div>
+
+    <div class="scene" id="scene">
+      <div class="hud-tag" id="hudTag">PROJECT POSTED · 3 VERIFIED BIDS</div>
+      <svg viewBox="0 0 560 480" aria-label="Isometric house being constructed as you scroll, synchronized with escrow events">
+        <!-- ground / lot : ch0 -->
+        <g id="g0">
+          <path class="thin" d="M60 360 L280 250 L500 360 L280 470 Z"/>
+          <path d="M100 360 L280 270 L460 360 L280 450 Z"/>
+          <text x="68" y="345">LOT 12 — 48TH AVE</text>
+          <line class="thin" x1="100" y1="375" x2="280" y2="465" stroke-dasharray="4 5"/>
+          <text x="150" y="438" transform="rotate(26 150 438)">26.0 m</text>
+        </g>
+        <!-- foundation : ch1 -->
+        <g id="g1">
+          <path d="M140 360 L280 290 L420 360 L280 430 Z"/>
+          <path d="M140 360 L140 372 L280 442 L420 372 L420 360"/>
+          <path d="M280 430 L280 442"/>
+          <g class="amber">
+            <rect class="draw" x="64" y="160" width="40" height="30" rx="3"/>
+            <path d="M64 172 h40"/>
+            <rect class="draw" x="248" y="120" width="64" height="52" rx="4"/>
+            <circle class="draw" cx="280" cy="146" r="11"/>
+            <path d="M280 141 v10 M276 146 h8"/>
+          </g>
+          <path class="amber thin" d="M104 175 C 160 150, 200 140, 248 146" stroke-dasharray="3 6"/>
+          <text x="58" y="152">OWNER WALLET</text>
+          <text x="240" y="110">ESCROW VAULT</text>
+        </g>
+        <!-- walls + roof : ch2 -->
+        <g id="g2">
+          <path d="M160 350 L160 250 L280 190 L400 250 L400 350"/>
+          <path d="M280 290 L280 190"/>
+          <path d="M160 250 L280 310 L400 250"/>
+          <path d="M280 310 L280 430"/>
+          <path d="M160 250 L120 230 L240 170 L280 190"/>
+          <path d="M280 190 L320 170 L440 230 L400 250"/>
+          <path d="M240 170 L240 158 M320 170 L320 158 M240 158 L320 158"/>
+        </g>
+        <!-- details : ch3 -->
+        <g id="g3">
+          <rect class="draw" x="190" y="280" width="34" height="34"/>
+          <path d="M190 297 h34 M207 280 v34"/>
+          <rect class="draw" x="336" y="280" width="34" height="34"/>
+          <path d="M336 297 h34 M353 280 v34"/>
+          <path d="M262 352 L262 300 L298 300 L298 370"/>
+          <circle class="draw" cx="291" cy="338" r="2.4"/>
+          <g class="mint">
+            <path class="thin" d="M312 150 C 380 130, 430 150, 470 190" stroke-dasharray="3 6"/>
+            <rect class="draw" x="462" y="190" width="40" height="30" rx="3"/>
+            <path d="M462 202 h40"/>
+          </g>
+          <text x="452" y="182">CONTRACTOR</text>
+          <g class="seal mint" id="seal">
+            <circle class="draw" cx="120" cy="120" r="34"/>
+            <circle class="draw thin" cx="120" cy="120" r="27"/>
+            <path d="M106 120 l9 9 l18 -18"/>
+          </g>
+          <text class="seal" id="sealTxt" x="88" y="170" fill="#00E5A0">APPROVED</text>
+        </g>
+        <!-- glow + ledger : ch4 -->
+        <g id="g4">
+          <path class="fillc house-glow" id="houseGlow" d="M160 350 L160 250 L280 190 L400 250 L400 350 L280 430 Z" stroke="none"/>
+          <g id="ledgerScene" transform="translate(56 36)">
+            <text class="ledger-l" y="0"  fill="#7C93B5">└ 0x8f2a…c41d  project.created</text>
+            <text class="ledger-l" y="18" fill="#FFB300">└ 0x3b7e…a92f  escrow.funded      $38,500</text>
+            <text class="ledger-l" y="36" fill="#7C93B5">└ 0x6c1d…e83b  milestone.submitted   m1</text>
+            <text class="ledger-l" y="54" fill="#00E5A0">└ 0x9a4f…b27c  milestone.released $8,300</text>
+            <text class="ledger-l" y="72" fill="#00E5A0">└ 0x2e8b…f19a  milestone.released $9,000</text>
+            <text class="ledger-l" y="90" fill="#7C93B5">└ 0x7d3c…48e5  audit.sealed       9 events</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ================= SIMULATOR ================= -->
+<section id="sim">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-no dim-line">02 — INTERACTIVE</div>
+        <h2 style="margin-top:14px">Try the rail yourself.</h2>
+      </div>
+      <div class="side">SIMULATION · NO REAL FUNDS<br>3 MILESTONES · 1 VAULT</div>
+    </div>
+
+    <div class="sim rv">
+      <div class="crosshair tl"></div><div class="crosshair tr"></div><div class="crosshair bl"></div><div class="crosshair br"></div>
+      <div class="sim-grid">
+        <div class="sim-stage">
+          <div class="nodes" id="nodes">
+            <div class="node n-owner" id="nOwner">
+              <div class="nb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 9.5L12 3l9 6.5V21H3z"/><path d="M9 21v-8h6v8"/></svg></div>
+              <b>Homeowner</b><span id="ownerBal">$40,000</span>
+            </div>
+            <div class="node n-vault" id="nVault">
+              <div class="nb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+              <b>Escrow Vault</b><span id="vaultBal">$0</span>
+            </div>
+            <div class="node n-contr" id="nContr">
+              <div class="nb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14.7 6.3a5 5 0 01-7.07 7.07L3 18v3h3l4.63-4.63a5 5 0 017.07-7.07z"/></svg></div>
+              <b>Contractor</b><span id="contrBal">$0</span>
+            </div>
+            <div class="particle" id="simP"></div>
+          </div>
+        </div>
+        <div class="sim-ledger">
+          <div class="lt"><span>AUDIT TRAIL</span><span id="evCount">0 EVENTS</span></div>
+          <div class="ring-wrap">
+            <svg class="ring" width="102" height="102" viewBox="0 0 102 102">
+              <circle class="bgc" cx="51" cy="51" r="46"/>
+              <circle class="fgc" id="ringFg" cx="51" cy="51" r="46"/>
+            </svg>
+            <div class="ring-num"><span id="relPct">0%</span><small>RELEASED</small></div>
+          </div>
+          <div class="ledger" id="ledgerBox"></div>
+        </div>
+      </div>
+      <div class="sim-controls">
+        <div class="slider-row">
+          <label for="budget">PROJECT BUDGET</label>
+          <input type="range" id="budget" min="10000" max="120000" step="500" value="38500" aria-label="Project budget">
+          <span class="budget" id="budgetV">$38,500</span>
+        </div>
+        <div class="ms-btns">
+          <button class="msb fund" id="bFund" data-cursor="FUND">⊕ FUND ESCROW</button>
+          <button class="msb" id="b1" disabled data-cursor="M1">M1 · FOUNDATION</button>
+          <button class="msb" id="b2" disabled data-cursor="M2">M2 · STRUCTURE</button>
+          <button class="msb" id="b3" disabled data-cursor="M3">M3 · FINISHING</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ROLES ================= -->
+<section id="roles" style="padding-top:40px">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-no dim-line">03 — TWO PARTIES, ONE CONTRACT</div>
+        <h2 style="margin-top:14px">Protection drawn to scale.</h2>
+      </div>
+    </div>
+    <div class="aud">
+      <div class="pane tilt rv" data-cursor="OWNER">
+        <span class="role">HOMEOWNER · SHEET A</span>
+        <h3>Your money moves only when you say so.</h3>
+        <div class="callout"><span class="mk">[A-01]</span>Budget locked in escrow — contractors can verify it, never touch it early.</div>
+        <div class="callout"><span class="mk">[A-02]</span>Release per approved milestone. Reject substandard work without losing leverage.</div>
+        <div class="callout"><span class="mk">[A-03]</span>Dispute freezes funds instantly — nobody disappears with your deposit.</div>
+      </div>
+      <div class="pane c tilt rv" data-cursor="BUILDER">
+        <span class="role" style="color:var(--cyan)">CONTRACTOR · SHEET B</span>
+        <h3>Verified once. Trusted everywhere. Paid instantly.</h3>
+        <div class="callout"><span class="mk">[B-01]</span>Compliance-reviewed profile — license, insurance, documents — wins bids on proof.</div>
+        <div class="callout"><span class="mk">[B-02]</span>Escrow shows the money exists before you mobilize a single crew.</div>
+        <div class="callout"><span class="mk">[B-03]</span>Approved milestones settle in under a second. No 60-day invoice purgatory.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRUST PIPELINE ================= -->
+<section id="trust" style="padding-top:40px">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-no dim-line">04 — VERIFICATION PIPELINE</div>
+        <h2 style="margin-top:14px">Five gates before a single bid.</h2>
+      </div>
+      <div class="side">COMPLIANCE SPEC · GCSC-VRF-01</div>
+    </div>
+    <div class="pipe rv" id="pipe">
+      <div class="pipe-line"><i id="pipeFill"></i></div>
+      <div class="pipe-steps">
+        <div class="ps"><div class="pd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div><b>License</b><span>STATE REGISTRY</span></div>
+        <div class="ps"><div class="pd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><b>Insurance</b><span>ACTIVE POLICY</span></div>
+        <div class="ps"><div class="pd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div><b>Documents</b><span>ADMIN REVIEW</span></div>
+        <div class="ps"><div class="pd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 10-16 0"/></svg></div><b>Identity</b><span>BIOMETRIC WEBAUTH</span></div>
+        <div class="ps"><div class="pd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></div><b>Ready</b><span>CLEARED TO BID</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PERMIT CTA ================= -->
+<section style="padding-top:30px">
+  <div class="wrap">
+    <div class="permit rv" id="permit">
+      <div class="pstamp" id="permitStamp">PERMIT GRANTED</div>
+      <h2>Your next project,<br>cleared to build.</h2>
+      <p>Post a project or build your verified contractor profile. Free on testnet — the rail is live.</p>
+      <a class="btn btn-amber magnetic" style="font-size:15px;padding:15px 34px" href="#" data-cursor="GO"><span class="tick tl"></span>Launch App<span class="tick br"></span></a>
+      <div class="meta">
+        <span>DWG № GCSC-2026</span><span>REV 1.3</span><span>SCALE 1:1</span><span>XPR TESTNET · NO LIVE FUNDS</span>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap" style="padding:0">
+    <div class="tblock">
+      <div class="tb">PROJECT<b>GCSC — Global Construction Smart Contract</b></div>
+      <div class="tb">SHEET<b>01 / 05 — TITLE</b></div>
+      <div class="tb">REVISION<b>1.3 — HYBRID</b></div>
+      <div class="tb">DATE<b>2026-06</b></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ UTIL ============ */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt=n=>'$'+n.toLocaleString('en-US');
+window.addEventListener('load',()=>document.body.classList.add('loaded'));
+
+/* ============ NAV ============ */
+addEventListener('scroll',()=>$('#nav').classList.toggle('scrolled',scrollY>30),{passive:true});
+
+/* ============ CURSOR ============ */
+const cur=$('.cur');
+if(cur&&matchMedia('(pointer:fine)').matches&&!reduced){
+  let cx=innerWidth/2,cy=innerHeight/2,tx=cx,ty=cy;
+  addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY});
+  (function loop(){cx+=(tx-cx)*.22;cy+=(ty-cy)*.22;cur.style.transform=`translate(${cx}px,${cy}px)`;requestAnimationFrame(loop)})();
+  $$('[data-cursor]').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.classList.add('hov');cur.querySelector('.cur-label').textContent=el.dataset.cursor});
+    el.addEventListener('mouseleave',()=>cur.classList.remove('hov'));
+  });
+  document.documentElement.style.cursor='none';
+  $$('a,button,input').forEach(el=>el.style.cursor='none');
+}
+
+/* ============ MAGNETIC ============ */
+if(!reduced)$$('.magnetic').forEach(b=>{
+  b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();
+    b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.18}px,${(e.clientY-r.top-r.height/2)*.3}px)`});
+  b.addEventListener('mouseleave',()=>{b.style.transition='transform .45s cubic-bezier(.2,1.6,.35,1)';b.style.transform='';
+    setTimeout(()=>b.style.transition='',450)});
+});
+
+/* ============ ROLLING WORD ============ */
+if(!reduced){let ri=0;setInterval(()=>{ri=(ri+1)%3;$('#rollTrack').style.transform=`translateY(${-ri*1.02}em)`},2500);}
+
+/* ============ COUNTERS ============ */
+$$('[data-count]').forEach(el=>{
+  const t=+el.dataset.count,pre=el.dataset.prefix||'',suf=el.dataset.suffix||'';
+  if(reduced){el.innerHTML=pre+t+suf;return}
+  new IntersectionObserver((es,o)=>es.forEach(e=>{if(!e.isIntersecting)return;o.disconnect();
+    const t0=performance.now();(function tick(now){const p=Math.min((now-t0)/1300,1);
+      el.innerHTML=pre+Math.round(t*(1-Math.pow(1-p,3)))+suf;if(p<1)requestAnimationFrame(tick)})(t0);
+  })).observe(el);
+});
+
+/* ============ REVEAL ============ */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+$$('.rv').forEach(el=>io.observe(el));
+
+/* ============ SCENE DRAW ============ */
+const groups=['g0','g1','g2','g3','g4'].map(id=>$('#'+id));
+const strokables=g=>[...g.querySelectorAll('path,line,polyline,rect,circle')].filter(el=>!el.closest('.seal')&&el.id!=='houseGlow');
+groups.forEach(g=>strokables(g).forEach(el=>{
+  let L=100;try{L=el.getTotalLength()||100}catch(_){}
+  el.dataset.len=L;
+  if(el.getAttribute('stroke-dasharray')){el.dataset.dashed='1';el.style.opacity=0}
+  else{el.style.strokeDasharray=L;el.style.strokeDashoffset=L}
+}));
+function drawGroup(g,p){
+  const els=strokables(g),n=els.length;
+  els.forEach((el,i)=>{
+    const lo=i/n,hi=(i+1)/n,lp=Math.max(0,Math.min(1,(p-lo)/(hi-lo)));
+    if(el.dataset.dashed){el.style.opacity=lp;return}
+    el.style.strokeDashoffset=el.dataset.len*(1-lp);
+  });
+}
+const hudTexts=['PROJECT POSTED · 3 VERIFIED BIDS','ESCROW FUNDED · $38,500 LOCKED','MILESTONE 2/4 SUBMITTED · IN REVIEW','APPROVED · RELEASED $9,000 · 0.4s','AUDIT TRAIL SEALED · 9 EVENTS'];
+const chapters=$$('.chapter'),pips=$$('#rail .pp'),hudTag=$('#hudTag');
+let curCh=-1,sealDone=false,ledgerDone=false;
+function setChapter(i){
+  if(i===curCh)return;curCh=i;
+  chapters.forEach(c=>c.classList.toggle('on',+c.dataset.ch===i));
+  pips.forEach((p,j)=>p.classList.toggle('on',j<=i));
+  hudTag.textContent=hudTexts[i];
+  if(i>=3&&!sealDone){sealDone=true;$('#seal').classList.add('on');
+    const st=$('#sealTxt');st.style.opacity=1;st.style.transform='none';st.style.animation='none'}
+  if(i>=4&&!ledgerDone){ledgerDone=true;
+    $$('#ledgerScene .ledger-l').forEach((l,j)=>setTimeout(()=>{l.style.transition='opacity .3s';l.style.opacity=1},j*260));
+    $('#houseGlow').style.opacity=1;
+  }
+}
+if(reduced){
+  groups.forEach(g=>drawGroup(g,1));setChapter(4);
+  chapters.forEach(c=>{c.style.position='static';c.classList.add('on');c.style.marginBottom='40px'});
+  document.querySelector('.chapters').style.flexDirection='column';
+}else{
+  const track=$('#storyTrack');
+  function onScroll(){
+    const r=track.getBoundingClientRect();
+    const total=r.height-innerHeight;
+    const p=Math.max(0,Math.min(1,-r.top/total));
+    const seg=p*5;
+    setChapter(Math.min(4,Math.floor(seg)));
+    groups.forEach((g,i)=>drawGroup(g,Math.max(0,Math.min(1,seg-i))));
+  }
+  addEventListener('scroll',()=>requestAnimationFrame(onScroll),{passive:true});
+  onScroll();
+}
+
+/* ============ SIMULATOR ============ */
+const state={budget:38500,funded:false,ms:[0,0,0],released:0};
+const msAmt=()=>[Math.round(state.budget*.22),Math.round(state.budget*.43),Math.round(state.budget*.35)];
+const msNames=['FOUNDATION','STRUCTURE','FINISHING'];
+const ownerBal=$('#ownerBal'),vaultBal=$('#vaultBal'),contrBal=$('#contrBal'),ledgerBox=$('#ledgerBox'),evC=$('#evCount');
+let events=0;
+const hash=()=>'0x'+[...crypto.getRandomValues(new Uint8Array(4))].map(b=>b.toString(16).padStart(2,'0')).join('')+'…';
+function log(msg,cls){events++;evC.textContent=events+' EVENTS';
+  const d=document.createElement('div');d.className='row';
+  d.innerHTML=`<span class="${cls||''}">${msg}</span><span class="hash">${hash()}</span>`;
+  ledgerBox.prepend(d);}
+function fly(fromEl,toEl,mint,done){
+  if(reduced){done&&done();return}
+  const p=$('#simP'),nr=$('#nodes').getBoundingClientRect();
+  const a=fromEl.querySelector('.nb').getBoundingClientRect(),b=toEl.querySelector('.nb').getBoundingClientRect();
+  const x1=a.left+a.width/2-nr.left,y1=a.top+a.height/2-nr.top,x2=b.left+b.width/2-nr.left,y2=b.top+b.height/2-nr.top;
+  p.classList.toggle('mintc',!!mint);p.style.opacity=1;
+  const t0=performance.now(),dur=700;
+  (function step(t){const k=Math.min((t-t0)/dur,1),e=1-Math.pow(1-k,3);
+    const mx=(x1+x2)/2,my=Math.min(y1,y2)-46;
+    const X=(1-e)*(1-e)*x1+2*(1-e)*e*mx+e*e*x2, Y=(1-e)*(1-e)*y1+2*(1-e)*e*my+e*e*y2;
+    p.style.transform=`translate(${X-3}px,${Y-3}px)`;
+    if(k<1)requestAnimationFrame(step);else{p.style.opacity=0;done&&done()}})(t0);
+}
+function updateBals(){
+  ownerBal.textContent=fmt(Math.max(0,40000-(state.funded?state.budget:0)));
+  vaultBal.textContent=fmt(state.funded?state.budget-state.released:0);
+  contrBal.textContent=fmt(state.released);
+  const pct=state.funded?Math.round(state.released/state.budget*100):0;
+  $('#relPct').textContent=pct+'%';
+  $('#ringFg').style.strokeDashoffset=289*(1-pct/100);
+}
+$('#budget').addEventListener('input',e=>{
+  if(state.funded){e.target.value=state.budget;return}
+  state.budget=+e.target.value;$('#budgetV').textContent=fmt(state.budget);
+});
+$('#bFund').addEventListener('click',()=>{
+  if(state.funded)return;
+  state.funded=true;$('#bFund').disabled=true;$('#bFund').textContent='✓ ESCROW FUNDED';$('#bFund').classList.add('done');
+  $('#nVault').classList.add('lit');
+  fly($('#nOwner'),$('#nVault'),false,()=>{updateBals();log(`escrow.funded ${fmt(state.budget)}`,'am');$('#b1').disabled=false});
+});
+[1,2,3].forEach(n=>{
+  const btn=$('#b'+n);
+  btn.addEventListener('click',()=>{
+    const phase=state.ms[n-1];
+    if(phase===0){state.ms[n-1]=1;btn.textContent=`M${n} · APPROVE?`;log(`milestone.submitted m${n}`)}
+    else if(phase===1){state.ms[n-1]=2;btn.textContent=`M${n} · RELEASE ⇢`;log(`milestone.approved m${n}`,'ok')}
+    else if(phase===2){state.ms[n-1]=3;btn.disabled=true;btn.classList.add('done');btn.textContent=`✓ M${n} · ${msNames[n-1]}`;
+      const amt=msAmt()[n-1];state.released+=amt;
+      $('#nContr').classList.add('lit-m');
+      fly($('#nVault'),$('#nContr'),true,()=>{updateBals();log(`milestone.released ${fmt(amt)}`,'ok');
+        if(n<3)$('#b'+(n+1)).disabled=false;
+        if(n===3)log('audit.sealed · project complete','ok');
+      });
+    }
+  });
+});
+updateBals();
+
+/* ============ TILT PANELS ============ */
+if(!reduced)$$('.tilt').forEach(p=>{
+  p.addEventListener('mousemove',e=>{const r=p.getBoundingClientRect();
+    const rx=((e.clientY-r.top)/r.height-.5)*-5,ry=((e.clientX-r.left)/r.width-.5)*5;
+    p.style.transform=`perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`});
+  p.addEventListener('mouseleave',()=>{p.style.transition='transform .5s var(--ease)';p.style.transform='';
+    setTimeout(()=>p.style.transition='',500)});
+});
+
+/* ============ PIPELINE ============ */
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(!e.isIntersecting)return;o.disconnect();
+  $('#pipeFill').style.width='100%';
+  $$('#pipe .ps').forEach((s,i)=>setTimeout(()=>s.classList.add('on'),250+i*320));
+}),{threshold:.35}).observe($('#pipe'));
+
+/* ============ PERMIT STAMP ============ */
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(!e.isIntersecting)return;o.disconnect();
+  setTimeout(()=>$('#permitStamp').classList.add('on'),350);
+}),{threshold:.4}).observe($('#permit'));
+</script>
+</body>
+</html>

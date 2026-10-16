@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSC — Escrow Infrastructure for Construction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070B14; --bg-2:#0C1322; --card:rgba(20,30,50,.55); --line:rgba(94,118,160,.18);
+  --cyan:#22D3EE; --teal:#2DD4BF; --green:#34D399; --fg:#EDF2FA; --dim:#8B9BB5; --warn:#FBBF24;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none;cursor:pointer}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* AURORA BG */
+.aurora{position:fixed;inset:0;pointer-events:none;z-index:0}
+.aurora::before{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:1200px;height:800px;background:radial-gradient(ellipse,rgba(34,211,238,.07) 0%,transparent 60%)}
+.aurora::after{content:'';position:absolute;bottom:-40%;right:-10%;width:900px;height:700px;background:radial-gradient(ellipse,rgba(45,212,191,.05) 0%,transparent 60%)}
+main,nav,footer{position:relative;z-index:1}
+
+/* NAV */
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;width:min(1100px,calc(100% - 32px));background:rgba(12,19,34,.72);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:16px}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 22px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;letter-spacing:.5px}
+.logo-hex{width:30px;height:30px;color:var(--cyan)}
+.nav-links{display:flex;gap:28px;font-size:13.5px;font-weight:500;color:var(--dim)}
+.nav-links a{transition:color .2s}.nav-links a:hover{color:var(--cyan)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-size:13.5px;font-weight:700;transition:all .2s;border:1px solid transparent}
+.btn-cyan{background:var(--cyan);color:#04141A}
+.btn-cyan:hover{box-shadow:0 0 28px rgba(34,211,238,.4);transform:translateY(-1px)}
+.btn-ghost{border-color:var(--line);color:var(--fg)}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* HERO */
+.hero{padding:150px 0 90px;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(34,211,238,.06);font-size:12.5px;font-weight:600;color:var(--cyan);margin-bottom:24px}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-size:clamp(38px,5vw,58px);font-weight:800;line-height:1.06;letter-spacing:-1.8px}
+h1 .grad{background:linear-gradient(90deg,var(--cyan),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin-top:22px;font-size:17px;color:var(--dim);max-width:480px}
+.hero-ctas{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+.hero-foot{display:flex;gap:28px;margin-top:44px;font-size:12.5px;color:var(--dim);flex-wrap:wrap}
+.hero-foot span{display:flex;align-items:center;gap:7px}
+.hero-foot svg{color:var(--teal)}
+
+/* ESCROW PANEL */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;backdrop-filter:blur(20px);padding:26px;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.panel-head .t{font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px;background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.25)}
+.amount{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:600;letter-spacing:-1px}
+.amount small{font-size:14px;color:var(--dim)}
+.ms{margin-top:22px;display:flex;flex-direction:column;gap:10px}
+.m{display:flex;align-items:center;gap:14px;padding:13px 16px;border-radius:12px;border:1px solid var(--line);background:rgba(7,11,20,.45);transition:border-color .25s}
+.m:hover{border-color:rgba(34,211,238,.45)}
+.m .st{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.m.done .st{background:rgba(52,211,153,.15);color:var(--green)}
+.m.act .st{background:rgba(34,211,238,.15);color:var(--cyan)}
+.m.wait .st{background:rgba(139,155,181,.12);color:var(--dim)}
+.m b{font-size:13.5px;font-weight:600;flex:1}
+.m .amt{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--dim)}
+.m.act{position:relative;overflow:hidden}
+.m.act::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(34,211,238,.07),transparent);animation:sweep 2.4s infinite}
+@keyframes sweep{to{transform:translateX(100%)}}
+.bar-wrap{margin-top:20px}
+.bar-lbl{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim);margin-bottom:7px}
+.bar{height:7px;border-radius:99px;background:rgba(139,155,181,.15);overflow:hidden}
+.bar i{display:block;height:100%;width:45%;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--cyan));box-shadow:0 0 14px rgba(34,211,238,.5)}
+
+/* SECTIONS */
+section{padding:96px 0}
+.sec-label{font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px}
+h2{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-1.2px;line-height:1.12;max-width:620px}
+.sub{margin-top:14px;color:var(--dim);font-size:16.5px;max-width:540px}
+
+/* FEATURE GRID */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}
+.f{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:30px;backdrop-filter:blur(14px);transition:all .25s;position:relative;overflow:hidden}
+.f::before{content:'';position:absolute;top:0;left:24px;right:24px;height:1px;background:linear-gradient(90deg,transparent,rgba(34,211,238,.6),transparent);opacity:0;transition:opacity .25s}
+.f:hover{transform:translateY(-3px);border-color:rgba(34,211,238,.35)}
+.f:hover::before{opacity:1}
+.f .ic{width:42px;height:42px;border-radius:11px;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.2);display:flex;align-items:center;justify-content:center;color:var(--cyan);margin-bottom:18px}
+.f h3{font-size:17.5px;font-weight:700;margin-bottom:8px}
+.f p{font-size:14px;color:var(--dim)}
+
+/* STATS BAND */
+.band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(12,19,34,.5);padding:54px 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+.s .v{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:600;color:var(--cyan)}
+.s .k{font-size:12.5px;color:var(--dim);margin-top:4px}
+
+/* CTA */
+.cta{border:1px solid rgba(34,211,238,.3);border-radius:24px;padding:64px 48px;text-align:center;background:radial-gradient(ellipse at 50% 120%,rgba(34,211,238,.12),rgba(12,19,34,.6) 65%);backdrop-filter:blur(10px)}
+.cta h2{margin:0 auto}
+.cta p{color:var(--dim);margin:16px auto 30px;max-width:440px}
+
+footer{border-top:1px solid var(--line);padding:40px 0;font-size:13px;color:var(--dim)}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease-out,transform .6s ease-out}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .pill .dot,.m.act::after{animation:none}
+}
+@media (max-width:980px){
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr;padding-top:130px}
+  .grid3{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+
+<nav>
+  <div class="nav-in">
+    <a class="logo" href="#">
+      <svg class="logo-hex" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l8.5 5v10L12 22l-8.5-5V7z"/><path d="M12 22V12M12 12L3.5 7M12 12l8.5-5"/></svg>
+      GCSC
+    </a>
+    <div class="nav-links">
+      <a href="#infra">Infrastructure</a><a href="#how">How it works</a><a href="#">Verification</a><a href="#">Security</a>
+    </div>
+    <div style="display:flex;gap:10px">
+      <a class="btn btn-ghost" href="#">Log in</a>
+      <a class="btn btn-cyan" href="#">Launch App</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<header class="hero wrap">
+  <div>
+    <span class="pill"><span class="dot"></span> SETTLEMENT LAYER · XPR NETWORK</span>
+    <h1>The escrow rail<br>construction <span class="grad">runs on.</span></h1>
+    <p>Institutional-grade payment infrastructure for builders and homeowners: milestone escrow, verified counterparties, sub-second settlement, immutable audit.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-cyan" style="padding:13px 26px;font-size:14.5px" href="#">Open the platform</a>
+      <a class="btn btn-ghost" style="padding:13px 26px;font-size:14.5px" href="#how">Watch the flow</a>
+    </div>
+    <div class="hero-foot">
+      <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Funds never touch our balance sheet</span>
+      <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> KYC-verified contractors only</span>
+    </div>
+  </div>
+
+  <div class="panel reveal">
+    <div class="panel-head">
+      <span class="t">Escrow · Kitchen Remodel #1042</span>
+      <span class="chip">ACTIVE</span>
+    </div>
+    <div class="amount">$38,500.00 <small>secured</small></div>
+    <div class="bar-wrap">
+      <div class="bar-lbl"><span>Released: $17,300</span><span>45%</span></div>
+      <div class="bar"><i></i></div>
+    </div>
+    <div class="ms">
+      <div class="m done">
+        <span class="st"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <b>Demolition & prep</b><span class="amt">$8,300 · released</span>
+      </div>
+      <div class="m done">
+        <span class="st"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <b>Plumbing & electrical</b><span class="amt">$9,000 · released</span>
+      </div>
+      <div class="m act">
+        <span class="st"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
+        <b>Cabinets & countertops</b><span class="amt">$12,700 · in review</span>
+      </div>
+      <div class="m wait">
+        <span class="st"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+        <b>Finishing & inspection</b><span class="amt">$8,500 · locked</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="band">
+  <div class="wrap stats">
+    <div class="s reveal"><div class="v">100%</div><div class="k">funds escrow-secured</div></div>
+    <div class="s reveal"><div class="v">&lt;500ms</div><div class="k">settlement finality</div></div>
+    <div class="s reveal"><div class="v">4-step</div><div class="k">verified milestone lifecycle</div></div>
+    <div class="s reveal"><div class="v">0</div><div class="k">trust required</div></div>
+  </div>
+</section>
+
+<section id="infra">
+  <div class="wrap">
+    <div class="sec-label reveal">Infrastructure</div>
+    <h2 class="reveal">Built like a clearing house.<br>Priced like an app.</h2>
+    <div class="grid3">
+      <div class="f reveal">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <h3>Milestone escrow</h3>
+        <p>Budgets lock before work starts. Releases happen per approved milestone — never sooner, never on a promise.</p>
+      </div>
+      <div class="f reveal">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
+        <h3>Counterparty verification</h3>
+        <p>Licenses, insurance, and business documents reviewed by compliance before a contractor can bid.</p>
+      </div>
+      <div class="f reveal">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></div>
+        <h3>Immutable audit trail</h3>
+        <p>Every bid, approval, release, and dispute is recorded — verifiable on-chain, exportable for court or insurer.</p>
+      </div>
+      <div class="f reveal">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></div>
+        <h3>Instant payouts</h3>
+        <p>Approved milestones settle in under a second on XPR Network. No 60-day invoices, no chasing checks.</p>
+      </div>
+      <div class="f reveal">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Dispute protection</h3>
+        <p>Either side can freeze a milestone instantly. Funds stay locked until resolution — nobody can run with the money.</p>
+      </div>
+      <div class="f reveal">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 10-16 0"/></svg></div>
+        <h3>Biometric wallet</h3>
+        <p>WebAuth sign-in with Face ID — every approval is cryptographically signed by a real person.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta reveal">
+      <h2>See your first project through escrow.</h2>
+      <p>Post a project or build your verified contractor profile — free on the testnet today.</p>
+      <a class="btn btn-cyan" style="font-size:15px;padding:14px 30px" href="#">Launch App
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 GCSC — Global Construction Smart Contract</span>
+    <span class="mono">XPR TESTNET · NO LIVE FUNDS</span>
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

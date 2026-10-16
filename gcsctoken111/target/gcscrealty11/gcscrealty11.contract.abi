@@ -1,0 +1,372 @@
+{
+  "version": "eosio::abi/1.2",
+  "structs": [
+    {
+      "name": "Config",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "token_contract",
+          "type": "name"
+        },
+        {
+          "name": "token_symbol_raw",
+          "type": "uint64"
+        },
+        {
+          "name": "platform_fee_bps",
+          "type": "uint32"
+        },
+        {
+          "name": "min_investment",
+          "type": "int64"
+        },
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "Investment",
+      "base": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint64"
+        },
+        {
+          "name": "property_id",
+          "type": "uint64"
+        },
+        {
+          "name": "investor",
+          "type": "name"
+        },
+        {
+          "name": "shares",
+          "type": "int64"
+        },
+        {
+          "name": "invested_at",
+          "type": "uint32"
+        },
+        {
+          "name": "claimed_income",
+          "type": "int64"
+        }
+      ]
+    },
+    {
+      "name": "Property",
+      "base": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint64"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "location",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "target_amount",
+          "type": "int64"
+        },
+        {
+          "name": "raised_amount",
+          "type": "int64"
+        },
+        {
+          "name": "total_shares",
+          "type": "uint64"
+        },
+        {
+          "name": "income_pool",
+          "type": "int64"
+        },
+        {
+          "name": "distributed",
+          "type": "int64"
+        },
+        {
+          "name": "status",
+          "type": "uint8"
+        },
+        {
+          "name": "listed_at",
+          "type": "uint32"
+        },
+        {
+          "name": "activated_at",
+          "type": "uint32"
+        },
+        {
+          "name": "valuation",
+          "type": "int64"
+        }
+      ]
+    },
+    {
+      "name": "activateprop",
+      "base": "",
+      "fields": [
+        {
+          "name": "property_id",
+          "type": "uint64"
+        }
+      ]
+    },
+    {
+      "name": "addincome",
+      "base": "",
+      "fields": [
+        {
+          "name": "property_id",
+          "type": "uint64"
+        },
+        {
+          "name": "income",
+          "type": "asset"
+        },
+        {
+          "name": "memo",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "cancelprop",
+      "base": "",
+      "fields": [
+        {
+          "name": "property_id",
+          "type": "uint64"
+        }
+      ]
+    },
+    {
+      "name": "claimincome",
+      "base": "",
+      "fields": [
+        {
+          "name": "investor",
+          "type": "name"
+        },
+        {
+          "name": "investment_id",
+          "type": "uint64"
+        }
+      ]
+    },
+    {
+      "name": "closeprop",
+      "base": "",
+      "fields": [
+        {
+          "name": "property_id",
+          "type": "uint64"
+        },
+        {
+          "name": "proceeds",
+          "type": "asset"
+        }
+      ]
+    },
+    {
+      "name": "invest",
+      "base": "",
+      "fields": [
+        {
+          "name": "investor",
+          "type": "name"
+        },
+        {
+          "name": "property_id",
+          "type": "uint64"
+        },
+        {
+          "name": "amount",
+          "type": "asset"
+        }
+      ]
+    },
+    {
+      "name": "listprop",
+      "base": "",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "location",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "target_amount",
+          "type": "asset"
+        },
+        {
+          "name": "valuation",
+          "type": "asset"
+        }
+      ]
+    },
+    {
+      "name": "refund",
+      "base": "",
+      "fields": [
+        {
+          "name": "investor",
+          "type": "name"
+        },
+        {
+          "name": "investment_id",
+          "type": "uint64"
+        }
+      ]
+    },
+    {
+      "name": "setconfig",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "token_contract",
+          "type": "name"
+        },
+        {
+          "name": "token_symbol",
+          "type": "symbol"
+        },
+        {
+          "name": "platform_fee_bps",
+          "type": "uint32"
+        },
+        {
+          "name": "min_investment",
+          "type": "asset"
+        }
+      ]
+    },
+    {
+      "name": "updprop",
+      "base": "",
+      "fields": [
+        {
+          "name": "property_id",
+          "type": "uint64"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "valuation",
+          "type": "asset"
+        }
+      ]
+    }
+  ],
+  "types": [],
+  "actions": [
+    {
+      "name": "activateprop",
+      "type": "activateprop",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "addincome",
+      "type": "addincome",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "cancelprop",
+      "type": "cancelprop",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "claimincome",
+      "type": "claimincome",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "closeprop",
+      "type": "closeprop",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "invest",
+      "type": "invest",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "listprop",
+      "type": "listprop",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "refund",
+      "type": "refund",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "setconfig",
+      "type": "setconfig",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "updprop",
+      "type": "updprop",
+      "ricardian_contract": ""
+    }
+  ],
+  "tables": [
+    {
+      "name": "config",
+      "type": "Config",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "investments",
+      "type": "Investment",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "properties",
+      "type": "Property",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    }
+  ],
+  "ricardian_clauses": [],
+  "variants": [],
+  "action_results": [],
+  "abi_extensions": [],
+  "error_messages": []
+}

@@ -64,6 +64,16 @@
 - Прежде чем ставить `READY_FOR_REVIEW`, автор сам прогоняет ВЕСЬ набор обязательных проверок теми же командами, что и reviewer, без временных CLI-обходов; flaky-тесты (тайминги, ключи, сеть, БД) гоняет 2–3 раза до стабильного зелёного (целевая среда — медленный Windows-runner founder'а).
 - Все находки чинятся ОДНИМ заходом; в запись вписываются точные команды и результат. Цель: `READY_FOR_REVIEW` → `APPROVED` за один проход. Полное правило — в `AI-REVIEW-GATE.md`.
 
+### Rule 9: INTENT → SPEC → PLAN
+- For substantial features, integrations, refactors, and multi-session work,
+  use docs/tasks/<task-id>/INTENT.md, SPEC.md, and PLAN.md before implementation.
+  Read current code and applicable instructions first. Record assumptions and
+  resolve factual gaps using evidence. Map acceptance criteria to requirements,
+  implementation steps, and verification. Keep PLAN.md current and finish with
+  REPORT.md showing evidence and remaining limitations. Continue authorized work
+  without routine approval stops. Skip this workflow for simple edits/questions.
+  On resumption, read the task files and check the actual repository state.
+
 ---
 
 ## Project Context

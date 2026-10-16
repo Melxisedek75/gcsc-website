@@ -1,0 +1,28 @@
+Subject: Review needed - Pierce County CCB First Floor Door Widening Bid, due May 20
+
+Hi team,
+
+Attached is the partner review package for the Pierce County CCB First Floor Door Widening bid in Tacoma, WA.
+
+Key dates:
+- Pre-bid walkthrough: May 13, 2026 at 7:00 AM
+- Questions deadline: May 15, 2026 at 4:00 PM
+- Bid due: May 20, 2026 at 1:00 PM
+
+Please review:
+- Original owner documents in `01_owner_original_documents`
+- Prepared working package in `02_prepared_bid_working_package`
+- Especially the scope/price proposal, schedule, safety/logistics plan, vendor RFQ package, and walkthrough questions
+
+Main decisions needed:
+- Can we perform this within 42 calendar days?
+- Which partners/subcontractors cover each trade?
+- What vendor quotes do we need immediately?
+- What is our final bid number?
+- Who will attend the May 13 walkthrough?
+- Who will prepare the bid bond and final OpenGov upload?
+
+Important: final submission must use official Pierce County/OpenGov forms where required. The prepared documents are for review, pricing, coordination, and supporting attachments.
+
+Thank you.
+

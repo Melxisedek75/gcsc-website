@@ -161,3 +161,18 @@ The next founder-present live steps are:
 4. Only after that, strict admin smoke tests with local ENV token.
 
 Until then, Codex should continue local safe prep and validation work.
+
+## Codex-Claude Coordination Poll
+
+The active 2-minute heartbeat also drives the shared AI coordination mailbox without creating a second competing worker.
+
+On each wakeup:
+
+1. Read `ai-review/coordination/PROTOCOL.md` when it exists.
+2. Check `.tmp/ai-coordination-last-poll.txt`.
+3. If the marker is missing or at least 30 minutes old, inspect `ai-review/coordination/inbox/codex/`, `outbox/codex/`, and `outbox/claude/`.
+4. Write the current UTC timestamp to the local marker after the inspection. The marker is local runtime state and must never be committed.
+5. If an actionable safe task exists and no unexpired lease blocks it, execute one oldest task under the protocol.
+6. If no task exists, continue the normal safe backlog loop without creating a no-op status file.
+
+The coordination poll does not authorize merge, deploy, self-review, production, public publication, secrets, external accounts, paid services, live finance, XPR/FIO actions, legal/provider commitments, mobile release, destructive actions, or any other founder-only boundary.

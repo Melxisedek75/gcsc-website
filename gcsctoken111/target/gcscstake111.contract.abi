@@ -1,0 +1,244 @@
+{
+  "version": "eosio::abi/1.2",
+  "structs": [
+    {
+      "name": "Config",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "token_contract",
+          "type": "name"
+        },
+        {
+          "name": "token_symbol_raw",
+          "type": "uint64"
+        },
+        {
+          "name": "apy_bps",
+          "type": "uint32"
+        },
+        {
+          "name": "lock_period",
+          "type": "uint32"
+        },
+        {
+          "name": "min_stake",
+          "type": "int64"
+        },
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "RewardPool",
+      "base": "",
+      "fields": [
+        {
+          "name": "total_staked",
+          "type": "int64"
+        },
+        {
+          "name": "total_rewards",
+          "type": "int64"
+        },
+        {
+          "name": "distributed",
+          "type": "int64"
+        },
+        {
+          "name": "last_update",
+          "type": "uint32"
+        }
+      ]
+    },
+    {
+      "name": "Stake",
+      "base": "",
+      "fields": [
+        {
+          "name": "staker",
+          "type": "name"
+        },
+        {
+          "name": "staked_amount",
+          "type": "int64"
+        },
+        {
+          "name": "reward_debt",
+          "type": "int64"
+        },
+        {
+          "name": "stake_time",
+          "type": "uint32"
+        },
+        {
+          "name": "unstake_time",
+          "type": "uint32"
+        },
+        {
+          "name": "lock_end",
+          "type": "uint32"
+        }
+      ]
+    },
+    {
+      "name": "claimreward",
+      "base": "",
+      "fields": [
+        {
+          "name": "staker",
+          "type": "name"
+        }
+      ]
+    },
+    {
+      "name": "fundrewards",
+      "base": "",
+      "fields": [
+        {
+          "name": "funder",
+          "type": "name"
+        },
+        {
+          "name": "amount",
+          "type": "asset"
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "base": "",
+      "fields": [
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "setconfig",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "token_contract",
+          "type": "name"
+        },
+        {
+          "name": "token_symbol",
+          "type": "symbol"
+        },
+        {
+          "name": "apy_bps",
+          "type": "uint32"
+        },
+        {
+          "name": "lock_period",
+          "type": "uint32"
+        },
+        {
+          "name": "min_stake",
+          "type": "asset"
+        }
+      ]
+    },
+    {
+      "name": "stake",
+      "base": "",
+      "fields": [
+        {
+          "name": "staker",
+          "type": "name"
+        },
+        {
+          "name": "amount",
+          "type": "asset"
+        }
+      ]
+    },
+    {
+      "name": "unstake",
+      "base": "",
+      "fields": [
+        {
+          "name": "staker",
+          "type": "name"
+        },
+        {
+          "name": "amount",
+          "type": "asset"
+        }
+      ]
+    }
+  ],
+  "types": [],
+  "actions": [
+    {
+      "name": "claimreward",
+      "type": "claimreward",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "fundrewards",
+      "type": "fundrewards",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "pause",
+      "type": "pause",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "setconfig",
+      "type": "setconfig",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "stake",
+      "type": "stake",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "unstake",
+      "type": "unstake",
+      "ricardian_contract": ""
+    }
+  ],
+  "tables": [
+    {
+      "name": "config",
+      "type": "Config",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "rewardpool",
+      "type": "RewardPool",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "stakes",
+      "type": "Stake",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    }
+  ],
+  "ricardian_clauses": [],
+  "variants": [],
+  "action_results": [],
+  "abi_extensions": [],
+  "error_messages": []
+}

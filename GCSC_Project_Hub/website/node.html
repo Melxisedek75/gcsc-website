@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCSC Block Producer - XPR Network</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark-bg: #0D1B2A;
+            --darker-bg: #0A1118;
+            --dark-blue: #0D2B5E;
+            --gold: #F4A300;
+            --gold-light: #FFB84D;
+            --text-main: #FFFFFF;
+            --text-muted: #B0B8C8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(13, 27, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 1rem 2rem;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFB84D 0%, #F4A300 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .navbar-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            color: var(--gold);
+        }
+
+        .navbar-links a.active {
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 0.5rem;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(244, 163, 0, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            width: 100%;
+            z-index: 2;
+            text-align: center;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: #1a1a2e;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #FFFFFF 0%, #B0B8C8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-title .accent {
+            color: var(--gold);
+            -webkit-text-fill-color: var(--gold);
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: #1a1a2e;
+            box-shadow: 0 8px 24px rgba(244, 163, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(244, 163, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(244, 163, 0, 0.1);
+        }
+
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(244, 163, 0, 0.05);
+            border-color: var(--gold);
+            transform: translateY(-4px);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* SECTION */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 600px;
+        }
+
+        /* WHY VOTE */
+        .why-vote-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .why-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .why-card:hover {
+            background: rgba(244, 163, 0, 0.08);
+            border-color: var(--gold);
+            transform: translateY(-8px);
+        }
+
+        .why-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .why-card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--gold);
+        }
+
+        .why-card-text {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* HOW TO VOTE */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step-card {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, rgba(13, 43, 94, 0.5) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(244, 163, 0, 0.1), transparent);
+            border-radius: 0 0 0 100%;
+        }
+
+        .step-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gold);
+            opacity: 0.2;
+            position: absolute;
+            top: 0;
+            right: 1rem;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-text {
+            color: var(--text-muted);
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* NODE STATS */
+        .node-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--darker-bg);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .navbar-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 80px 1rem 2rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* ANIMATIONS */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="navbar-logo">⚙️ GCSC</a>
+            <div class="navbar-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#ecosystem">Ecosystem</a>
+                <a href="node.html" class="active">Node</a>
+                <a href="whitepaper.html">Whitepaper</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🚀 Block Producer on XPR Network</div>
+            <h1 class="hero-title">Vote for <span class="accent">GCSC</span> Block Producer</h1>
+            <p class="hero-subtitle">Support decentralized construction finance. Vote for gcscnetwork1 and help build the future of GCSC on XPR Network.</p>
+            <div class="cta-buttons">
+                <a href="https://webauth.com" target="_blank" class="btn btn-primary">Vote on WebAuth →</a>
+                <a href="#how-to-vote" class="btn btn-secondary">Learn How ↓</a>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">99.9%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">Helsinki</div>
+                    <div class="stat-label">Location</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">DPoS</div>
+                    <div class="stat-label">Consensus</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">Active</div>
+                    <div class="stat-label">Status</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY VOTE -->
+    <section class="section" style="background: rgba(244, 163, 0, 0.02);">
+        <h2 class="section-title">Why Vote for GCSC?</h2>
+        <p class="section-subtitle">GCSC is building real infrastructure for the construction industry, backed by 100% reinvestment of BP rewards.</p>
+
+        <div class="why-vote-grid">
+            <div class="why-card scroll-reveal">
+                <div class="why-card-icon">🏗️</div>
+                <h3 class="why-card-title">Real Ecosystem</h3>
+                <p class="why-card-text">GCSC builds a real ecosystem for the $13 trillion construction industry—solving payment delays, fraud, and transparency issues.</p>
+            </div>
+
+            <div class="why-card scroll-reveal">
+                <div class="why-card-icon">💰</div>
+                <h3 class="why-card-title">100% Reinvestment</h3>
+                <p class="why-card-text">All BP rewards are reinvested back into platform development, AI agents, and ecosystem expansion.</p>
+            </div>
+
+            <div class="why-card scroll-reveal">
+                <div class="why-card-icon">🔗</div>
+                <h3 class="why-card-title">Decentralization</h3>
+                <p class="why-card-text">Your vote supports decentralization of XPR Network by distributing power across independent, mission-driven producers.</p>
+            </div>
+
+            <div class="why-card scroll-reveal">
+                <div class="why-card-icon">✨</div>
+                <h3 class="why-card-title">Zero Cost</h3>
+                <p class="why-card-text">Voting is completely free—just stake your XPR tokens. Your tokens remain in your control at all times.</p>
+            </div>
+
+            <div class="why-card scroll-reveal">
+                <div class="why-card-icon">🤖</div>
+                <h3 class="why-card-title">AI-Powered</h3>
+                <p class="why-card-text">5 AI agents (CMA, RAA, CA, TA, REA) power contractor matching, risk assessment, compliance, and real estate.</p>
+            </div>
+
+            <div class="why-card scroll-reveal">
+                <div class="why-card-icon">🌍</div>
+                <h3 class="why-card-title">Growing Impact</h3>
+                <p class="why-card-text">Starting with Seattle pilot, expanding to 5+ US states with 10,000+ contractors by maturity phase.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW TO VOTE -->
+    <section class="section" id="how-to-vote">
+        <h2 class="section-title">How to Vote - 4 Easy Steps</h2>
+        <p class="section-subtitle">Voting takes just 2 minutes. No fees, no complications.</p>
+
+        <div class="steps-grid">
+            <div class="step-card scroll-reveal">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Open WebAuth</h3>
+                <p class="step-text">Go to <a href="https://webauth.com" target="_blank" style="color: var(--gold);">webauth.com</a> and sign in with your WebAuth wallet. Create one if you don't have it.</p>
+            </div>
+
+            <div class="step-card scroll-reveal">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Stake XPR</h3>
+                <p class="step-text">Stake your XPR tokens. Each staked token = 1 vote. Your tokens stay in your control—no sending, no risk.</p>
+            </div>
+
+            <div class="step-card scroll-reveal">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Find GCSC</h3>
+                <p class="step-text">In the "Vote for BP" section, search for <strong>gcscnetwork1</strong>. You'll see it instantly in the list.</p>
+            </div>
+
+            <div class="step-card scroll-reveal">
+                <div class="step-number">4</div>
+                <h3 class="step-title">Vote & Done!</h3>
+                <p class="step-text">Click the Vote button next to gcscnetwork1, confirm your vote. That's it—you're now supporting GCSC!</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="https://webauth.com" target="_blank" class="btn btn-primary">Start Voting Now →</a>
+        </div>
+    </section>
+
+    <!-- NODE STATS -->
+    <section class="section" style="background: rgba(13, 43, 94, 0.1);">
+        <h2 class="section-title">GCSC BP Statistics</h2>
+        <p class="section-subtitle">Reliable infrastructure powering the GCSC ecosystem on XPR Network.</p>
+
+        <div class="node-info-grid">
+            <div class="info-item scroll-reveal">
+                <div class="info-label">BP Account</div>
+                <div class="info-value">gcscnetwork1</div>
+            </div>
+
+            <div class="info-item scroll-reveal">
+                <div class="info-label">Network</div>
+                <div class="info-value">XPR Network</div>
+            </div>
+
+            <div class="info-item scroll-reveal">
+                <div class="info-label">Status</div>
+                <div class="info-value">Active</div>
+            </div>
+
+            <div class="info-item scroll-reveal">
+                <div class="info-label">Uptime</div>
+                <div class="info-value">99.9%</div>
+            </div>
+
+            <div class="info-item scroll-reveal">
+                <div class="info-label">Location</div>
+                <div class="info-value">Helsinki, Finland</div>
+            </div>
+
+            <div class="info-item scroll-reveal">
+                <div class="info-label">Infrastructure</div>
+                <div class="info-value">Hetzner Cloud</div>
+            </div>
+
+            <div class="info-item scroll-reveal">
+                <div class="info-label">Sync Type</div>
+                <div class="info-value">Full + Archive</div>
+            </div>
+
+            <div class="info-item scroll-reveal">
+                <div class="info-label">Rewards Usage</div>
+                <div class="info-value">100% Reinvest</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DPoS EXPLANATION -->
+    <section class="section">
+        <h2 class="section-title">Understanding DPoS</h2>
+        <p class="section-subtitle">How the Delegated Proof of Stake consensus mechanism works on XPR Network.</p>
+
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-top: 2rem;">
+            <h3 style="color: var(--gold); margin-bottom: 1rem; font-size: 1.3rem;">How DPoS Works</h3>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">🗳️ Voting</h4>
+                    <p style="color: var(--text-muted); line-height: 1.7;">Each staked XPR token equals one vote. You vote directly for your preferred Block Producers.</p>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">👑 Top 21</h4>
+                    <p style="color: var(--text-muted); line-height: 1.7;">The top 21 BPs by vote count become active validators. They produce blocks and earn daily rewards.</p>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">💎 Rewards</h4>
+                    <p style="color: var(--text-muted); line-height: 1.7;">BPs earn rewards from 1% of XPR annual inflation. GCSC reinvests 100% into platform development.</p>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">⚡ Decentralization</h4>
+                    <p style="color: var(--text-muted); line-height: 1.7;">Power is distributed across 21 independent producers. No single entity controls the network.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="section" style="background: linear-gradient(135deg, var(--dark-blue) 0%, rgba(13, 43, 94, 0.3) 100%); border-radius: 16px; text-align: center;">
+        <h2 class="section-title" style="margin-bottom: 1rem; display: block;">Ready to Support GCSC?</h2>
+        <p class="section-subtitle">Your vote helps build decentralized construction finance. Free to vote, zero risk.</p>
+        <div class="cta-buttons" style="justify-content: center; margin-top: 2rem;">
+            <a href="https://webauth.com" target="_blank" class="btn btn-primary">Vote Now on WebAuth →</a>
+            <a href="index.html" class="btn btn-secondary">Learn More About GCSC</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="whitepaper.html">Whitepaper</a>
+                    <a href="https://github.com/Melxisedek75/gcsc-website" target="_blank">GitHub</a>
+                    <a href="https://dex.protonnz.com" target="_blank">Trade GCSC</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Community</h3>
+                <div class="footer-links">
+                    <a href="https://twitter.com/GCSC_Network" target="_blank">𝕏 Twitter</a>
+                    <a href="https://xprnetwork.org" target="_blank">XPR Network</a>
+                    <a href="https://webauth.com" target="_blank">WebAuth Wallet</a>
+                    <a href="mailto:gcscdao@gmail.com">Email</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>About GCSC BP</h3>
+                <p style="color: var(--text-muted); line-height: 1.7;">GCSC is an active Block Producer on XPR Network, 100% dedicated to building decentralized infrastructure for the construction industry.</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 GCSC Network. All rights reserved. | BP Account: gcscnetwork1 on XPR Network</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Update active nav link on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.navbar-links');
+            if (nav) {
+                const navLinks = nav.querySelectorAll('a');
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                const currentLink = nav.querySelector('a[href="node.html"]');
+                if (currentLink) currentLink.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
