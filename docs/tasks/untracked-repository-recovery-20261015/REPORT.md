@@ -13,3 +13,5 @@ Evidence through 2026-10-16:
 - Clean-clone verification completed on D: at HEAD `c1e7b5c5`: 1,974 files and empty `git status`.
 - Main worktree exact duplicate cleanup committed and pushed; remaining dirty entries are nested repositories with patches preserved on D:.
 - `.tmp` archive verification completed: 22,706 files and 381.47 MB on D: with source removed from C:.
+- The remaining nested `capsule` untracked `package-lock.json` was classified as generated third-party metadata and preserved on D:; the top-level worktree now has no untracked paths.
+- Top-level remaining dirty state is limited to two nested repositories whose binary patches are preserved on D:; they were not silently deleted or published to an unrelated upstream.
